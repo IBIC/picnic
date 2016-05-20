@@ -1,13 +1,11 @@
 #!/bin/bash
 
-file=$1
+python makemakedoc.py "$@"
 
-# identify phony targets
-PHONY=`cat $file | grep "^.PHONY:"`
-
-targets=`echo "$PHONY" | sed 's/.PHONY: //g' | sed 's/[[:space:]]\+/\n/g' `
-
-for i in `echo "${targets}"`
-do
-	echo $i
-done
+if [ $? -eq 0 ]
+then
+    for file in "variables.txt targets.txt intermediates.txt"
+    do
+	wc -l $file
+    done
+fi
