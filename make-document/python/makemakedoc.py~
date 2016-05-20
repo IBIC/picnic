@@ -1,0 +1,68 @@
+#!/usr/bin/python
+
+import sys
+import re
+import numpy as np
+
+variables = []
+phonies = []
+targets = []
+
+varmatch=re.compile("^[A-Z a-z]+=")
+targetmatch=re.compile("^.*:")
+leadinghash=re.compile("^#\s*")
+
+filen=sys.argv[1]
+files=sys.argv
+del files[0]
+
+for f in files:
+    with open(f, 'r') as file_read:
+        contents = file_read.read()
+
+    linewise=filter(None, contents.splitlines())
+
+    for i in range(len(linewise)):
+        line=linewise[i]
+
+        if varmatch.match(line):
+            # get the names of the variables
+            variable=line.rsplit('=', 1)[0]
+            
+        # get the comment if there is any
+            if '#' in line:
+                comment=line.rsplit('#', 1)[1]
+            else:
+                comment="No comment supplied."
+        
+            arr = np.array([[variable, comment, f]])
+
+            if len(variables) is 0:
+                variables = arr
+            else:
+                variables = np.concatenate((variables, arr))
+                    
+        if len(phonies) is 0:
+            if ".PHONY" in (line):
+                phonies=line.rsplit('\\s')
+                del phonies[0]
+                            
+        if ':' in line and '\t' not in line and '#' not in line:
+            target=line.rsplit(':', 1)[0]
+
+            if target in phonies:
+                if '#' in linewise[i-1]:
+                    comment=re.sub(leadinghash, "", linewise[i-1])
+                else:
+                    comment="No comment supplied."
+                
+            arr=np.array([[target, comment, f]])
+
+            if len(targets) is 0:
+                targets=arr
+            else:
+                targets=np.concatenate((targets, arr))
+
+
+print variables
+print targets

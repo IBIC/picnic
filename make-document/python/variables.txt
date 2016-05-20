@@ -1,0 +1,1 @@
+T1 & T1=$(SubjDIR)/mprage/T1_brain.nii.gz & Subject-specific T1 to register to & ASL.mk \\

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+python makemakedoc.py "$@"
+
+if [ $? -eq 0 ]
+then
+    for file in "variables.txt targets.txt intermediates.txt"
+    do
+	wc -l $file
+    done
+fi

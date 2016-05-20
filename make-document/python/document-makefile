@@ -1,0 +1,14 @@
+#!/bin/bash
+
+python makemakedoc.py "$@"
+
+# format for LaTeX, if python succeeded
+if [ $? -eq 0 ]
+then
+    for file in "variables.txt targets.txt intermediates.txt"
+    do
+	sed -i -e 's/;/ \& /g' -e 's/$/ \\\\/' ${file}
+    done
+else
+    exit 1
+fi

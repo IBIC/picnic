@@ -1,0 +1,69 @@
+#!/bin/bash
+
+ask=yes
+sep='\t'
+eol=''
+outfile=''
+file=''
+
+tmp=$(mktemp -d /tmp/makedocXXX)
+
+while getopts "Ldo:i:" opt; do
+  case $opt in
+      L)
+	  sep=' & '
+	  eol=' \\' ;;
+      d)
+	  ask=no ;;
+      o)
+	  outfile="$OPTARG" ;;
+      i)
+	  file="$OPTARG" ;;
+      \?)
+	  echo "Invalid option: -$OPTARG" >&2
+  esac
+done
+
+if [ -f ${outfile} ] ; then rm ${outfile} ; fi
+
+# identify phony targets
+PHONY=`cat $file | grep "^.PHONY:"`
+
+targets=$(echo "$PHONY" | sed 's/.PHONY: //g' | sed 's/[[:space:]]\+/\n/g')
+
+for i in `echo "${targets}"`
+do
+    comment=$(\
+	grep -B 20 "^${i}:" ${file} | \
+	    tac | \
+	    tail -n +2 | \
+	    sed '/^[[:space:]]*$/d' | \
+	    awk '{ if ($0 ~ /^#/) print $0; else print ""; exit}' | \
+	    sed -e 's/^#\+ *//g' -e 's/\n//g' )
+
+    if [ -z "${comment}" ]
+    then
+	touch ${tmp}/ask
+	echo ${i} >> ${tmp}/ask
+    fi
+        
+#    echo -e ${i}"${sep}${comment}${sep}${file}${eol}"
+    echo -e ${i}"${sep}${comment}${sep}${file}${eol}" >> ${outfile}
+
+#    read
+done
+
+echo "Prompting ..."
+
+if [ "$ask" = "yes" ]
+then
+    for i in `cat ${tmp}/ask`
+    do
+	echo "Add a comment for $i:"
+	read comment
+	sed -i "s/\(^$i\t\)/\1${comment}/g" ${outfile}
+	echo -e '\n'
+    done
+fi
+
+rm -rf ${tmp}

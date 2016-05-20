@@ -1,0 +1,102 @@
+\documentclass[oneside,11pt]{memoir}
+
+% Fonts
+\usepackage[T1]{fontenc}	% better output encoding
+\usepackage{textcomp}		% For ASCII diacritics
+\usepackage{lmodern}		% Latin Modern instad of CM
+%\usepackage{inconsolata}	% better monospaced font
+\usepackage[defaultsans]{droidsans} % straight quotes
+\usepackage{microtype}		% fix the little things % comes after any fonts
+
+% basics
+\usepackage[textwidth=0.65\paperwidth]{geometry}	% Adjust margins
+\usepackage{graphicx}	% now you can add pretty pictures
+\usepackage{url} 		% makes urls look nicer
+\usepackage[usenames,dvipsnames]{color} % adds colored text
+\usepackage[font=footnotesize]{caption}	% more control over figure captions
+\usepackage{xparse}		% nesting arguments wtihin environments
+\usepackage{underscore}	% better text underscores
+\usepackage{marginnote}	% better margin notes
+\usepackage{tabularx}	% more flexible tables
+\usepackage[table]{xcolor}	% alternating table colors
+\usepackage{todonotes}	% backend organization. Also for some reason necessary for tikz
+\usepackage{authblk} % author block
+
+% Complex packages
+\usepackage{tikz}		% nice flowcharts and stuff
+\usepackage{tikzpagenodes}
+\usetikzlibrary{positioning,calc}
+\usepackage{tcolorbox} 	% frames
+\usepackage{listings} 	% nice code formatting
+\usepackage{dirtree}	% pretty directory trees
+
+% Lists
+\usepackage[ampersand]{easylist}	% Nicer syntax for creating lists
+\usepackage{paralist}	% Allows inline lists %
+% For citations using Bibtex
+\usepackage{natbib}
+
+% Hyperref
+\usepackage[colorlinks=true]{hyperref} 	% allows hyperlinking % NEEDS TO BE LOADED LAST
+\hypersetup{citecolor=red}
+
+\newcommand{\sdmf}{\textsc{sdmf}}
+
+\newcommand{\bashcmd}[1]{ \hfill\, \begin{minipage}[t]{\linewidth}  \hrule \vspace{0.5\baselineskip} \texttt{\small \$ #1} \vspace{0.5\baselineskip} \hrule \end{minipage} \vspace{0.5\baselineskip} }
+
+\begin{document}
+	
+	\section{Introduction}
+	
+	The purpose of this document is to describe the standards for creating self-documenting makefiles (\textsc{sdmf}). As projects grow more complex and branch off into multiple makefiles, keeping track of variable-settings and targets becomes increasing complex. 
+	
+	This script is designed to collect the following information from any number of relevant makefiles you point it at:
+	
+	\begin{easylist}[itemize]
+		& \textbf{Variables:} Defined through \texttt{VAR=x} syntax in the makefile preamble. Often references to directory paths (\texttt{bin/}, \texttt{incoming/}, etc)
+		& \textbf{Targets:} What's actually called from the command line, things like \texttt{PrepSubject}. These should be defined under \texttt{.PHONY}
+		& \textbf{Files:} Intermediate targets not called directly from the command line, something like \texttt{mprage/T1\_brain.nii.gz}
+	\end{easylist}
+	
+	\section{Calling the script}
+	
+	Documenting makefiles is easy, simply call from the command line \texttt{document-makefile}, followed by the name(s) of one or more makefiles.	
+	\bashcmd{./document-makefile ASL.mk}
+	
+	\texttt{document-makefile} requires the following scripts to be in the same directory:
+	
+	\begin{easylist}[itemize]
+		& \texttt{makemakedoc.py} -- A \texttt{Python} script that reads the makefiles and creates the output text files \texttt{variables.txt}, and \texttt{targets.txt}, \texttt{intermediates.txt} for later interpretation.
+	\end{easylist}
+	
+	\newpage
+	\section{Makefile commenting syntax}
+	
+	Because we have three things to identify from the makefiles (variable, targets, and files), we introduce three comment ``keywords'' to facilitate information extraction.
+	All makefile comments begin with \texttt{\#}, so \textsc{sdmf} comments will also begin with \texttt{\#}. 
+	
+	\begin{center}
+		\fbox{\color{red} Semicolons (\texttt{;}) are \textbf{disallowed} in comments. They will be sanitized.}
+	\end{center}
+	
+	\begin{tabularx}{\textwidth}{rX}
+		\toprule
+		Comment & Description \\
+		\midrule
+		
+		\texttt{\#}, \texttt{\#\#}, \ldots 
+						& (Any number of only octothorpes.) \newline Only octothorpes without any \sdmf{} control characters will be ignored, for makefile-only comments, section headers and the like. \newline E.g \texttt{\#\#\# QA \#\#\#} will be completely ignored by the parser. \\
+		
+		\texttt{\#!}	& Variable definition. \newline The only comment to appear on the same line as its referent, this should be appended after the variable definition (to save vertical space) \newline E.g. \newline \texttt{PROJECT\_DIR=/mnt/home/adrc/ADRC \# top level of the project directory}\\
+		
+		\texttt{\#>}	& File (intermediary target) descriptions. \newline Any number of \texttt{\#>} comments can be used before an intermediate target. I don't recommend using more than two or three. Newlines will not be preserved \newline E.g \newline \texttt{\#> Register m0 to t1 using fnirt} \newline \texttt{{\color{blue} pcasl/pcasl\_fnirt.nii.gz}: pcasl/Pcasl\_skstrip.nii.gz mprage/T1\_brain.nii.gz} \\
+		
+		\texttt{\#?}	& Target descriptions. \newline One-line descriptions of targets to be called from the command line, e.g. \texttt{all}, \texttt{PrepSubject}. \newline E.g. \newline \texttt{\#? Make all the relevant PCASL registrations} \newline \texttt{{\color{blue} PCASL}: pcasl/pcasl\_fnirt.nii.gz pcasl/pcasl\_M0\_to\_T1\_ANTs\_Warped.nii.gz}\\
+		
+		\bottomrule
+	\end{tabularx}
+	
+	
+	
+	
+\end{document}

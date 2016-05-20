@@ -1,0 +1,13 @@
+PreprocessSubject	foo	PreprocessSubject.mk
+TSNR_fMRI	threshold signal-to-noise ratio for functional scans	PreprocessSubject.mk
+BH_TSNR	TSNR for breathhold scans	PreprocessSubject.mk
+MotionGraphs	These make the summary graphs for rotations, translations, fd, and dvars	PreprocessSubject.mk
+outliers	unless you're doing something debuggy	PreprocessSubject.mk
+bh_outliers	bar	PreprocessSubject.mk
+registrations	Write transformation matrices	PreprocessSubject.mk
+meica	Create the meica files for each subject/scan: medn, tsoc, and mefc	PreprocessSubject.mk
+epireg	baz	PreprocessSubject.mk
+MeicaMovies	Resting state meica movies	PreprocessSubject.mk
+RawMovies	Movies of the original data	PreprocessSubject.mk
+BH_Movies	Breathhold movies	PreprocessSubject.mk
+BH_RawMovies	Movies of the original data	PreprocessSubject.mk

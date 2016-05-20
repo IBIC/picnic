@@ -1,0 +1,13 @@
+#!/bin/bash
+
+file=$1
+
+# identify phony targets
+PHONY=`cat $file | grep "^.PHONY:"`
+
+targets=`echo "$PHONY" | sed 's/.PHONY: //g' | sed 's/[[:space:]]\+/\n/g' `
+
+for i in `echo "${targets}"`
+do
+	echo $i
+done
