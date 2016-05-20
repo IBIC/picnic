@@ -1,0 +1,110 @@
+\documentclass[oneside,11pt]{memoir}
+
+% Fonts
+\usepackage[T1]{fontenc}	% better output encoding
+\usepackage{textcomp}		% For ASCII diacritics
+\usepackage{lmodern}		% Latin Modern instad of CM
+%\usepackage{inconsolata}	% better monospaced font
+\usepackage[defaultsans]{droidsans} % straight quotes
+\usepackage{microtype}		% fix the little things % comes after any fonts
+
+% basics
+\usepackage[textwidth=0.65\paperwidth]{geometry}	% Adjust margins
+\usepackage{graphicx}	% now you can add pretty pictures
+\usepackage{url} 		% makes urls look nicer
+\usepackage[usenames,dvipsnames]{color} % adds colored text
+\usepackage[font=footnotesize]{caption}	% more control over figure captions
+\usepackage{xparse}		% nesting arguments wtihin environments
+\usepackage{underscore}	% better text underscores
+\usepackage{marginnote}	% better margin notes
+\usepackage{tabularx}	% more flexible tables
+\usepackage[table]{xcolor}	% alternating table colors
+\usepackage{todonotes}	% backend organization. Also for some reason necessary for tikz
+\usepackage{authblk} % author block
+
+% Complex packages
+\usepackage{tikz}		% nice flowcharts and stuff
+\usepackage{tikzpagenodes}
+\usetikzlibrary{positioning,calc}
+\usepackage{tcolorbox} 	% frames
+\usepackage{listings} 	% nice code formatting
+\usepackage{dirtree}	% pretty directory trees
+
+% Lists
+\usepackage[ampersand]{easylist}	% Nicer syntax for creating lists
+\usepackage{paralist}	% Allows inline lists %
+% For citations using Bibtex
+\usepackage{natbib}
+
+% Hyperref
+\usepackage[colorlinks=true]{hyperref} 	% allows hyperlinking % NEEDS TO BE LOADED LAST
+\hypersetup{citecolor=red}
+
+\newcommand{\sdmf}{\textsc{sdmf}}
+
+\renewcommand{\thesection}{\arabic{section}}
+
+\title{Makefile Documentation}
+
+\date{\today}
+\author{}
+
+\usepackage{titletoc}
+\titlecontents*{section} % Section
+	[0em]                  % Left
+	{\space}               % Above code
+	{\thecontentslabel~}   % Numbered format
+	{}                     % Numberless format
+	{}                     % Filler
+	[\hspace{1em}]         % Separator
+	
+\renewcommand{\contentsname}{Contents}
+
+\begin{document}
+	
+	\begin{center}
+		{\Huge \textbf{Makefile Documentation}}
+		
+		{\large Documenting makefiles: \texttt{\input{../sdmf-output/header.txt}} }
+		
+		\textit{\today}
+	\end{center}
+	
+	\tableofcontents
+	
+	\section{Targets}
+	
+	\begin{tabularx}{\textwidth}{>{\ttfamily}l X >{\ttfamily}l}
+		\toprule
+		\textbf{TARGET} & \textbf{Description} & \textbf{File} \\
+		\midrule 
+		
+		\input{../sdmf-output/targets.txt}
+		
+		\bottomrule
+	\end{tabularx}
+	
+	
+	\section{Variables}
+			
+	\begin{tabularx}{\textwidth}{>{\ttfamily}l X >{\ttfamily}l}
+		\toprule
+		\textbf{TARGET} & \textbf{Definition \& Description} & \textbf{File} \\
+		\midrule 
+		
+		\input{../sdmf-output/variables.txt}
+		
+		\bottomrule
+	\end{tabularx}
+	
+	
+	\section{Intermediate Files}
+
+	\begin{description}
+		
+		\input{../sdmf-output/intermediates.txt}		
+		
+	\end{description}
+	
+\end{document}
+	

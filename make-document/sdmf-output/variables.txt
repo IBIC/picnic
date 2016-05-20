@@ -1,1 +1,3 @@
-T1 & $(SubjDIR)/mprage/T1_brain.nii.gz & Subject-specific T1 to register to & ASL.mk \\
+FLEXPATH & \texttt{\$(BIN)/wmprogram/sb/cross_platform/scripts} \newline No comment supplied. &Flex.mk \\
+SBBINDIR & \texttt{\$(BIN)/wmprogram/sb/linux} \newline No comment supplied. &Flex.mk \\
+T1 & \texttt{\$(SubjDIR)/mprage/T1_brain.nii.gz} \newline Subject-specific T1 to register to &ASL.mk \\

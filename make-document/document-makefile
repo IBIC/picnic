@@ -3,14 +3,30 @@
 python sdmf-scripts/makemakedoc.py "$@"
 
 mkdir -p sdmf-output/
+echo "$@" | sed 's/\s/, /g' > sdmf-output/header.txt
 
 # format for LaTeX, if python succeeded
 if [ $? -eq 0 ]
 then
-    for file in "variables.txt targets.txt intermediates.txt"
+    for file in targets.txt variables.txt
     do
-	sed -i -e 's/;/ \& /g' -e 's/$/ \\\\/' ${file}
+	
+	sort $file -o $file
+	# swap ; for & and add \\ to EOL
+	sed -i -e 's/;/\&/g' -e 's/$/ \\\\/' ${file}
+
+	# escape $, %
+	sed -i -e 's/\$/\\$/g' -e 's/%/\\%/g' ${file}
     done
+
+    # collapse second and third cols of variables.txt into a single cell
+    gawk -i inplace 'BEGIN {FS="&"} ; {print $1" & ""\\texttt{"$2"} \\newline "$3" &"$4}' variables.txt
+    
+    # escape $, %
+    sort intermediates.txt -o intermediates.txt
+    sed -i -e 's/\$/\\$/g' -e 's/%/\\%/g' intermediates.txt
+    gawk -i inplace 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}]: (\\texttt{"$3"}) "$2}' intermediates.txt
+
 else
     exit 1
 fi
@@ -18,3 +34,13 @@ fi
 mv variables.txt sdmf-output/
 mv targets.txt sdmf-output/
 mv intermediates.txt sdmf-output/
+
+if [ $? -eq 0 ]
+then
+    cd sdmf-scripts
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex
+    cd ..
+    cp sdmf-scripts/tables.pdf sdmf-output/
+else
+    exit 1 "Moves failed"
+fi
