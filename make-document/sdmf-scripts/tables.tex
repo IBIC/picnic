@@ -9,7 +9,7 @@
 \usepackage{microtype}		% fix the little things % comes after any fonts
 
 % basics
-\usepackage[textwidth=0.8\paperwidth]{geometry}	% Adjust margins
+\usepackage[textwidth=0.75\paperwidth]{geometry}	% Adjust margins
 \usepackage{graphicx}	% now you can add pretty pictures
 \usepackage{url} 		% makes urls look nicer
 \usepackage[usenames,dvipsnames]{color} % adds colored text
@@ -18,10 +18,10 @@
 \usepackage{underscore}	% better text underscores
 \usepackage{marginnote}	% better margin notes
 \usepackage{tabularx}	% more flexible tables
-\usepackage[table]{xcolor}	% alternating table colors
+\usepackage[table,dvipsnames]{xcolor}	% alternating table colors
 \usepackage{todonotes}	% backend organization. Also for some reason necessary for tikz
 \usepackage{authblk} % author block
-\usepackage{booktabs}\texttt{}
+\usepackage{booktabs}
 \usepackage{ltxtable}
 
 % Complex packages
@@ -39,9 +39,7 @@
 \usepackage{natbib}
 
 % Hyperref
-\usepackage[colorlinks=true]{hyperref} 	% allows hyperlinking % NEEDS TO BE LOADED LAST
-\hypersetup{citecolor=red}
-
+\usepackage[linkcolor=magenta,colorlinks=true]{hyperref} 	% allows hyperlinking % NEEDS TO BE LOADED LAST
 \newcommand{\sdmf}{\textsc{sdmf}}
 
 \renewcommand{\thesection}{\arabic{section}}
@@ -63,6 +61,8 @@
 \makeatletter
 \renewcommand*{\@tocmaketitle}{\noindent \textbf{\large Contents}}
 \makeatother
+
+\definecolor{lemon}{HTML}{F5ECCE}
 
 \begin{document}
 	
@@ -86,11 +86,21 @@
 	
 	\section{Intermediate Files}
 
-	\begin{description}
-		
-		\input{../sdmf-output/intermediates.txt}		
-		
+	\begin{description}		
+		\input{../sdmf-output/intermediates.txt}				
 	\end{description}
+	
+	\newpage
+	\newgeometry{scale=0.85, centering}
+	\section{Makefiles}
+		
+	\lstset{language=make,backgroundcolor=\color{lemon},showstringspaces=false,
+		gobble=8,
+		basicstyle=\small\ttfamily,
+		breaklines=true,
+		escapeinside={\%*}{*}}
+		
+	\input{makefiles.tex}
 	
 \end{document}
 	
