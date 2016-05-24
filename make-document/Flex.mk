@@ -1,9 +1,12 @@
 ## Does the flex stuff
 ## copied from act-plus PrepSubject.mk
 
+.PHONY: Flex
+
 FLEXPATH=$(BIN)/wmprogram/sb/cross_platform/scripts
 SBBINDIR=$(BIN)/wmprogram/sb/linux
 
+#? Identify wm hyperintesities
 Flex: flair/Flair.nii.gz flair/Flair_scaled.nii.gz flair/Flair_RO.nii.gz flair/Flair_brain.hdr flair/Flair_brain_flwmt_lesions.hdr flair/Flair_wmh_mask.nii.gz QA/images/checkflex.gif
 
 # The default Flair image has crazy-high intensities that flex doesn't like,

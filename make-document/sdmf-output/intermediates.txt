@@ -1,19 +1,19 @@
-\item [\texttt{flair/Flair_brain_flwmt_lesions.hdr}]: (\texttt{Flex.mk}) No comment supplied.
-\item [\texttt{flair/Flair_brain.hdr}]: (\texttt{Flex.mk}) No comment supplied.
-\item [\texttt{flair/Flair_restore.nii.gz}]: (\texttt{Flex.mk}) No comment supplied.
+\item [\texttt{.PHONY}]: (\texttt{ASL.mk}) No comment supplied.
+\item [\texttt{.PHONY}]: (\texttt{Flex.mk}) No comment supplied.
+\item [\texttt{QA/images/checkflex.gif}]: (\texttt{Flex.mk}) No comment supplied.
 \item [\texttt{flair/Flair_RO.nii.gz}]: (\texttt{Flex.mk}) No comment supplied.
+\item [\texttt{flair/Flair_brain.hdr}]: (\texttt{Flex.mk}) No comment supplied.
+\item [\texttt{flair/Flair_brain_flwmt_lesions.hdr}]: (\texttt{Flex.mk}) No comment supplied.
+\item [\texttt{flair/Flair_restore.nii.gz}]: (\texttt{Flex.mk}) No comment supplied.
 \item [\texttt{flair/Flair_scaled.nii.gz}]: (\texttt{Flex.mk}) No comment supplied.
 \item [\texttt{flair/Flair_wmh_mask.nii.gz}]: (\texttt{Flex.mk}) No comment supplied.
 \item [\texttt{flair/wmhstats.csv}]: (\texttt{Flex.mk}) No comment supplied.
-\item [\texttt{Flex}]: (\texttt{Flex.mk}) No comment supplied.
-\item [\texttt{pcasl/PCASL_M0_brain_avg.nii.gz}]: (\texttt{ASL.mk}) The average image of the motion-corrected, skull-stripped file.
-\item [\texttt{pcasl/PCASL_M0_brainmask.nii.gz}]: (\texttt{ASL.mk}) Extract a binarized brainmask
-\item [\texttt{pcasl/PCASL_M0_brain.nii.gz}]: (\texttt{ASL.mk}) Apply the brainmask to the 4d nifti
-\item [\texttt{pcasl/PCASL_M0_brain_vol0.nii.gz}]: (\texttt{ASL.mk}) The first TR of the motion-corrected, skull-stripped file
-\item [\texttt{pcasl/PCASL_M0_mcf.nii.gz}]: (\texttt{ASL.mk}) Motion correct using mcflirt
 \item [\texttt{pcasl/PCASL_M0_\%_to_T1_ANTs.nii.gz}]: (\texttt{ASL.mk}) Register M0 to T1 using ANTs
 \item [\texttt{pcasl/PCASL_M0_\%_to_T1_fnirt.nii.gz}]: (\texttt{ASL.mk}) Register M0 to T1 using fnirt
+\item [\texttt{pcasl/PCASL_M0_brain.nii.gz}]: (\texttt{ASL.mk}) Apply the brainmask to the 4d nifti
+\item [\texttt{pcasl/PCASL_M0_brain_avg.nii.gz}]: (\texttt{ASL.mk}) The average image of the motion-corrected, skull-stripped file.
+\item [\texttt{pcasl/PCASL_M0_brain_vol0.nii.gz}]: (\texttt{ASL.mk}) The first TR of the motion-corrected, skull-stripped file
+\item [\texttt{pcasl/PCASL_M0_brainmask.nii.gz}]: (\texttt{ASL.mk}) Extract a binarized brainmask
+\item [\texttt{pcasl/PCASL_M0_mcf.nii.gz}]: (\texttt{ASL.mk}) Motion correct using mcflirt
 \item [\texttt{pcasl/QA/overlay_\%.gif}]: (\texttt{ASL.mk}) No comment supplied.
 \item [\texttt{pcasl/QA/slices_\%.gif}]: (\texttt{ASL.mk}) No comment supplied.
-\item [\texttt{.PHONY}]: (\texttt{ASL.mk}) No comment supplied.
-\item [\texttt{QA/images/checkflex.gif}]: (\texttt{Flex.mk}) No comment supplied.

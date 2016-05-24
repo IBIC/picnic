@@ -1,44 +1,104 @@
 #!/bin/bash
 
-python sdmf-scripts/makemakedoc.py "$@"
+usage() {
+    echo "There are two options to run $0."
+    echo -e "\t1. $0 -D /path/to/all/makefiles\t(expands to *.mk)"
+    echo -e "\t--OR--"
+    echo -e "\t2. $0 path/to/makefile another/makefile"
+    }
+
+directory=""
+while getopts ":D:h" opt
+do
+    case $opt in 
+	D)
+	    if [ -d $OPTARG ]
+	    then
+		directory=$OPTARG
+		echo "Reading all *.mk files from $directory"
+	    else
+		echo "$OPTARG is not a directory."
+		usage
+		exit 1
+	    fi
+	    ;;
+	h)
+	    usage
+	    exit 0
+	    ;;
+	\?)
+	    echo "-$OPTARG is not a valid option"
+	    usage
+	    ;;
+    esac
+done
+
+if [ "$directory" = "" ]
+then
+    # if no directory was supplied, take all arguments
+    files=$@
+else
+    # if a directory was supplied, use it.
+    files=$directory/*
+fi
+
+echo $files
+exit
 
 mkdir -p sdmf-output/
-echo "$@" | sed 's/\s/, /g' > sdmf-output/header.txt
+
+rm sdmf-output/header.txt
+for i in ${files}
+do
+    echo $(basename $i) >> sdmf-output/header.txt
+done
+
+python sdmf-scripts/makemakedoc.py ${files}
+
+if [ ! -s targets.txt ] || [ ! -s intermediates.txt ] || [ ! -s variables.txt ]
+then
+    echo "One or more output files is empty. This probably isn't what you want; check your inputs."
+#   exit 1
+fi
 
 # format for LaTeX, if python succeeded
 if [ $? -eq 0 ]
 then
     for file in targets.txt variables.txt
     do
-	
-	sort $file -o $file
 	# swap ; for & and add \\ to EOL
 	sed -i -e 's/;/\&/g' -e 's/$/ \\\\/' ${file}
 
 	# escape $, %
-	sed -i -e 's/\$/\\$/g' -e 's/%/\\%/g' ${file}
+	sed -i -e 's/\$/\\$/g' -e 's/%/\\%/g' -e 's/\#/\\#/g' ${file}
     done
 
     # collapse second and third cols of variables.txt into a single cell
     gawk -i inplace 'BEGIN {FS="&"} ; {print $1" & ""\\texttt{"$2"} \\newline "$3" &"$4}' variables.txt
+    # TO DO trim variable definitions to 120 characters (approx. three lines)
     
     # escape $, %
-    sort intermediates.txt -o intermediates.txt
     sed -i -e 's/\$/\\$/g' -e 's/%/\\%/g' intermediates.txt
-    gawk -i inplace 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}]: (\\texttt{"$3"}) "$2}' intermediates.txt
+    gawk -i inplace 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}] (\\texttt{"$3"}) "$2}' intermediates.txt
 
 else
     exit 1
 fi
 
+touch variables.txt
+touch targets.txt
+touch intermediates.txt
+
 mv variables.txt sdmf-output/
 mv targets.txt sdmf-output/
 mv intermediates.txt sdmf-output/
 
+echo "Running PdfLaTeX ..."
+
 if [ $? -eq 0 ]
 then
     cd sdmf-scripts
-    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex > /dev/null 2>&1
     cd ..
     cp sdmf-scripts/tables.pdf sdmf-output/
 else

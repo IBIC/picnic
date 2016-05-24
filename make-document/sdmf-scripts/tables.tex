@@ -9,7 +9,7 @@
 \usepackage{microtype}		% fix the little things % comes after any fonts
 
 % basics
-\usepackage[textwidth=0.65\paperwidth]{geometry}	% Adjust margins
+\usepackage[textwidth=0.8\paperwidth]{geometry}	% Adjust margins
 \usepackage{graphicx}	% now you can add pretty pictures
 \usepackage{url} 		% makes urls look nicer
 \usepackage[usenames,dvipsnames]{color} % adds colored text
@@ -21,6 +21,8 @@
 \usepackage[table]{xcolor}	% alternating table colors
 \usepackage{todonotes}	% backend organization. Also for some reason necessary for tikz
 \usepackage{authblk} % author block
+\usepackage{booktabs}\texttt{}
+\usepackage{ltxtable}
 
 % Complex packages
 \usepackage{tikz}		% nice flowcharts and stuff
@@ -58,7 +60,9 @@
 	{}                     % Filler
 	[\hspace{1em}]         % Separator
 	
-\renewcommand{\contentsname}{Contents}
+\makeatletter
+\renewcommand*{\@tocmaketitle}{\noindent \textbf{\large Contents}}
+\makeatother
 
 \begin{document}
 	
@@ -70,33 +74,15 @@
 		\textit{\today}
 	\end{center}
 	
-	\tableofcontents
+	\tableofcontents*
 	
 	\section{Targets}
 	
-	\begin{tabularx}{\textwidth}{>{\ttfamily}l X >{\ttfamily}l}
-		\toprule
-		\textbf{TARGET} & \textbf{Description} & \textbf{File} \\
-		\midrule 
-		
-		\input{../sdmf-output/targets.txt}
-		
-		\bottomrule
-	\end{tabularx}
-	
+	\LTXtable{\textwidth}{targets.tex}	
 	
 	\section{Variables}
 			
-	\begin{tabularx}{\textwidth}{>{\ttfamily}l X >{\ttfamily}l}
-		\toprule
-		\textbf{TARGET} & \textbf{Definition \& Description} & \textbf{File} \\
-		\midrule 
-		
-		\input{../sdmf-output/variables.txt}
-		
-		\bottomrule
-	\end{tabularx}
-	
+	\LTXtable{\textwidth}{variables.tex}
 	
 	\section{Intermediate Files}
 
