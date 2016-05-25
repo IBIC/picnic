@@ -14,6 +14,7 @@ targets = []
 varmatch=re.compile("^[A-Z a-z 0-9]+=")
 targetmatch=re.compile("^.*:")
 leadingdot=re.compile("^\.")
+leadinghash=re.compile("^#")
 
 files=sys.argv
 del files[0] # the first element is 'makemakedoc.py'
@@ -66,7 +67,7 @@ for f in files:
                 phonies = phonies + phonies_temp
         
         # GET (INTERMDIATE) TARGETS
-        if ':' in line and '\t' not in line and '^#' not in line:
+        if ':' in line and '\t' not in line and not leadinghash.match(line):
             target=line.rsplit(':', 1)[0]
             
             if not leadingdot.match(target):
