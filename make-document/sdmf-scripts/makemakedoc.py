@@ -16,6 +16,18 @@ targetmatch=re.compile("^.*:")
 leadingdot=re.compile("^\.")
 leadinghash=re.compile("^#")
 
+def savestring( array, filen ):
+    if len(array) is not 0:
+        array = array[array[:,0].argsort()]
+        with open(filen, "wb") as F:
+            writer = csv.writer(F, delimiter=";", lineterminator='\n')
+            writer.writerows(array)
+    else:
+        with open(filen, "wb") as F:
+            writer = csv.writer(F, delimiter=";", lineterminator='\n')
+            writer.writerow("-;None found;-".split(';'))
+
+
 files=sys.argv
 del files[0] # the first element is 'makemakedoc.py'
 
@@ -41,12 +53,15 @@ for f in files:
             
             # get the comment if there is any
             if '#!' in line:
-                comment = line.rsplit(' #! ', 1)[1]
-                definition = line.rsplit(' #! ', 1)[0].rsplit('=', 1)[1]
+                comment = line.split('#!', 1)[1]
+                definition = line.split('#!', 1)[0].rsplit('=', 1)[1]
                 comment = re.sub(";", ",", comment)
             else:
+                if '#!' in linewise[i-1]:
+                    comment=line.rsplit('#! ', 1)[1]
+                else:
+                    comment="No comment supplied."
                 definition=line.rsplit('=', 1)[1]
-                comment="No comment supplied."
         
             arr = np.array([[variable, definition, comment, fbn]])
 
@@ -66,7 +81,7 @@ for f in files:
                 del phonies_temp[0]
                 phonies = phonies + phonies_temp
         
-        # GET (INTERMDIATE) TARGETS
+        # GET (INTERMEDIATE) TARGETS
         if ':' in line and '\t' not in line and not leadinghash.match(line):
             target=line.rsplit(':', 1)[0]
             
@@ -95,20 +110,6 @@ for f in files:
                     else:
                         targets = np.concatenate([targets, np.array([[target, comment, fbn]])])
 
-if len(variables) is not 0:
-    variables = variables[variables[:,0].argsort()]
-    with open("variables.txt", "wb") as v:
-        writer = csv.writer(v, delimiter=";", lineterminator='\n')
-        writer.writerows(variables)
-
-if len(phonies_arr) is not 0: 
-    phonies_arr = phonies_arr[phonies_arr[:,0].argsort()]
-    with open("targets.txt", "wb") as t:
-        writer = csv.writer(t, delimiter=";", lineterminator='\n')
-        writer.writerows(phonies_arr)
-
-if len(targets) is not 0:
-    targets = targets[targets[:,0].argsort()]
-    with open("intermediates.txt", "wb") as i:
-        writer = csv.writer(i, delimiter=";", lineterminator='\n')
-        writer.writerows(targets)
+savestring(variables, "variables.txt")
+savestring(phonies_arr, "targets.txt")
+savestring(targets, "intermediates.txt")

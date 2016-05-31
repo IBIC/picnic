@@ -7,8 +7,9 @@ usage() {
     echo -e "\t2. $0 path/to/makefile another/makefile"
     }
 
+verbose=0
 directory=""
-while getopts ":D:h" opt
+while getopts ":D:qh" opt
 do
     case $opt in 
 	D)
@@ -21,6 +22,10 @@ do
 		usage
 		exit 1
 	    fi
+	    ;;
+	q)
+	    verbose=1
+	    shift
 	    ;;
 	h)
 	    usage
@@ -65,10 +70,13 @@ if [ $? -eq 0 ]
 then
     for file in targets.txt variables.txt
     do
+	# sanitize &
+	sed -i -e 's/\&/\\\&/g' ${file} 
+
 	# swap ; for & and add \\ to EOL
 	sed -i -e 's/;/\&/g' -e 's/$/ \\\\/' ${file}
 
-	# escape $, %, #
+	# escape $, %, #, &
 	sed -i -e 's/\$/\\$/g' -e 's/%/{\\color{blue}\\%/g' -e 's/\#/\\#/g' ${file}
     done
 
@@ -76,7 +84,8 @@ then
     gawk -i inplace 'BEGIN {FS="&"} ; {print $1" & ""\\texttt{"$2"} \\newline "$3" &"$4}' variables.txt
     # TO DO trim variable definitions to 120 characters (approx. three lines)
     
-    # escape $, %, #
+    # escape $, %, #, &
+    sed -i -e 's/\&/\\\&/g' intermediates.txt
     sed -i -e 's/\$/\\$/g' -e 's/%/{\\color{blue}\\%}/g' -e 's/\#/\\#/g' intermediates.txt
     gawk -i inplace 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}] (\\texttt{\\hyperref["$3"]{"$3"}}) "$2}' intermediates.txt
 
@@ -102,14 +111,15 @@ do
     echo "\lstinputlisting{../"${i}"}" >> sdmf-scripts/makefiles.tex
 done
 
-if [ $? -eq 0 ]
-then
-    cd sdmf-scripts
-    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex > /dev/null 2>&1
-    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex > /dev/null 2>&1
-    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex > /dev/null 2>&1
-    cd ..
-    cp sdmf-scripts/tables.pdf sdmf-output/
+echo $latexout
+
+cd sdmf-scripts
+if [ $verbose -eq 0 ] ; then
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 
 else
-    exit 1 "Moves failed"
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 1 > /dev/null
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 1 > /dev/null  
 fi
+cd ..
+cp sdmf-scripts/tables.pdf sdmf-output/
