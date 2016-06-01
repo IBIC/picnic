@@ -9,9 +9,17 @@ usage() {
 
 verbose=0
 directory=""
-while getopts ":D:qh" opt
+outfile="tables.pdf"
+while getopts ":D:vho:" opt
 do
     case $opt in 
+	o)
+	    outfile=$OPTARG
+	    if [[ $outfile != *.pdf ]]
+	    then
+		outfile=${outfile}.pdf
+	    fi
+	    ;;
 	D)
 	    if [ -d $OPTARG ]
 	    then
@@ -23,7 +31,7 @@ do
 		exit 1
 	    fi
 	    ;;
-	q)
+	v)
 	    verbose=1
 	    shift
 	    ;;
@@ -38,6 +46,9 @@ do
     esac
 done
 
+# remove flags and their arguments, keep the rest as input
+shift $(( $OPTIND - 1 ))
+
 if [ "$directory" = "" ]
 then
     # if no directory was supplied, take all arguments
@@ -47,7 +58,7 @@ else
     files=$directory/*
 fi
 
-echo $files
+if [ $verbose -eq 1 ] ; then echo $files ; fi
 
 mkdir -p sdmf-output/
 
@@ -62,7 +73,7 @@ python sdmf-scripts/makemakedoc.py ${files}
 if [ ! -s targets.txt ] || [ ! -s intermediates.txt ] || [ ! -s variables.txt ]
 then
     echo "One or more output files is empty. This probably isn't what you want; check your inputs."
-#   exit 1
+   exit 1
 fi
 
 # format for LaTeX, if python succeeded
@@ -70,23 +81,23 @@ if [ $? -eq 0 ]
 then
     for file in targets.txt variables.txt
     do
-	# sanitize &
+	# sanitize & (remove from comments before proceeding)
 	sed -i -e 's/\&/\\\&/g' ${file} 
 
 	# swap ; for & and add \\ to EOL
 	sed -i -e 's/;/\&/g' -e 's/$/ \\\\/' ${file}
 
-	# escape $, %, #, &
-	sed -i -e 's/\$/\\$/g' -e 's/%/{\\color{blue}\\%/g' -e 's/\#/\\#/g' ${file}
+	# escape $, %, #, &, allow breaking at ':', '/'
+	sed -i -e 's/[\$\#]/\\&/g' -e 's/%/{\\color{blue}\\%}/g' -e 's/[:/]/\\discretionary{&}{}{&}/g' ${file}
     done
 
     # collapse second and third cols of variables.txt into a single cell
     gawk -i inplace 'BEGIN {FS="&"} ; {print $1" & ""\\texttt{"$2"} \\newline "$3" &"$4}' variables.txt
     # TO DO trim variable definitions to 120 characters (approx. three lines)
     
-    # escape $, %, #, &
+    # escape $, %, #, & in intermediates.txt
     sed -i -e 's/\&/\\\&/g' intermediates.txt
-    sed -i -e 's/\$/\\$/g' -e 's/%/{\\color{blue}\\%}/g' -e 's/\#/\\#/g' intermediates.txt
+    sed -i -e 's/[\$\#]/\\&/g' -e 's/%/{\\color{blue}\\%}/g' intermediates.txt
     gawk -i inplace 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}] (\\texttt{\\hyperref["$3"]{"$3"}}) "$2}' intermediates.txt
 
 else
@@ -106,6 +117,12 @@ echo "Running PdfLaTeX ..."
 > sdmf-scripts/makefiles.tex
 for i in ${files}
 do
+    if [[ $i == *"_"* ]] ; then
+	echo "Bash: LaTeX doesn't like underscores in filenames."
+	echo -e "\tPlease rename your files if you wish to continue using SDMF."
+	exit 1
+    fi
+
     echo "\subsection{\texttt{"$(basename ${i})"}}" >> sdmf-scripts/makefiles.tex
     echo "\label{"$(basename ${i})"}" >> sdmf-scripts/makefiles.tex
     echo "\lstinputlisting{../"${i}"}" >> sdmf-scripts/makefiles.tex
@@ -114,12 +131,16 @@ done
 echo $latexout
 
 cd sdmf-scripts
-if [ $verbose -eq 0 ] ; then
+if [ $verbose -eq 1 ] ; then
+    # output all of pdflatex's gobbledygook
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 
 else
+    # redirect STDOUT to /dev/null
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 1 > /dev/null
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 1 > /dev/null  
 fi
 cd ..
-cp sdmf-scripts/tables.pdf sdmf-output/
+cp sdmf-scripts/tables.pdf sdmf-output/$outfile
+
+echo "Saved to sdmf-output/$outfile"
