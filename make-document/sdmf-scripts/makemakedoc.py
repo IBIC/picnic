@@ -19,6 +19,7 @@ leadinghash=re.compile("^#")            # looking for comment lines, ^#
 
 def save_array( array, filen ):
     """Save the array to the file, or save a placeholder if it is empty."""
+
     if len(array) is not 0:
         array = array[array[:,0].argsort()]
         with open(filen, "wb") as F:
@@ -29,15 +30,27 @@ def save_array( array, filen ):
             writer = csv.writer(F, delimiter=";", lineterminator='\n')
             writer.writerow("-;None found;-".split(';'))
 
+
 def get_ml_comments( lines, startat, spliton ):
     """Get all the comment lines preceding a target"""
+
     comment_list=[]
     inc=1
-    while "#>" in lines[startat - inc]:
-        comment_list.append(re.sub(spliton, "", lines[startat - inc]))
+    
+    while spliton in lines[startat - inc]:
+        comment_list.append(lines[startat - inc][3::])
         inc += 1
+
     comment_list.reverse()
-    return(' '.join(comment_list))
+    comment=' '.join(comment_list)
+    return comment
+
+
+#def check_and_get_comment ( lines, startat, checkfor ):
+#    if checkfor in line[startat - 1]:
+#        return(get_ml_comments(linewise, i, checkfor + " *"))
+#    else:
+#        return("No comment supplied")
 
 
 files=sys.argv
@@ -59,7 +72,6 @@ for f in files:
 
     for i in range(0, len(linewise)):
         line=linewise[i]
-        comment=''
 
         ## GET VARIABLES
         if varmatch.match(line):
@@ -68,9 +80,10 @@ for f in files:
             
             # get the comment if there is any
             if '#!' in linewise[i-1]:
-                comment = re.sub("#! *", "", linewise[i-1])
+                comment = get_ml_comments(linewise, i, "#! ")
+#                comment = "foo"
             else:
-                comment="No comment supplied."
+                comment = "No comment supplied."
             
             # rsplit works R2L so to get what follows the first '=',
             # we have to reverse, split, then take the first element of that array,
@@ -102,8 +115,7 @@ for f in files:
             if not leadingdot.match(target) and not "export" in target:
                 if target in phonies:
                     if "#?" in linewise[i-1]:
-                        comment = get_ml_comments(linewise, i, "#? *")
-                        comment = re.sub(";", ",", comment)
+                        comment = get_ml_comments(linewise, i, "#? ")
                     else:
                         comment="No comment supplied."
                     
@@ -114,7 +126,7 @@ for f in files:
                         phonies_arr = np.concatenate([phonies_arr, temp_arr])
                 else:
                     if "#>" in linewise[i-1]:
-                        comment = get_ml_comments(linewise, i, "#> *")
+                        comment = get_ml_comments(linewise, i, "#> ")
                     else:
                         comment = "No comment supplied."
 

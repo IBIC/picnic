@@ -82,10 +82,10 @@ then
     for file in targets.txt variables.txt
     do
 	# sanitize & (remove from comments before proceeding)
-	sed -i -e 's/\&/\\\&/g' ${file} 
+	sed -i -e 's/\&/and/g' ${file} 
 
 	# swap ; for & and add \\ to EOL
-	sed -i -e 's/;/\&/g' -e 's/$/ \\\\/' ${file}
+	sed -i -e 's/;/\&/g' -e 's/$/ \\/' ${file}
 
 	# escape $, %, #, &, allow breaking at ':', '/'
 	sed -i -e 's/[\$\#]/\\&/g' -e 's/%/{\\color{blue}\\%}/g' -e 's/[:/]/\\discretionary{&}{}{&}/g' ${file}
