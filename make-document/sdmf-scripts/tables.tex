@@ -23,6 +23,10 @@
 \usepackage{authblk} % author block
 \usepackage{booktabs}
 \usepackage{ltxtable}
+\usepackage{upquote}
+\usepackage[level]{datetime}
+\shortdate
+
 
 % Complex packages
 \usepackage{tikz}		% nice flowcharts and stuff
@@ -31,6 +35,7 @@
 \usepackage{tcolorbox} 	% frames
 \usepackage{listings} 	% nice code formatting
 \usepackage{dirtree}	% pretty directory trees
+\usepackage{minted}
 
 % Lists
 \usepackage[ampersand]{easylist}	% Nicer syntax for creating lists
@@ -43,6 +48,9 @@
 \newcommand{\sdmf}{\textsc{sdmf}}
 
 \renewcommand{\thesection}{\arabic{section}}
+%\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+
+\setsecnumdepth{subsection}
 
 \title{Makefile Documentation}
 
@@ -63,8 +71,30 @@
 \makeatother
 
 \definecolor{lemon}{HTML}{F5ECCE}
+\definecolor{keycolor}{RGB}{172, 42, 42}
+\definecolor{mbleu}{RGB}{64,96,127}
+\definecolor{vimvert}{RGB}{46, 139, 87}
 
-%\discretionary{:}{:}{:}
+\lstdefinestyle{global}{
+	basicstyle=\ttfamily\scriptsize\color{black!90},%
+	stringstyle=\itshape\color{magenta},%
+	showstringspaces=false,%
+	keywordstyle={[1]\bfseries\color{keycolor}},%
+	keywordstyle={[2]\bfseries\color{mbleu}},%
+	commentstyle=\color{blue}\slshape,%
+	framexleftmargin=1mm,%
+	backgroundcolor=\color{black!2},%
+}
+
+\lstdefinestyle{makefile}{
+	otherkeywords={.SUFFIXES},
+	morekeywords={SUFFIX, CPP_,},
+	moredelim=[is][\color{mbleu}]{^}{:},
+	style=global,%
+	morecomment=[l][commentstyle]{\#},%
+	emphstyle={\color{vimvert}},%
+	moredelim=[s][\color{vimvert}]{\$(}{)}%
+}
 
 \begin{document}
 	
@@ -78,15 +108,31 @@
 	
 	\tableofcontents*
 	
+	\section{This File}
+	\label{intro}
+	
+	This documentation covers the following makefiles, and was prepared on \today{} at \currenttime{} by \texttt{\input{../sdmf-output/user.txt}}
+	
+	\begin{description}
+		\input{../sdmf-output/descriptions.txt}
+	\end{description}
+	
+	\begin{center}
+		\fbox{Note that the items are sorted uppercase, then lowercase: [A-Za-z]}
+	\end{center}
+	
 	\section{Targets}
+	\label{targets}
 	
 	\LTXtable{\textwidth}{targets.tex}	
 	
 	\section{Variables}
+	\label{variables}
 			
 	\LTXtable{\textwidth}{variables.tex}
 	
 	\section{Intermediate Files}
+	\label{intermediates}
 
 	\begin{description}		
 		\input{../sdmf-output/intermediates.txt}				
@@ -95,14 +141,20 @@
 	\newpage
 	\newgeometry{scale=0.85, centering}
 	\section{Makefiles}
+	\label{makefiles}
 		
-	\lstset{language=make,backgroundcolor=\color{lemon},showstringspaces=false,
+	\lstset{language=make, 
+		backgroundcolor=\color{lemon},
+		showstringspaces=false,
 		gobble=8,
 		basicstyle=\small\ttfamily,
 		breaklines=true,
-		escapeinside={\%*}{*}}
+		escapeinside={\%*}{*},
+		upquote=true}
 		
 	\input{makefiles.tex}
+
+
 	
 \end{document}
 	

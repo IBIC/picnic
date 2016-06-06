@@ -24,15 +24,15 @@ xfm_dir/fs_to_T1.mat: $(SUBJECTS_DIR)/$(subject).s$(SESSION)/mri/aparc+aseg.mgz
 #T1 to 2 mm MNI (through CT intermediate). 
 
 # Register skull stripped brain to Subject specific template using ANTS
-xfm_dir/T1_to_CT_deformed.nii.gz: mprage/T1_brain.nii.gz $(STANDARD_DIR)/Subject-specific_template.nii.gz
+xfm_dir/T1_to_CT_deformed.nii.gz: mprage/T1_brain.nii.gz $(PROJECT_STANDARD)
 	mkdir -p xfm_dir ;\
 	export ANTSPATH=$(ANTSpath) ;\
 	$(ANTSpath)/antsIntroduction.sh -d 3 -i $(word 1,$^) -m 30x90x20 -o $(SubjDIR)/xfm_dir/T1_to_CT_ -s CC -r $(word 2,$^) -t GR
 
 # Overlay image of T1 to CT image over subject specific template
-QA/images/T1_to_CT_deformed.gif: xfm_dir/T1_to_CT_deformed.nii.gz $(STANDARD_DIR)/Subject-specific_template.nii.gz
+QA/images/T1_to_CT_deformed.gif: xfm_dir/T1_to_CT_deformed.nii.gz $(PROJECT_STANDARD)
 	mkdir -p QA/images ;\
-	name=`dirname $@`/`basename $@ .gif` ;\
+	name=$(basename $@) ;\
 	$(BIN)/sliceappend.sh -1 $(word 1,$^) -2 $(word 2,$^) -s -o $${name}.png ;\
 	convert $${name}.png -resize 1500 $@ 
 
@@ -45,7 +45,7 @@ xfm_dir/T1_to_mni_deformed.nii.gz: mprage/T1_brain.nii.gz $(MNI2mmBRAIN) $(STAND
 # Overlay image of T1 to MNI image
 QA/images/T1_to_mni_deformed.gif: xfm_dir/T1_to_mni_deformed.nii.gz $(MNI2mmBRAIN)
 	mkdir -p QA/images ;\
-	name=`dirname $@`/`basename $@ .gif` ;\
+	name=$(basename $@) ;\
 	$(BIN)/sliceappend.sh -1 $(word 1,$^) -2 $(word 2,$^) -s -o $${name}.png ;\
 	convert $${name}.png -resize 1500 $@ 
 
@@ -69,10 +69,10 @@ mprage/T1_fs_brain.nii.gz: mprage/T1.nii.gz mprage/T1_fs_brain_mask.nii.gz
 QA/images/T1_fs_brain.gif: mprage/T1.nii.gz mprage/T1_fs_brain_mask.nii.gz
 	mkdir -p QA/images ;\
 	$(FSLpath)/bin/overlay 1 1 mprage/T1.nii.gz -a $(word 2,$^) 1 10 mprage/rendered_T1_brain.nii.gz ;\
-	$(BIN)/slices mprage/rendered_T1_brain.nii.gz -o `dirname $@`/`basename $@ .gif`.png ;\
-	convert `dirname $@`/`basename $@ .gif`.png -resize 500 $@ ;\
+	$(BIN)/slices mprage/rendered_T1_brain.nii.gz -o $(basename $@).png ;\
+	convert $(basename $@).png -resize 500 $@ ;\
 	rm mprage/rendered_T1_brain.nii.gz ;\
-	rm `dirname $@`/`basename $@ .gif`.png
+	rm $(basename $@).png
 
 ###############################################################################
 # Segmentation with FAST and some pretty QA images
@@ -86,32 +86,32 @@ mprage/T1_fs_brain_wmseg.nii.gz: mprage/T1_fs_brain.nii.gz
 QA/images/csf.gif: mprage/T1_fs_brain.nii.gz mprage/T1_fs_brain_wmseg.nii.gz
 	mkdir -p QA/images ;\
 	$(FSLpath)/bin/overlay 1 1 $(word 1,$^) -a mprage/fast_segmentation/T1_fs_brain_pve_0 1 10 QA/rendered_csf.nii.gz ;\
-	$(BIN)/slices QA/rendered_csf.nii.gz -o `dirname $@`/`basename $@ .gif`.png ;\
-	convert `dirname $@`/`basename $@ .gif`.png -resize 500 $@ ;\
+	$(BIN)/slices QA/rendered_csf.nii.gz -o $(basename $@).png ;\
+	convert $(basename $@).png -resize 500 $@ ;\
 	rm QA/rendered_csf.nii.gz ;\
-	rm `dirname $@`/`basename $@ .gif`.png
+	rm $(basename $@).png
 
 QA/images/gm.gif: mprage/T1_fs_brain.nii.gz mprage/T1_fs_brain_wmseg.nii.gz
 	mkdir -p QA/images ;\
 	$(FSLpath)/bin/overlay 1 1 $(word 1,$^) -a mprage/fast_segmentation/T1_fs_brain_pve_1 1 10 QA/rendered_gm.nii.gz ;\
-	$(BIN)/slices QA/rendered_gm.nii.gz -o `dirname $@`/`basename $@ .gif`.png ;\
-	convert `dirname $@`/`basename $@ .gif`.png -resize 500 $@ ;\
+	$(BIN)/slices QA/rendered_gm.nii.gz -o $(basename $@).png ;\
+	convert $(basename $@).png -resize 500 $@ ;\
 	rm QA/rendered_gm.nii.gz ;\
-	rm `dirname $@`/`basename $@ .gif`.png
+	rm $(basename $@).png
 
 QA/images/wm.gif: mprage/T1_fs_brain.nii.gz mprage/T1_fs_brain_wmseg.nii.gz
 	mkdir -p QA/images ;\
 	$(FSLpath)/bin/overlay 1 1 $(word 1,$^) -a mprage/fast_segmentation/T1_fs_brain_pve_2 1 10 QA/rendered_wm.nii.gz ;\
-	$(BIN)/slices QA/rendered_wm.nii.gz -o `dirname $@`/`basename $@ .gif`.png
-	convert `dirname $@`/`basename $@ .gif`.png -resize 500 $@ ;\
+	$(BIN)/slices QA/rendered_wm.nii.gz -o $(basename $@).png
+	convert $(basename $@).png -resize 500 $@ ;\
 	rm QA/rendered_wm.nii.gz ;\
-	rm `dirname $@`/`basename $@ .gif`.png
+	rm $(basename $@).png
 
 QA/images/wm_seg.gif: mprage/T1_fs_brain.nii.gz mprage/T1_fs_brain_wmseg.nii.gz
 	mkdir -p QA/images ;\
 	$(FSLpath)/bin/overlay 1 1 $(word 1,$^) -a $(word 2,$^) 1 10 QA/rendered_wm_seg.nii.gz ;\
-	$(BIN)/slices QA/rendered_wm_seg.nii.gz -o `dirname $@`/`basename $@ .gif`.png
-	convert `dirname $@`/`basename $@ .gif`.png -resize 500 $@ ;\
+	$(BIN)/slices QA/rendered_wm_seg.nii.gz -o $(basename $@).png
+	convert $(basename $@).png -resize 500 $@ ;\
 	rm QA/rendered_wm_seg.nii.gz ;\
-	rm `dirname $@`/`basename $@ .gif`.png
+	rm $(basename $@).png
 

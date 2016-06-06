@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2014.12.29)  24 MAY 2016 12:08
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2014.12.29)  3 JUN 2016 10:11
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -816,7 +816,10 @@ Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
 Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
-)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/dvipsnam.def
+File: dvipsnam.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
 (/usr/share/texlive/texmf-dist/tex/latex/todonotes/todonotes.sty
 Package: todonotes 2011/10/22 .dtx Todonotes source and documentation.
 Package: todonotes 2011/10/22
@@ -1101,13 +1104,90 @@ Package: longtable 2004/02/01 v4.11 Multi-page Table package (DPC)
 \c@LT@chunks=\count331
 \LT@p@ftn=\toks37
 ))
-(/usr/share/texlive/texmf-dist/tex/latex/tikzpagenodes/tikzpagenodes.sty
+(/usr/share/texlive/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
+tim
+)
+(/usr/share/texlive/texmf-dist/tex/latex/datetime/datetime.sty
+Package: datetime 2010/09/21 v2.58 Date Time Package
+
+(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fmtcount.sty
+Package: fmtcount 2009/10/02 v1.31
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks38
+\ex@=\dimen304
+)
+\c@padzeroesN=\count332
+
+(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fc-english.def
+File: fc-english 2007/05/26
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fc-UKenglish.def
+File: fc-UKenglish 2007/06/14
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fc-british.def
+File: fc-british 2007/06/14
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fc-USenglish.def
+File: fc-USenglish 2007/06/14
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fc-spanish.def
+File: fc-spanish.def 2007/05/26
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fc-portuges.def
+File: fc-portuges.def 2007/05/26
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fc-french.def
+File: fc-french.def 2007/05/26
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fc-german.def
+File: fc-german.def 2007/06/14
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fc-italian.def
+File: fc-italian.def 2009/10/02 Italian support for fmtcount (Edoardo Pasca)
+)
+No configuration file fmtcount.cfg found.
+\@DT@modctr=\count333
+\@ordinalctr=\count334
+\@orgargctr=\count335
+\@strctr=\count336
+\@tmpstrctr=\count337
+\@DT@loopN=\count338
+\@DT@X=\count339
+
+Package fmtcount Warning: \ordinal already defined use \FCordinal instead. on i
+nput line 344.
+
+)
+\@day=\count340
+\@month=\count341
+\@year=\count342
+\c@HOUR=\count343
+\c@HOURXII=\count344
+\c@MINUTE=\count345
+\c@TOHOUR=\count346
+\c@TOMINUTE=\count347
+\c@SECOND=\count348
+\currenthour=\count349
+\currentminute=\count350
+\currentsecond=\count351
+Package datetime Info: No datetime.cfg file found, using default settings on in
+put line 292.
+\@dtctr=\count352
+\dayofyear=\count353
+\dayofweek=\count354
+LaTeX Info: Redefining \today on input line 724.
+\dt@a=\toks39
+\dt@b=\toks40
+) (/usr/share/texlive/texmf-dist/tex/latex/tikzpagenodes/tikzpagenodes.sty
 Package: tikzpagenodes 2011/09/15 v1.0 Special PGF/TikZ nodes for areas of the 
 page
 
 (/usr/share/texlive/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
 Package: ifoddpage 2011/09/13 v1.0 Conditionals for odd/even page detection
-\c@checkoddpage=\count332
+\c@checkoddpage=\count355
 LaTeX Info: Redefining \checkoddpage on input line 25.
 ))
 (/usr/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarycalc.
@@ -1122,23 +1202,23 @@ Package: tcolorbox 2012/04/20 version 1.30 text color boxes
 \tcb@out=\write5
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count333
+\lst@mode=\count356
 \lst@gtempboxa=\box54
-\lst@token=\toks38
-\lst@length=\count334
-\lst@currlwidth=\dimen304
-\lst@column=\count335
-\lst@pos=\count336
-\lst@lostspace=\dimen305
-\lst@width=\dimen306
-\lst@newlines=\count337
-\lst@lineno=\count338
-\lst@maxwidth=\dimen307
+\lst@token=\toks41
+\lst@length=\count357
+\lst@currlwidth=\dimen305
+\lst@column=\count358
+\lst@pos=\count359
+\lst@lostspace=\dimen306
+\lst@width=\dimen307
+\lst@newlines=\count360
+\lst@lineno=\count361
+\lst@maxwidth=\dimen308
 
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
-\c@lstnumber=\count339
-\lst@skipnumbers=\count340
+\c@lstnumber=\count362
+\lst@skipnumbers=\count363
 \lst@framebox=\box55
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
@@ -1151,56 +1231,114 @@ Package: dirtree 2006/01/25 v0.2 package wrapper for dirtree
 
 (/usr/share/texlive/texmf-dist/tex/generic/dirtree/dirtree.tex
 `dirtree' v0.2, 2006/01/25 (jcc)
-\DT@offset=\dimen308
-\DT@width=\dimen309
-\DT@sep=\dimen310
-\DT@all=\dimen311
-\DT@rulewidth=\dimen312
-\DT@dotwidth=\dimen313
-\DTbaselineskip=\dimen314
-\DT@counti=\count341
-\DT@countii=\count342
-\DT@countiii=\count343
-\DT@countiv=\count344
+\DT@offset=\dimen309
+\DT@width=\dimen310
+\DT@sep=\dimen311
+\DT@all=\dimen312
+\DT@rulewidth=\dimen313
+\DT@dotwidth=\dimen314
+\DTbaselineskip=\dimen315
+\DT@counti=\count364
+\DT@countii=\count365
+\DT@countiii=\count366
+\DT@countiv=\count367
 )
 File: dirtree.tex 2006/01/25 v0.2 `dirtree' (jcc)
 )
-(/usr/share/texlive/texmf-dist/tex/latex/easylist/easylist.sty
-Package: easylist 2010/02/28 v.1.3 Numbered items with a single command.
-\el@CounterTotal=\count345
-\el@Scratch=\count346
-\el@ControlCounter=\count347
-\el@CounterLevel=\count348
-\c@List1=\count349
-\c@List2=\count350
-\c@List3=\count351
-\c@List4=\count352
-\c@List5=\count353
-\c@List6=\count354
-\c@List7=\count355
-\c@List8=\count356
-\c@List9=\count357
-\c@List10=\count358
-\el@ProgressiveDimension=\dimen315
-\el@CounterBox=\box56
-\el@ControlBox=\box57
-\el@TotalMargin=\dimen316
-\el@LeftMove=\dimen317
+(/usr/share/texlive/texmf-dist/tex/latex/minted/minted.sty
+Package: minted 2011/09/17 v1.7 Yet another Pygments shim for LaTeX
+
+(/usr/share/texlive/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2008/02/07
+
+Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix 
+<2008/02/07> (tvz)
+\FV@CodeLineNo=\count368
+\FV@InFile=\read3
+\FV@TabBox=\box56
+\c@FancyVerbLine=\count369
+\FV@StepNumber=\count370
+\FV@OutFile=\write6
+) (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count371
+\float@exts=\toks42
+\float@box=\box57
+\@float@everytoks=\toks43
+\@floatcapt=\box58
 )
-(/usr/share/texlive/texmf-dist/tex/latex/paralist/paralist.sty
+(/usr/share/texlive/texmf-dist/tex/latex/ifplatform/ifplatform.sty
+Package: ifplatform 2010/10/22 v0.4 Testing for the operating system
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/catchfile.sty
+Package: catchfile 2011/03/01 v1.6 Catch the contents of a file (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+))
+runsystem(uname -s > "tables.w18")...executed.
+
+
+(./tables.w18)
+runsystem(rm -- "tables.w18")...executed.
+
+)
+\minted@bgbox=\box59
+\minted@code=\write7
+\@float@every@listing=\toks44
+\c@listing=\count372
+)
+runsystem(which pygmentize && touch tables.aex)...executed.
+
+runsystem(rm tables.aex)...executed.
+
+ (/usr/share/texlive/texmf-dist/tex/latex/easylist/easylist.sty
+Package: easylist 2010/02/28 v.1.3 Numbered items with a single command.
+\el@CounterTotal=\count373
+\el@Scratch=\count374
+\el@ControlCounter=\count375
+\el@CounterLevel=\count376
+\c@List1=\count377
+\c@List2=\count378
+\c@List3=\count379
+\c@List4=\count380
+\c@List5=\count381
+\c@List6=\count382
+\c@List7=\count383
+\c@List8=\count384
+\c@List9=\count385
+\c@List10=\count386
+\el@ProgressiveDimension=\dimen316
+\el@CounterBox=\box60
+\el@ControlBox=\box61
+\el@TotalMargin=\dimen317
+\el@LeftMove=\dimen318
+) (/usr/share/texlive/texmf-dist/tex/latex/paralist/paralist.sty
 Package: paralist 2002/03/18 v2.3b Extended list environments (BS)
 \pltopsep=\skip262
 \plpartopsep=\skip263
 \plitemsep=\skip264
 \plparsep=\skip265
-\pl@lab=\toks39
+\pl@lab=\toks45
 )
 (/usr/share/texlive/texmf-dist/tex/latex/natbib/natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip266
 \bibsep=\skip267
 LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count359
+\c@NAT@ctr=\count387
 )
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2012/05/13 v6.82q Hypertext links for LaTeX
@@ -1218,19 +1356,10 @@ Package hobsub Info: Skipping package `ifluatex' (already loaded).
 Package hobsub Info: Skipping package `ifvtex' (already loaded).
 Package: intcalc 2007/09/27 v1.1 Expandable calculations with integers (HO)
 Package hobsub Info: Skipping package `ifpdf' (already loaded).
-Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
-Package etexcmds Info: Could not find \expanded.
-(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
-(etexcmds)             that some package has redefined \expanded.
-(etexcmds)             In the latter case, load this package earlier.
+Package hobsub Info: Skipping package `etexcmds' (already loaded).
 Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
 Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
-Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
-)
-Package pdftexcmds Info: LuaTeX not detected.
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
+Package hobsub Info: Skipping package `pdftexcmds' (already loaded).
 Package: pdfescape 2011/11/25 v1.13 Implements pdfTeX's escape features (HO)
 Package: bigintcalc 2012/04/08 v1.3 Expandable calculations on big integers (HO
 )
@@ -1250,14 +1379,14 @@ Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
 )
-\@linkdim=\dimen318
-\Hy@linkcounter=\count360
-\Hy@pagecounter=\count361
+\@linkdim=\dimen319
+\Hy@linkcounter=\count388
+\Hy@pagecounter=\count389
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2012/05/13 v6.82q Hyperref: PDFDocEncoding definition (HO)
 )
-\Hy@SavedSpaceFactor=\count362
+\Hy@SavedSpaceFactor=\count390
 
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
@@ -1270,11 +1399,11 @@ Package hyperref Info: Plain pages OFF on input line 4077.
 Package hyperref Info: Backreferencing OFF on input line 4082.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4300.
-\c@Hy@tempcnt=\count363
+\c@Hy@tempcnt=\count391
 LaTeX Info: Redefining \url on input line 4653.
-\Fld@menulength=\count364
-\Field@Width=\dimen319
-\Fld@charsize=\dimen320
+\Fld@menulength=\count392
+\Field@Width=\dimen320
+\Fld@charsize=\dimen321
 Package hyperref Info: Hyper figures OFF on input line 5773.
 Package hyperref Info: Link nesting OFF on input line 5778.
 Package hyperref Info: Hyper index ON on input line 5781.
@@ -1284,22 +1413,22 @@ Package hyperref Info: Link coloring with OCG OFF on input line 5798.
 Package hyperref Info: PDF/A mode OFF on input line 5803.
 LaTeX Info: Redefining \ref on input line 5843.
 LaTeX Info: Redefining \pageref on input line 5847.
-\Hy@abspage=\count365
-\c@Item=\count366
-\c@Hfootnote=\count367
+\Hy@abspage=\count393
+\c@Item=\count394
+\c@Hfootnote=\count395
 )
 (/usr/share/texlive/texmf-dist/tex/latex/memoir/memhfixc.sty
 Package: memhfixc 2010/08/17 v1.15 nameref/hyperref package fixes for memoir cl
 ass
-\c@memhycontfloat=\count368
+\c@memhycontfloat=\count396
 )
 
 Package hyperref Message: Driver (autodetected): hpdftex.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
 File: hpdftex.def 2012/05/13 v6.82q Hyperref driver for pdfTeX
-\Fld@listcount=\count369
-\c@bookmark@seq@number=\count370
+\Fld@listcount=\count397
+\c@bookmark@seq@number=\count398
 
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
 Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
@@ -1310,37 +1439,37 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 (/usr/share/texlive/texmf-dist/tex/latex/titlesec/titletoc.sty
 Package: titletoc 2011/12/15 v1.6 TOC entries
-\ttl@leftsep=\dimen321
+\ttl@leftsep=\dimen322
 ) (./tables.aux)
 \openout1 = `tables.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 67.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 67.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 99.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 99.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 67.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 99.
 
 (/usr/share/texmf/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Info: Redefining \microtypecontext on input line 67.
+LaTeX Info: Redefining \microtypecontext on input line 99.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1391,17 +1520,17 @@ File: mt-cmr.cfg 2009/11/09 v2.0 microtype config. file: Computer Modern Roman
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count371
-\scratchdimen=\dimen322
-\scratchbox=\box58
-\nofMPsegments=\count372
-\nofMParguments=\count373
-\everyMPshowfont=\toks40
-\MPscratchCnt=\count374
-\MPscratchDim=\dimen323
-\MPnumerator=\count375
-\makeMPintoPDFobject=\count376
-\everyMPtoPDFconversion=\toks41
+\scratchcounter=\count399
+\scratchdimen=\dimen323
+\scratchbox=\box62
+\nofMPsegments=\count400
+\nofMParguments=\count401
+\everyMPshowfont=\toks46
+\MPscratchCnt=\count402
+\MPscratchDim=\dimen324
+\MPnumerator=\count403
+\makeMPintoPDFobject=\count404
+\everyMPtoPDFconversion=\toks47
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 
@@ -1418,6 +1547,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: longtable package is loaded.
@@ -1430,9 +1560,12 @@ Package marginnote Info: \pdfoutput not 0 and \pdflastxpos available.
 (marginnote)             Extended position detection mode activated.
 
 ABD: EveryShipout initializing macros
-\c@lstlisting=\count377
-\AtBeginShipoutBox=\box59
-Package hyperref Info: Link coloring ON on input line 67.
+\c@lstlisting=\count405
+runsystem(pygmentize -S default -f latex > tables.pyg)...executed.
+
+ (./tables.pyg)
+\AtBeginShipoutBox=\box63
+Package hyperref Info: Link coloring ON on input line 99.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
@@ -1440,103 +1573,37 @@ Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count378
+\c@section@level=\count406
 )
 Redoing nameref's sectioning
 Redoing nameref's label
-LaTeX Info: Redefining \nameref on input line 67.
-LaTeX Info: Redefining \ref on input line 67.
-LaTeX Info: Redefining \pageref on input line 67.
-LaTeX Info: Redefining \nameref on input line 67.
+LaTeX Info: Redefining \nameref on input line 99.
+LaTeX Info: Redefining \ref on input line 99.
+LaTeX Info: Redefining \pageref on input line 99.
+LaTeX Info: Redefining \nameref on input line 99.
 (./tables.out) (./tables.out)
-\@outlinefile=\write6
-\openout6 = `tables.out'.
+\@outlinefile=\write8
+\openout8 = `tables.out'.
 
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 72.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 104.
+
  (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-(../sdmf-output/header.txt) (./tables.toc
-
-! Package xcolor Error: Undefined color `cerulean'.
-
-See the xcolor package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1 ...on}{\numberline {1}Targets}{1}{section.0.1}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! Package xcolor Error: Undefined color `cerulean'.
-
-See the xcolor package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1 ...on}{\numberline {1}Targets}{1}{section.0.1}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! Package xcolor Error: Undefined color `cerulean'.
-
-See the xcolor package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.2 ...}{\numberline {2}Variables}{1}{section.0.2}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! Package xcolor Error: Undefined color `cerulean'.
-
-See the xcolor package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.2 ...}{\numberline {2}Variables}{1}{section.0.2}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! Package xcolor Error: Undefined color `cerulean'.
-
-See the xcolor package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.3 ...line {3}Intermediate Files}{1}{section.0.3}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! Package xcolor Error: Undefined color `cerulean'.
-
-See the xcolor package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.3 ...line {3}Intermediate Files}{1}{section.0.3}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-) (./targets.tex (../sdmf-output/targets.txt)) (./targets.tex
-(../sdmf-output/targets.txt)) (./targets.tex (../sdmf-output/targets.txt))
+(../sdmf-output/header.txt) (./tables.toc) (../sdmf-output/user.txt)
+(../sdmf-output/descriptions.txt) (./targets.tex (../sdmf-output/targets.txt))
+(./targets.tex (../sdmf-output/targets.txt)) (./targets.tex
+(../sdmf-output/targets.txt)) (./variables.tex (../sdmf-output/variables.txt))
 (./variables.tex (../sdmf-output/variables.txt)) (./variables.tex
-(../sdmf-output/variables.txt)) (./variables.tex (../sdmf-output/variables.txt)
-) (../sdmf-output/intermediates.txt [1{/var/lib/texmf/fonts/map/pdftex/updmap/p
-dftex.map}
+(../sdmf-output/variables.txt)) (../sdmf-output/intermediates.txt [1{/var/lib/t
+exmf/fonts/map/pdftex/updmap/pdftex.map}
 
-]) [2]
+]
+LaTeX Font Info:    Try loading font information for TS1+lmr on input line 6.
+
+(/usr/share/texmf/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)) [2]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
@@ -1571,46 +1638,62 @@ dftex.map}
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
- (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
-) (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang2.sty
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang2.sty
 File: lstlang2.sty 2004/09/05 1.3 listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
-) (./makefiles.tex) [3
+) (./makefiles.tex
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1.
+(../Flex.mk
+LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 61.
+
+ (/usr/share/texmf/tex/latex/lm/ts1lmtt.fd
+File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+Package microtype Info: Character `texttrademark ' is missing
+(microtype)             in font `TS1/lmtt/m/n/8'.
+(microtype)             Ignoring protrusion settings for this character.
+)) [3
 
 ]
-\tf@toc=\write7
-\openout7 = `tables.toc'.
+\tf@toc=\write9
+\openout9 = `tables.toc'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 105.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 105.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 159.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 159.
  (./tables.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 105.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 105.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 159.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 159.
 Package rerunfilecheck Info: File `tables.out' has not changed.
-(rerunfilecheck)             Checksum: 315E69547A08F856FC2A07FF397878E2;191.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 105.
+(rerunfilecheck)             Checksum: 533997D82BEA0416D93792A389D3B5FC;237.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 159.
  ) 
 Here is how much of TeX's memory you used:
- 28504 strings out of 493485
- 487007 string characters out of 3143525
- 619045 words of memory out of 3000000
- 31280 multiletter control sequences out of 15000+200000
- 38447 words of font info for 39 fonts, out of 3000000 for 9000
+ 30339 strings out of 493485
+ 517648 string characters out of 3143525
+ 1102574 words of memory out of 3000000
+ 32947 multiletter control sequences out of 15000+200000
+ 40244 words of font info for 46 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 69i,11n,72p,460b,391s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}</usr/share/texmf/fonts/type1/
-public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/s
-hare/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public
-/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/te
-xmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/lm/lm
-tt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb>
-Output written on tables.pdf (3 pages, 189502 bytes).
+ 69i,11n,80p,900b,1375s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/d
+vips/lm/lm-ec.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/shar
+e/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/l
+m/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf
+/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk1
+0.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb></usr/share/texmf/font
+s/type1/public/lm/lmtt12.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt8.pfb>
+</usr/share/texmf/fonts/type1/public/lm/lmtto10.pfb>
+Output written on tables.pdf (3 pages, 260596 bytes).
 PDF statistics:
- 84 PDF objects out of 1000 (max. 8388607)
- 67 compressed objects within 1 object stream
- 10 named destinations out of 1000 (max. 500000)
- 12845 words of extra memory for PDF output out of 14400 (max. 10000000)
+ 204 PDF objects out of 1000 (max. 8388607)
+ 174 compressed objects within 2 object streams
+ 75 named destinations out of 1000 (max. 500000)
+ 15413 words of extra memory for PDF output out of 17280 (max. 10000000)
 

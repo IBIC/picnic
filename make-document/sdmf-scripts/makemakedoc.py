@@ -20,8 +20,11 @@ leadinghash=re.compile("^#")            # looking for comment lines, ^#
 def save_array(array, filen):
     """Save the array to the file, or save a placeholder if it is empty."""
 
-    if len(array) is not 0:
-        array = array[array[:,0].argsort()]
+    if len(array) > 0:
+        if len(array) > 1:
+            # can only sort arrays with more than one row
+            array = array[np.argsort(array[:, 0])]
+
         with open(filen, "wb") as F:
             writer = csv.writer(F, delimiter=";", lineterminator='\n')
             writer.writerows(array)
@@ -29,6 +32,7 @@ def save_array(array, filen):
         with open(filen, "wb") as F:
             writer = csv.writer(F, delimiter=";", lineterminator='\n')
             writer.writerow("-;None found;-".split(';'))
+
 
 def check_and_get_comment(startat, spliton):
     """Get all the comment lines, or return a filler message."""
@@ -49,7 +53,7 @@ def check_and_get_comment(startat, spliton):
 
 def add_to_array(array, new):
     if array is not None:
-        if len(array) is 0:
+        if len(array) == 0:
             array = new
         else:
             array = np.concatenate([array, np.array(new)])
@@ -91,7 +95,7 @@ for f in files:
 
         # GET (INTERACTIVE) TARGETS
         if ".PHONY:" in line:
-            if len(phonies) is 0:
+            if len(phonies) == 0:
                 phonies = line.split()
                 del phonies[0]
             else:
@@ -104,7 +108,7 @@ for f in files:
             target=line.rsplit(':', 1)[0]
             
             # if this isn't the .PHONY line and we're not exporting a variable
-            if not leadingdot.match(target) and not "export" in target:
+            if not leadingdot.match(target) and not "export" in target and not "@echo" in target:
                 if target in phonies:
                     # if this is a phony target, add to phonies
                     comment = check_and_get_comment(i, "#?")
