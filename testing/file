@@ -1,0 +1,5 @@
+#> foo
+not a comment
+#> bar
+#> baz
+target: blah
