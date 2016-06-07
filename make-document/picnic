@@ -20,6 +20,8 @@ verbose=0
 directory=""
 outfile="tables.pdf"
 exclude="not a regex"
+lib=$(dirname $0) 
+
 while getopts ":o:D:e:vh" opt
 do
     case $opt in 
@@ -116,7 +118,7 @@ do
 done
 
 # run python to get *.txt files
-python sdmf-scripts/makemakedoc.py ${files}
+python ${lib}/makemakedoc.py ${files}
 
 # if something went wrong with python, we catch it here
 if [ ! -s targets.txt ] || [ ! -s intermediates.txt ] || [ ! -s variables.txt ]
@@ -128,6 +130,7 @@ fi
 ## Apply to everyone 
 
 outputfiles="targets.txt variables.txt intermediates.txt"
+
 # sanitize & (remove from comments before proceeding)
 sed -i -e 's/\&/and/g' targets.txt variables.txt intermediates.txt
 
@@ -160,7 +163,6 @@ echo "This documentation covers the following makefiles, and was prepared on \To
 \newline\noindent Project directory: \texttt{$(pwd | sed 's!\(.*\)/bin/.*!\1!')}
 \begin{description}" > sdmf-output/descriptions.tex
 
-
 > sdmf-output/makefiles.tex
 for i in ${files}
 do
@@ -180,8 +182,9 @@ done
 
 echo "\end{description}" >> sdmf-output/descriptions.tex
 
+cp ${lib}/*.tex sdmf-output/
 
-cd sdmf-scripts
+cd sdmf-output
 if [ $verbose -eq 1 ] ; then
     # output all of pdflatex's gobbledygook
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 
@@ -192,10 +195,9 @@ else
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 1 > /dev/null  
 fi
 cd ..
+cp sdmf-output/tables.pdf $PWD/$outfile
 
-cp sdmf-scripts/tables.pdf $outfile
-
-if [ $? -eq 0 ] ; then echo "Saved to $outfile" ; fi
+if [ $? -eq 0 ] ; then echo "Saved to $PWD/$outfile" ; fi
 
 echo "Cleaning up."
 
