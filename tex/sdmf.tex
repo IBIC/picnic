@@ -98,18 +98,33 @@
 	
 	\subsection{Organization}
 	
-	This system 
+	This system currently requires delicate use. Making it more robust and callable from different locations is a high priority. Currently, you need to duplicate the following folder structure: \\
+	
+	\begin{tcolorbox}[title=Directory structure]	
+		\dirtree{%
+			.1 SDMF/.
+			.2 document-makefile.
+			.2 sdmf-scripts/.
+			.3 makemakedoc.py.
+			.3 tables.tex.
+			.3 targets.tex.
+			.3 variables.tex.
+		}
+	\end{tcolorbox}
+
+	Other directories and files will be created as needed.
+	
+	Right now, you need to call \texttt{document-makefile} (see \autoref{sec:calling}) from the folder it is located in (\texttt{SDMF/}, above), and give it the relative or absolute paths to the makefiles from that location. 
 	
 	\section{Calling the script}
+	\label{sec:calling}
 	
 	There are two primary ways to document your makefiles.
 	
-	You can give it explicit direction to the makefiles you would like to document:
-	
+	You can give it explicit direction to the makefiles you would like to document:	
 	\bashcmd{./document-makefile PrepSubject.mk subdir/anotherfile.mk}
 	
-	Or, you can give it a directory from which it will collect all makefiles (in that directory and all subdirectories):
-	
+	Or, you can give it a directory from which it will collect all makefiles (in that directory and all subdirectories):	
 	\bashcmd{./document-makefile -D lib/makefiles}
 	
 	Using the \texttt{-D} syntax will include any makefile that ends in \texttt{*.mk} or matches the regex \texttt{*[Mm]akefile*}.
