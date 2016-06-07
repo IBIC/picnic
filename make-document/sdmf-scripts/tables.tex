@@ -25,7 +25,9 @@
 \usepackage{ltxtable}
 \usepackage{upquote}
 \usepackage[level]{datetime}
-\shortdate
+%\shortdate
+%\newdateformat{mydate}{%
+%	\monthname[\THEMONTH] \THEDAY, \THEYEAR}
 
 
 % Complex packages
@@ -71,30 +73,8 @@
 \makeatother
 
 \definecolor{lemon}{HTML}{F5ECCE}
-\definecolor{keycolor}{RGB}{172, 42, 42}
-\definecolor{mbleu}{RGB}{64,96,127}
-\definecolor{vimvert}{RGB}{46, 139, 87}
 
-\lstdefinestyle{global}{
-	basicstyle=\ttfamily\scriptsize\color{black!90},%
-	stringstyle=\itshape\color{magenta},%
-	showstringspaces=false,%
-	keywordstyle={[1]\bfseries\color{keycolor}},%
-	keywordstyle={[2]\bfseries\color{mbleu}},%
-	commentstyle=\color{blue}\slshape,%
-	framexleftmargin=1mm,%
-	backgroundcolor=\color{black!2},%
-}
-
-\lstdefinestyle{makefile}{
-	otherkeywords={.SUFFIXES},
-	morekeywords={SUFFIX, CPP_,},
-	moredelim=[is][\color{mbleu}]{^}{:},
-	style=global,%
-	morecomment=[l][commentstyle]{\#},%
-	emphstyle={\color{vimvert}},%
-	moredelim=[s][\color{vimvert}]{\$(}{)}%
-}
+\newcommand{\Today}{\usdate\today}
 
 \begin{document}
 	
@@ -103,7 +83,7 @@
 		
 		{\large Documenting makefiles: \texttt{\input{../sdmf-output/header.txt}} }
 		
-		\textit{\today}
+		\textit{\Today}
 	\end{center}
 	
 	\tableofcontents*
@@ -111,11 +91,7 @@
 	\section{This File}
 	\label{intro}
 	
-	This documentation covers the following makefiles, and was prepared on \today{} at \currenttime{} by \texttt{\input{../sdmf-output/user.txt}}
-	
-	\begin{description}
-		\input{../sdmf-output/descriptions.txt}
-	\end{description}
+	\input{../sdmf-output/descriptions.tex}
 	
 	\begin{center}
 		\fbox{Note that the items are sorted uppercase, then lowercase: [A-Za-z]}
@@ -152,9 +128,7 @@
 		escapeinside={\%*}{*},
 		upquote=true}
 		
-	\input{makefiles.tex}
-
-
+	\input{../sdmf-output/makefiles.tex}
 	
 \end{document}
 	

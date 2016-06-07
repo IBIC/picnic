@@ -1,0 +1,199 @@
+#!/bin/bash
+
+usage() {
+    echo -e "$0\n"
+    echo -e "Usage:"
+    echo -e "\t$0 <options> path/to/makefile another/path/makefile ..."
+    echo -e "\t$0 <options> -D path/to/makefiles\n"
+    echo -e "Options:"
+    echo -e "\t-o\tProvide an output name for the .pdf."
+    echo -e "\t-e\tExclude files matching given regex (for use with \`-D')."
+    echo -e "\t-v\tVerbose: Don't silence pdfLaTeX output, also keep intermediate files."
+    echo -e "\t-h\tShow this screen.\n"
+    echo -e "* Note that paths to makefiles (first option) cannot be combined with \`-D' syntax."
+    }
+
+if [ $# -eq 0 ]; then usage; exit 1; fi
+
+files=""
+verbose=0
+directory=""
+outfile="tables.pdf"
+exclude="not a regex"
+while getopts ":o:D:e:vh" opt
+do
+    case $opt in 
+	o)
+	    outfile=$OPTARG
+	    if [[ $outfile != *.pdf ]]
+	    then
+		outfile=$(basename $outfile).pdf
+	    fi
+	    ;;
+	D)
+	    if [ -d $OPTARG ]
+	    then
+		directory=$OPTARG
+		echo "Reading all *.mk files from $directory and its subdirectories."
+	    else
+		echo "$OPTARG is not a directory."
+		usage
+		exit 1
+	    fi
+	    ;;
+	e)
+	    exclude=$OPTARG
+	    ;;
+	v)
+	    verbose=1
+	    ;;
+	h)
+	    usage
+	    exit 0
+	    ;;
+	\?)
+	    echo "-$OPTARG is not a valid option"
+	    usage
+	    exit 1
+	    ;;
+    esac
+done
+
+
+# remove flags and their arguments, keep the rest as input
+shift $(( $OPTIND - 1 ))
+
+if [ "$directory" = "" ]
+then
+    # if no directory was supplied, take all arguments
+    files=$@
+else
+    # if a directory was supplied, use it.
+    files=$(find $directory -regextype posix-extended -regex '.+\.mk|.*[Mm]akefile$')
+    for f in $files
+    do
+	if [[ $f == $exclude ]]
+	then
+	    echo "Excluding $f"
+	    files=$(echo $files | sed "s|\s*$f\s*||g")
+	fi
+    done
+fi
+
+if [ $files == "" ] ; then usage; exit 1; fi
+
+mkdir -p sdmf-output/
+
+# Check for exceptions and skip files if necessary
+for f in $files
+do
+    grep "#*NODOC" $f -q
+    if [ $? -eq 0 ]
+    then
+	echo "$f contains #*NODOC directive, skipping."
+	files=$(echo $files | sed "s|\s*$f\s*||g")
+    fi
+    
+    if [[ $f == *"_"* ]] ; then
+	echo "Bash: LaTeX doesn't like underscores in filenames."
+	echo "Skipping $f"
+	files=$(echo $files | sed "s|\s*$f\s*||g")
+    fi
+done
+
+# make sure we haven't accidentally removed all files
+if [ $(echo $files | wc -w) -eq 0 ]
+then
+    echo "No valid files."
+    exit 1
+fi
+
+# save good files for LaTeX to open
+rm -f sdmf-output/{header,user}.txt 
+for i in ${files}
+do
+    echo $(basename $i) >> sdmf-output/header.txt
+done
+whoami > sdmf-output/user.txt
+
+# run python to get *.txt files
+python sdmf-scripts/makemakedoc.py ${files}
+
+# if something went wrong with python, we catch it here
+if [ ! -s targets.txt ] || [ ! -s intermediates.txt ] || [ ! -s variables.txt ]
+then
+   echo "One or more output files is empty. This probably isn't what you want; check your inputs."
+   exit 1
+fi
+
+## Apply to everyone 
+
+outputfiles="targets.txt variables.txt intermediates.txt"
+# sanitize & (remove from comments before proceeding)
+sed -i -e 's/\&/and/g' targets.txt variables.txt intermediates.txt
+
+# prepare for LaTeX
+# change ; to & for tabular, allow linebreaks at /,: (for paths)
+sed -i -e 's/;/\&/g' -e 's/[:/]/\\discretionary{&}{}{&}/g' targets.txt variables.txt
+
+# escape $, #, %, better <'>, allow breaking at :,/'
+# breaking at :,/ is important for path and assignments to PATH
+sed -i -e 's/[$#]/\\&/g' -e 's/%/{\\color{blue}\\%}/g' -e "s/'/\\\textquotesingle{}/g" $outputfiles
+
+# collapse second and third cols of variables.txt into a single cell
+gawk -i inplace 'BEGIN {FS="&"} ; {print $1" & \\texttt{"$2"} \\newline "$3" & \\hyperref["$4"]{"$4"}  \\\\"}' variables.txt
+
+# add hyperlinking and \\ to the end of the line for targets.txt
+gawk -i inplace 'BEGIN {FS="&"} ; {print $1" & "$2" & \\hyperref["$3"]{"$3"}"}' targets.txt
+sed -i -e 's/$/ \\\\/g' targets.txt
+    
+# escape $, %, #, & in intermediates.txt
+#sed -i -e 's/\&/\\\&/g' -e 's/[$#]/\\&/g' intermediates.txt
+gawk -i inplace 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}] (\\texttt{\\hyperref["$3"]{"$3"}}) "$2}' intermediates.txt
+
+mv variables.txt sdmf-output/
+mv targets.txt sdmf-output/
+mv intermediates.txt sdmf-output/
+
+echo "Running PdfLaTeX ..."
+
+> sdmf-output/descriptions.txt
+> sdmf-output/makefiles.tex
+for i in ${files}
+do
+    echo "\subsection{\texttt{"$(basename ${i})"}}" >> sdmf-output/makefiles.tex
+    echo "\label{"$(basename ${i})"}" >> sdmf-output/makefiles.tex
+    echo "\lstinputlisting{../"${i}"}" >> sdmf-output/makefiles.tex
+    
+    if [ $(grep "#\*" $i -c) -gt 0 ]
+    then
+	description=$(grep "#\*" $i | sed  -e 's/\n/; /g' -e 's/#\*\s*//')
+    else
+	description="No description supplied."
+    fi
+
+    echo "\item [$(basename $i)] $description" >> sdmf-output/descriptions.txt
+done
+
+cd sdmf-scripts
+if [ $verbose -eq 1 ] ; then
+    # output all of pdflatex's gobbledygook
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 
+else
+    # redirect STDOUT to /dev/null
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 1 > /dev/null
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 1 > /dev/null  
+fi
+cd ..
+
+cp sdmf-scripts/tables.pdf $outfile
+
+if [ $? -eq 0 ] ; then echo "Saved to $outfile" ; fi
+
+echo "Cleaning up."
+
+if [ $verbose -eq 0 ]
+then
+    rm -rf sdmf-output
+fi
