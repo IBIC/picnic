@@ -1,10 +1,16 @@
 #!/bin/bash
 
 usage() {
-    echo "There are two options to run $0."
-    echo -e "\t1. $0 -D /path/to/all/makefiles\t(expands to *.mk)"
-    echo -e "\t--OR--"
-    echo -e "\t2. $0 path/to/makefile another/makefile"
+    echo -e "$0\n"
+    echo -e "Usage:"
+    echo -e "\t$0 <options> path/to/makefile another/path/makefile ..."
+    echo -e "\t$0 <options> -D path/to/makefiles\n"
+    echo -e "Options:"
+    echo -e "\t-o\tProvide an output name for the .pdf."
+    echo -e "\t-e\tExclude files matching given regex (for use with \`-D')."
+    echo -e "\t-v\tVerbose: Don't silence PDFLaTeX output."
+    echo -e "\t-h\tShow this screen.\n"
+    echo -e "* Note that paths to makefiles (first option) cannot be combined with \`-D' syntax."
     }
 
 verbose=0
@@ -49,6 +55,12 @@ do
 	    ;;
     esac
 done
+
+if [ $files == "" ] 
+then
+    usage
+    exit 1
+fi
 
 # remove flags and their arguments, keep the rest as input
 shift $(( $OPTIND - 1 ))

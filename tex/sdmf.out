@@ -1,3 +1,12 @@
-\BOOKMARK [1][-]{section.0.1}{Introduction}{}% 1
-\BOOKMARK [1][-]{section.0.2}{Calling the script}{}% 2
-\BOOKMARK [1][-]{section.0.3}{Makefile commenting syntax}{}% 3
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Purpose}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Organization}{section.1}% 3
+\BOOKMARK [1][-]{section.2}{Calling the script}{}% 4
+\BOOKMARK [2][-]{subsection.2.1}{Options}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.2}{Naming makefiles}{section.2}% 6
+\BOOKMARK [1][-]{section.3}{Makefile commenting syntax}{}% 7
+\BOOKMARK [2][-]{subsection.3.1}{\043, \043\043, \203}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.2}{\043*}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.3}{\043!}{section.3}% 10
+\BOOKMARK [2][-]{subsection.3.4}{\043?}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.5}{\043>}{section.3}% 12
