@@ -1,16 +1,16 @@
 # IBIC picnic
 
-## Self-documenting makefiles!
+### Self-documenting makefiles!
 
-### Now known as *Picnic*
+#### Now known as *Picnic*
 
-* make-document/ -> Actually running the scripts, testing.
+* make-document/   Actually running the scripts, testing.
 
- * sdmf-scripts/ -> Scripts that have to move with document-makefile
+ * sdmf-scripts/   Scripts needed for document-makefile
 
- * sdmf-output/  -> Testing output
+ * sdmf-output/	   Output of document-makefile
 
-* testing/       -> Testing python outside of `production' environment	 
+* testing/	   Testing python outside of `production' environment	 
  
-* tex/	       -> Manual for documenting makefiles.
+* tex/		   Manual for documenting makefiles.
 
