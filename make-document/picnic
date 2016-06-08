@@ -21,6 +21,7 @@ directory=""
 outfile="tables.pdf"
 exclude="not a regex"
 lib=$(dirname $0) 
+pwd=$PWD
 
 while getopts ":o:D:e:vh" opt
 do
@@ -82,7 +83,7 @@ else
     done
 fi
 
-if [ $files == "" ] ; then usage; exit 1; fi
+if [ "$files" == "" ] ; then usage; exit 1; fi
 
 mkdir -p sdmf-output/
 
@@ -159,8 +160,10 @@ mv intermediates.txt sdmf-output/
 
 echo "Running PdfLaTeX ..."
 
-echo "This documentation covers the following makefiles, and was prepared on \Today{} at \currenttime{} by \texttt{$(whoami)}.
-\newline\noindent Project directory: \texttt{$(pwd | sed 's!\(.*\)/bin/.*!\1!')}
+echo "This document was prepared on \Today{} at \currenttime{} by \texttt{$(whoami)}.
+\newline\noindent Makefile directory: \texttt{$pwd}
+
+\newline\noindent \textbf{Files:} 
 \begin{description}" > sdmf-output/descriptions.tex
 
 > sdmf-output/makefiles.tex
@@ -176,8 +179,8 @@ do
     else
 	description="No description supplied."
     fi
-
-    echo "\item [$(basename $i)] $description" >> sdmf-output/descriptions.tex
+    
+    echo "\item [\texttt{$i}] $description" >> sdmf-output/descriptions.tex
 done
 
 echo "\end{description}" >> sdmf-output/descriptions.tex
