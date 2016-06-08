@@ -16,14 +16,17 @@ usage() {
 if [ $# -eq 0 ]; then usage; exit 1; fi
 
 files=""
-verbose=0
-directory=""
+
 outfile="tables.pdf"
+title="Makefile Documentation"
+directory=""
 exclude="not a regex"
+verbose=0
+
 lib=$(dirname $0) 
 pwd=$PWD
 
-while getopts ":o:D:e:vh" opt
+while getopts ":o:t:D:e:vh" opt
 do
     case $opt in 
 	o)
@@ -45,7 +48,10 @@ do
 	    fi
 	    ;;
 	e)
-	    exclude=$OPTARG
+	    exclude="$OPTARG"
+	    ;;
+	t)
+	    title="$OPTARG"
 	    ;;
 	v)
 	    verbose=1
@@ -152,7 +158,7 @@ sed -i -e 's/$/ \\\\/g' targets.txt
     
 # escape $, %, #, & in intermediates.txt
 #sed -i -e 's/\&/\\\&/g' -e 's/[$#]/\\&/g' intermediates.txt
-gawk -i inplace 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}] (\\texttt{\\hyperref["$4"]{"$3"}}) "$2}' intermediates.txt
+gawk -i inplace 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}] \\hfill \\hyperref["$4"]{\\texttt{"$3"}} \\newline "$2}' intermediates.txt
 
 mv variables.txt sdmf-output/
 mv targets.txt sdmf-output/
@@ -160,22 +166,33 @@ mv intermediates.txt sdmf-output/
 
 echo "Running PdfLaTeX ..."
 
-echo "This document was prepared on \Today{} at \currenttime{} by \texttt{$(whoami)}.
-\newline\noindent Makefile directory: \texttt{$pwd}
+echo "\begin{center}
+	{\Huge \textbf{${title}}}
+	
+	{\large Documenting makefiles: \texttt{${files}} }
+	
+	\textit{\Today}
+\end{center}
+	
+\tableofcontents*
 
-\newline\noindent \textbf{Files:} 
+\section{This File}
+\label{intro}
+
+This document was prepared on \Today{} at \currenttime{} by \texttt{$(whoami)}.
+\newline\noindent Called from: \texttt{$pwd}
+
+\subsection{Files}
 \begin{description}" > sdmf-output/descriptions.tex
 
 > sdmf-output/makefiles.tex
 for i in ${files}
 do
-    safe=$(echo $i | sed 's/[^a-zA-Z]//g')
-
     echo "\subsection{\texttt{"$(basename ${i})"}}" >> sdmf-output/makefiles.tex
     echo "\begingroup" >> sdmf-output/makefiles.tex
     echo "\catcode\`\_=12" >> sdmf-output/makefiles.tex
-    echo "\label{"$(basename ${safe})"}" >> sdmf-output/makefiles.tex
-    echo "\lstinputlisting{../"${i}"}" >> sdmf-output/makefiles.tex
+    echo "\label{"$(echo $(basename $i) | sed 's/[^a-zA-Z]//g')"}" >> sdmf-output/makefiles.tex
+    echo "\lstinputlisting{"${i}"}" >> sdmf-output/makefiles.tex
     echo "\endgroup" >> sdmf-output/makefiles.tex
     
     if [ $(grep "#\*" $i -c) -gt 0 ]
@@ -205,7 +222,7 @@ fi
 cd ..
 cp sdmf-output/tables.pdf $PWD/$outfile
 
-if [ $? -eq 0 ] ; then echo "Saved to $PWD/$outfile" ; fi
+if [ $? -eq 0 ] ; then echo "Saved to $PWD/$outfile -- \"${title}\"" ; fi
 
 echo "Cleaning up."
 

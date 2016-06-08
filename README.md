@@ -24,12 +24,3 @@
 * `tex/` 
  
  Manual for documenting makefiles. 
-
-
-### To Do
-
-* Change temporary working dir `sdmf-ouput` to a `/tmp/` directory.
-
-* Format **Intermediate Files** section nicer. (\hfill to file name, newline before description.
-
-* Add functionality to skip documenting certain targets (any with no comment?)
