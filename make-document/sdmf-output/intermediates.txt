@@ -1,8 +1,0 @@
-\item [\texttt{QA/images/checkflex.gif}] (\texttt{\hyperref[Flex.mk]{Flex.mk}}) check flex output - this is a quickie image for checking skull stripping and whether the hyperintensities seem at least to be in the right places
-\item [\texttt{flair/Flair_RO.nii.gz}] (\texttt{\hyperref[Flex.mk]{Flex.mk}}) reorient to standard
-\item [\texttt{flair/Flair_brain.hdr}] (\texttt{\hyperref[Flex.mk]{Flex.mk}}) skull-strip and export as ANALYZE filetype for the sb_flex script
-\item [\texttt{flair/Flair_brain_flwmt_lesions.hdr}] (\texttt{\hyperref[Flex.mk]{Flex.mk}}) identify wm lesions
-\item [\texttt{flair/Flair_restore.nii.gz}] (\texttt{\hyperref[Flex.mk]{Flex.mk}}) produce bias-field corrected image that is segmented 
-\item [\texttt{flair/Flair_scaled.nii.gz}] (\texttt{\hyperref[Flex.mk]{Flex.mk}}) The default Flair image has crazy-high intensities that flex doesn\textquotesingle{}t like, so we lower the intensities
-\item [\texttt{flair/Flair_wmh_mask.nii.gz}] (\texttt{\hyperref[Flex.mk]{Flex.mk}}) create mask of wm lesions
-\item [\texttt{flair/wmhstats.csv}] (\texttt{\hyperref[Flex.mk]{Flex.mk}}) ??

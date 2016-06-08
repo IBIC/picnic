@@ -1,3 +1,0 @@
-FLEXPATH & \texttt{\$(BIN)\discretionary{/}{}{/}wmprogram\discretionary{/}{}{/}sb\discretionary{/}{}{/}cross_platform\discretionary{/}{}{/}scripts} \newline where the flex scripts are stored & \hyperref[Flex.mk]{Flex.mk}  \\
-SBBINDIR & \texttt{\$(BIN)\discretionary{/}{}{/}wmprogram\discretionary{/}{}{/}sb\discretionary{/}{}{/}linux} \newline where the linux wrappers for the flex scripts are stored & \hyperref[Flex.mk]{Flex.mk}  \\
-SCALE & \texttt{0.00266} \newline scalar to adjust intensities, found through trial and error & \hyperref[Flex.mk]{Flex.mk}  \\

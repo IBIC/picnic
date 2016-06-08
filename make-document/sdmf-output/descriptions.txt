@@ -1,2 +1,0 @@
-\item [Flex.mk] Identifies WM hyperintensities 
-copied from act-plus PrepSubject.mk

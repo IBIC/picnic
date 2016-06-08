@@ -15,6 +15,7 @@ varmatch=re.compile("^[A-Z a-z 0-9]+=") # looking for ^VARIABLE=
 targetmatch=re.compile("^.*:")          # looking for ^target:
 leadingdot=re.compile("^\.")            # looking for ^. (.PHONY, .SECONDARY)
 leadinghash=re.compile("^#")            # looking for comment lines, ^#
+alpharegex=re.compile("[^a-zA-Z]")      # used to strip non-alphabetic characters
 
 
 def save_array(array, filen):
@@ -77,6 +78,7 @@ for f in files:
     linewise=filter(None, contents.splitlines()) # remove blank lines
 
     fbn = os.path.basename(f)
+    fbn_safe = alpharegex.sub('', fbn)
 
     for i in range(0, len(linewise)):
         line=linewise[i]
@@ -91,7 +93,7 @@ for f in files:
             # then reverse it so we have the result the right way round.
             definition=line[::-1].rsplit('=', 1)[0][::-1]
 
-            variables = add_to_array(variables, [[variable, definition, comment, fbn]])
+            variables = add_to_array(variables, [[variable, definition, comment, fbn, fbn_safe]])
 
         # GET (INTERACTIVE) TARGETS
         if ".PHONY:" in line:
@@ -112,11 +114,11 @@ for f in files:
                 if target in phonies:
                     # if this is a phony target, add to phonies
                     comment = check_and_get_comment(i, "#?")
-                    phonies_arr = add_to_array(phonies_arr, [[target, comment, fbn]])
+                    phonies_arr = add_to_array(phonies_arr, [[target, comment, fbn, fbn_safe]])
                 else:
                     # if it's not phony, add to secondary targets
                     comment = check_and_get_comment(i, "#>")
-                    targets = add_to_array(targets, [[target, comment, fbn]])
+                    targets = add_to_array(targets, [[target, comment, fbn, fbn_safe]])
 
 
 save_array(variables, "variables.txt")

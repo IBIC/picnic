@@ -97,11 +97,11 @@ do
 	files=$(echo $files | sed "s|\s*$f\s*||g")
     fi
     
-    if [[ $f == *"_"* ]] ; then
-	echo "Bash: LaTeX doesn't like underscores in filenames."
-	echo "Skipping $f"
-	files=$(echo $files | sed "s|\s*$f\s*||g")
-    fi
+#    if [[ $f == *"_"* ]] ; then
+#	echo "Bash: LaTeX doesn't like underscores in filenames."
+#	echo "Skipping $f"
+#	files=$(echo $files | sed "s|\s*$f\s*||g")
+#    fi
 done
 
 # make sure we haven't accidentally removed all files
@@ -144,15 +144,15 @@ sed -i -e 's/;/\&/g' -e 's/[:/]/\\discretionary{&}{}{&}/g' targets.txt variables
 sed -i -e 's/[$#]/\\&/g' -e 's/%/{\\color{blue}\\%}/g' -e "s/'/\\\textquotesingle{}/g" $outputfiles
 
 # collapse second and third cols of variables.txt into a single cell
-gawk -i inplace 'BEGIN {FS="&"} ; {print $1" & \\texttt{"$2"} \\newline "$3" & \\hyperref["$4"]{"$4"}  \\\\"}' variables.txt
+gawk -i inplace 'BEGIN {FS="&"} ; {print $1" & \\texttt{"$2"} \\newline "$3" & \\hyperref["$5"]{"$4"}  \\\\"}' variables.txt
 
 # add hyperlinking and \\ to the end of the line for targets.txt
-gawk -i inplace 'BEGIN {FS="&"} ; {print $1" & "$2" & \\hyperref["$3"]{"$3"}"}' targets.txt
+gawk -i inplace 'BEGIN {FS="&"} ; {print $1" & "$2" & \\hyperref["$4"]{"$3"}"}' targets.txt
 sed -i -e 's/$/ \\\\/g' targets.txt
     
 # escape $, %, #, & in intermediates.txt
 #sed -i -e 's/\&/\\\&/g' -e 's/[$#]/\\&/g' intermediates.txt
-gawk -i inplace 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}] (\\texttt{\\hyperref["$3"]{"$3"}}) "$2}' intermediates.txt
+gawk -i inplace 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}] (\\texttt{\\hyperref["$4"]{"$3"}}) "$2}' intermediates.txt
 
 mv variables.txt sdmf-output/
 mv targets.txt sdmf-output/
@@ -169,9 +169,14 @@ echo "This document was prepared on \Today{} at \currenttime{} by \texttt{$(whoa
 > sdmf-output/makefiles.tex
 for i in ${files}
 do
+    safe=$(echo $i | sed 's/[^a-zA-Z]//g')
+
     echo "\subsection{\texttt{"$(basename ${i})"}}" >> sdmf-output/makefiles.tex
-    echo "\label{"$(basename ${i})"}" >> sdmf-output/makefiles.tex
+    echo "\begingroup" >> sdmf-output/makefiles.tex
+    echo "\catcode\`\_=12" >> sdmf-output/makefiles.tex
+    echo "\label{"$(basename ${safe})"}" >> sdmf-output/makefiles.tex
     echo "\lstinputlisting{../"${i}"}" >> sdmf-output/makefiles.tex
+    echo "\endgroup" >> sdmf-output/makefiles.tex
     
     if [ $(grep "#\*" $i -c) -gt 0 ]
     then
