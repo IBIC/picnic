@@ -192,7 +192,7 @@ do
     echo "\begingroup" >> sdmf-output/makefiles.tex
     echo "\catcode\`\_=12" >> sdmf-output/makefiles.tex
     echo "\label{"$(echo $(basename $i) | sed 's/[^a-zA-Z]//g')"}" >> sdmf-output/makefiles.tex
-    echo "\lstinputlisting{"${i}"}" >> sdmf-output/makefiles.tex
+    echo "\lstinputlisting{"${PWD}/${i}"}" >> sdmf-output/makefiles.tex
     echo "\endgroup" >> sdmf-output/makefiles.tex
     
     if [ $(grep "#\*" $i -c) -gt 0 ]
