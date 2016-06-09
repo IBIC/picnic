@@ -1,0 +1,91 @@
+\documentclass[oneside,11pt]{memoir}
+
+% Fonts
+\usepackage[T1]{fontenc}	% better output encoding
+\usepackage{textcomp}		% For ASCII diacritics
+\usepackage{lmodern}		% Latin Modern instad of CM
+%\usepackage{inconsolata}	% better monospaced font
+\usepackage[defaultsans]{droidsans} % straight quotes
+\usepackage{microtype}		% fix the little things % comes after any fonts
+
+% basics
+\usepackage[textwidth=0.75\paperwidth]{geometry}	% Adjust margins
+\usepackage{graphicx}	% now you can add pretty pictures
+\usepackage{url} 		% makes urls look nicer
+\usepackage[usenames,dvipsnames]{color} % adds colored text
+\usepackage[font=footnotesize]{caption}	% more control over figure captions
+\usepackage{xparse}		% nesting arguments within environments
+\usepackage{underscore}	% better text underscores
+\usepackage{marginnote}	% better margin notes
+\usepackage{tabularx}	% more flexible tables
+\usepackage[table,dvipsnames]{xcolor}	% alternating table colors
+\usepackage{todonotes}	% backend organization. Also for some reason necessary for tikz
+\usepackage{authblk} % author block
+\usepackage{booktabs}
+\usepackage{ltxtable}
+\usepackage{upquote}
+\usepackage[level]{datetime}
+%\shortdate
+%\newdateformat{mydate}{%
+%	\monthname[\THEMONTH] \THEDAY, \THEYEAR}
+
+
+% Complex packages
+\usepackage{tikz}		% nice flowcharts and stuff
+\usepackage{tikzpagenodes}
+\usetikzlibrary{positioning,calc}
+\usepackage{tcolorbox} 	% frames
+\usepackage{listings} 	% nice code formatting
+\usepackage{dirtree}	% pretty directory trees
+\usepackage{minted}
+
+% Lists
+\usepackage[ampersand]{easylist}	% Nicer syntax for creating lists
+\usepackage{paralist}	% Allows inline lists %
+% For citations using Bibtex
+\usepackage{natbib}
+
+% Hyperref
+\usepackage[linkcolor=magenta,colorlinks=true]{hyperref} 	% allows hyperlinking % NEEDS TO BE LOADED LAST
+\newcommand{\sdmf}{\textsc{sdmf}}
+
+\renewcommand{\thesection}{\arabic{section}}
+%\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+
+\setsecnumdepth{subsection}
+
+\title{Makefile Documentation}
+
+\date{\today}
+\author{}
+
+\usepackage{titletoc}
+\titlecontents*{section} % Section
+[0em]                  % Left
+{\space}               % Above code
+{\thecontentslabel~}   % Numbered format
+{}                     % Numberless format
+{}                     % Filler
+[\hspace{1em}]         % Separator
+
+\makeatletter
+\renewcommand*{\@tocmaketitle}{\noindent \textbf{\large Contents}}
+\makeatother
+
+\definecolor{lemon}{HTML}{F5ECCE}
+
+\newcommand{\Today}{\usdate\today}
+
+\begin{document}
+	
+	A link: \autopageref{tribute}
+	
+	\label{tribute}
+	\begingroup
+		\catcode`\_=12\relax
+		\input{tribute_file}
+	\endgroup
+		
+\end{document}
+	
+	
