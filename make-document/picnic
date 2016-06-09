@@ -21,12 +21,13 @@ outfile="tables.pdf"
 title="Makefile Documentation"
 directory=""
 exclude="not a regex"
+docfile=""
 verbose=0
 
 lib=$(dirname $0) 
 pwd=$PWD
 
-while getopts ":o:t:D:e:vh" opt
+while getopts ":o:t:D:e:d:vh" opt
 do
     case $opt in 
 	o)
@@ -50,6 +51,9 @@ do
 	e)
 	    exclude="$OPTARG"
 	    ;;
+	d)
+	    docfile=$OPTARG
+	    ;;
 	t)
 	    title="$OPTARG"
 	    ;;
@@ -68,6 +72,7 @@ do
     esac
 done
 
+echo $docfile
 
 # remove flags and their arguments, keep the rest as input
 shift $(( $OPTIND - 1 ))
@@ -102,12 +107,6 @@ do
 	echo "$f contains #*NODOC directive, skipping."
 	files=$(echo $files | sed "s|\s*$f\s*||g")
     fi
-    
-#    if [[ $f == *"_"* ]] ; then
-#	echo "Bash: LaTeX doesn't like underscores in filenames."
-#	echo "Skipping $f"
-#	files=$(echo $files | sed "s|\s*$f\s*||g")
-#    fi
 done
 
 # make sure we haven't accidentally removed all files
@@ -166,6 +165,14 @@ mv intermediates.txt sdmf-output/
 
 echo "Running PdfLaTeX ..."
 
+if [ ${docfile}x == "x" ]
+then
+    inputdesc="No description supplied."
+else
+    inputdesc=$(cat "$docfile")
+fi
+
+
 echo "\begin{center}
 	{\Huge \textbf{${title}}}
 	
@@ -181,6 +188,9 @@ echo "\begin{center}
 
 This document was prepared on \Today{} at \currenttime{} by \texttt{$(whoami)}.
 \newline\noindent Called from: \texttt{$pwd}
+
+\subsection{Description}
+${inputdesc}
 
 \subsection{Files}
 \begin{description}" > sdmf-output/descriptions.tex
