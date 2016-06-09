@@ -66,6 +66,7 @@ mprage/T1.nii.gz: parrec/MPRAGE.zip
 #
 
 #> PCASL conversion should be done with mcverter in subject_setup
+# this comment should be removed
 pcasl-%/Pcasl.nii.gz: 
 	mkdir -p pcasl-$*
 	cp dicom/*PCASL*.nii.gz pcasl-$* ;\
