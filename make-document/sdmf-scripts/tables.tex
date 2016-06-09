@@ -10,34 +10,22 @@
 
 % basics
 \usepackage[textwidth=0.75\paperwidth]{geometry}	% Adjust margins
-\usepackage{graphicx}	% now you can add pretty pictures
 \usepackage{url} 		% makes urls look nicer
 \usepackage[usenames,dvipsnames]{color} % adds colored text
 \usepackage[font=footnotesize]{caption}	% more control over figure captions
-\usepackage{xparse}		% nesting arguments within environments
 \usepackage{underscore}	% better text underscores
-\usepackage{marginnote}	% better margin notes
 \usepackage{tabularx}	% more flexible tables
 \usepackage[table,dvipsnames]{xcolor}	% alternating table colors
 \usepackage{todonotes}	% backend organization. Also for some reason necessary for tikz
-\usepackage{authblk} % author block
 \usepackage{booktabs}
 \usepackage{ltxtable}
+\usepackage{array}
 \usepackage{upquote}
+\usepackage{tabu}
 \usepackage[level]{datetime}
 %\shortdate
 %\newdateformat{mydate}{%
 %	\monthname[\THEMONTH] \THEDAY, \THEYEAR}
-
-
-% Complex packages
-\usepackage{tikz}		% nice flowcharts and stuff
-\usepackage{tikzpagenodes}
-\usetikzlibrary{positioning,calc}
-\usepackage{tcolorbox} 	% frames
-\usepackage{listings} 	% nice code formatting
-\usepackage{dirtree}	% pretty directory trees
-\usepackage{minted}
 
 % Lists
 \usepackage[ampersand]{easylist}	% Nicer syntax for creating lists
@@ -87,12 +75,29 @@
 	\section{Targets}
 	\label{targets}
 	
-	\LTXtable{\textwidth}{targets.tex}	
+%	\LTXtable{\textwidth}{targets.tex}	
+	\rowcolors{2}{gray!25}{white}%
+	\begin{longtabu} to \linewidth {>{\ttfamily}l X >{\ttfamily}l}
+		\rowcolor{gray!50}
+		\textbf{Target} & \textbf{Definition \& Description} & \textbf{File} \\
+		
+		\input{targets.txt}		
+		
+	\end{longtabu}
 	
 	\section{Variables}
 	\label{variables}
 			
-	\LTXtable{\textwidth}{variables.tex}
+	\rowcolors{2}{gray!25}{white}
+	
+	\begin{longtabu} to \linewidt {>{\ttfamily}l X >{\ttfamily}l}
+		\rowcolor{gray!50}
+		\textbf{Variable} & \textbf{Definition \& Description} & \textbf{File} \\
+		
+		\input{variables.txt}		
+		
+		\bottomrule
+	\end{longtabu}
 	
 	\section{Intermediate Files}
 	\label{intermediates}
