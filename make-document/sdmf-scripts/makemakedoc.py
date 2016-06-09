@@ -14,7 +14,7 @@ targets = []
 varmatch=re.compile("^[A-Z a-z 0-9]+=") # looking for ^VARIABLE=
 targetmatch=re.compile("^.*:")          # looking for ^target:
 leadingdot=re.compile("^\.")            # looking for ^. (.PHONY, .SECONDARY)
-leadinghash=re.compile("^#")            # looking for comment lines, ^#
+leadinghash=re.compile("^#([^?>*!]|\s|$)")            # looking for comment lines, ^# _followed by a space!_
 alpharegex=re.compile("[^a-zA-Z]")      # used to strip non-alphabetic characters
 
 
@@ -75,7 +75,10 @@ for f in files:
     with open(f, 'r') as file_read:
         contents = file_read.read()
 
-    linewise=filter(None, contents.splitlines()) # remove blank lines
+    # remove blank lines and lines starting with '# ' only
+    linewise = filter(None, contents.splitlines())
+    clines = filter(leadinghash.match, linewise)
+    linewise = [x for x in linewise if x not in clines]
 
     fbn = os.path.basename(f)
     fbn_safe = alpharegex.sub('', fbn)

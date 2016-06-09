@@ -1,11 +1,21 @@
 #!/usr/bin/python
 
 import re
+import itertools as it
+
+lh=re.compile("^#([^?>*!]|\s|$)")
 
 with open("file", 'r') as file_read:
     contents=file_read.read()
 
-linewise=filter(None, contents.splitlines())
+linewise = filter(None, contents.splitlines())
+clines = filter(lh.match, linewise)
+
+linewise = [x for x in linewise if x not in clines]
+
+print(linewise)
+
+exit()
 
 def get_ml_comments( lines, startat ):
     """Get all the comment lines preceding a target"""
