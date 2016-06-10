@@ -96,7 +96,10 @@ fi
 
 if [ "$files" == "" ] ; then usage; exit 1; fi
 
-mkdir -p sdmf-output/
+#mkdir -p sdmf-output/
+tmpdir=$(mktemp -d /tmp/picnicXXXX)
+
+echo "Working in $tmpdir"
 
 # Check for exceptions and skip files if necessary
 for f in $files
@@ -117,10 +120,9 @@ then
 fi
 
 # save good files for LaTeX to open
-rm -f sdmf-output/{header,user}.txt 
 for i in ${files}
 do
-    echo $(basename $i) >> sdmf-output/header.txt
+    echo $(basename $i) >> $tmpdir/header.txt
 done
 
 # run python to get *.txt files
@@ -159,9 +161,9 @@ sed -i -e 's/$/ \\\\/g' targets.txt
 #sed -i -e 's/\&/\\\&/g' -e 's/[$#]/\\&/g' intermediates.txt
 gawk -i inplace 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}] \\hfill \\hyperref["$4"]{\\texttt{"$3"}} \\newline "$2}' intermediates.txt
 
-mv variables.txt sdmf-output/
-mv targets.txt sdmf-output/
-mv intermediates.txt sdmf-output/
+mv variables.txt $tmpdir/
+mv targets.txt $tmpdir/
+mv intermediates.txt $tmpdir/
 
 echo "Running PdfLaTeX ..."
 
@@ -179,31 +181,31 @@ echo "\begin{center}
 	{\large Documenting makefiles: \texttt{${files}} }
 	
 	\textit{\Today}
-\end{center}
+        \end{center}
 	
-\tableofcontents*
+        \tableofcontents*
 
-\section{This File}
-\label{intro}
+        \section{This File}
+        \label{intro}
 
-This document was prepared on \Today{} at \currenttime{} by \texttt{$(whoami)}.
-\newline\noindent Called from: \texttt{$pwd}
+        This document was prepared on \Today{} at \currenttime{} by \texttt{$(whoami)}.
+        \newline\noindent Called from: \texttt{$pwd}
 
-\subsection{Description}
-${inputdesc}
+        \subsection{Description}
+        ${inputdesc}
 
-\subsection{Files}
-\begin{description}" > sdmf-output/descriptions.tex
+        \subsection{Files}
+        \begin{description}" > $tmpdir/descriptions.tex
 
-> sdmf-output/makefiles.tex
+> $tmpdir/makefiles.tex
 for i in ${files}
 do
-    echo "\subsection{\texttt{"$(basename ${i})"}}" >> sdmf-output/makefiles.tex
-    echo "\begingroup" >> sdmf-output/makefiles.tex
-    echo "\catcode\`\_=12" >> sdmf-output/makefiles.tex
-    echo "\label{"$(echo $(basename $i) | sed 's/[^a-zA-Z]//g')"}" >> sdmf-output/makefiles.tex
-    echo "\lstinputlisting{"${PWD}/${i}"}" >> sdmf-output/makefiles.tex
-    echo "\endgroup" >> sdmf-output/makefiles.tex
+    echo "\subsection{\texttt{"$(basename ${i})"}}
+          \begingroup
+          \catcode\`\_=12
+          \label{"$(echo $(basename $i) | sed 's/[^a-zA-Z]//g')"}
+          \lstinputlisting{"${PWD}/${i}"}
+          \endgroup" >> $tmpdir/makefiles.tex
     
     if [ $(grep "#\*" $i -c) -gt 0 ]
     then
@@ -212,14 +214,14 @@ do
 	description="No description supplied."
     fi
     
-    echo "\item [\texttt{$i}] $description" >> sdmf-output/descriptions.tex
+    echo "\item [\texttt{$i}] $description" >> $tmpdir/descriptions.tex
 done
 
-echo "\end{description}" >> sdmf-output/descriptions.tex
+echo "\end{description}" >> $tmpdir/descriptions.tex
 
-cp ${lib}/*.tex sdmf-output/
+cp ${lib}/*.tex $tmpdir/
 
-cd sdmf-output
+cd $tmpdir
 if [ $verbose -eq 1 ] ; then
     # output all of pdflatex's gobbledygook
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 
@@ -230,13 +232,6 @@ else
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 1 > /dev/null  
 fi
 cd ..
-cp sdmf-output/tables.pdf $PWD/$outfile
+cp $tmpdir/tables.pdf $PWD/$outfile
 
 if [ $? -eq 0 ] ; then echo "Saved to $PWD/$outfile -- \"${title}\"" ; fi
-
-echo "Cleaning up."
-
-if [ $verbose -eq 0 ]
-then
-    rm -rf sdmf-output
-fi
