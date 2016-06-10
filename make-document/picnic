@@ -23,11 +23,12 @@ directory=""
 exclude="not a regex"
 docfile=""
 verbose=0
+projdir=""
 
 lib=$(dirname $0) 
 pwd=$PWD
 
-while getopts ":o:t:D:e:d:vh" opt
+while getopts ":o:t:D:e:d:p:vh" opt
 do
     case $opt in 
 	o)
@@ -59,6 +60,9 @@ do
 	    ;;
 	v)
 	    verbose=1
+	    ;;
+	p)
+	    projdir=$OPTARG
 	    ;;
 	h)
 	    usage
@@ -97,7 +101,7 @@ fi
 if [ "$files" == "" ] ; then usage; exit 1; fi
 
 #mkdir -p sdmf-output/
-tmpdir=$(mktemp -d /tmp/picnicXXXX)
+tmpdir=$(mktemp -d /tmp/picnic.XXXXX)
 
 echo "Working in $tmpdir"
 
@@ -174,6 +178,10 @@ else
     inputdesc=$(cat "$docfile")
 fi
 
+if [ ${projdir}x == "x" ]
+then
+    projdir=$pwd
+fi
 
 echo "\begin{center}
 	{\Huge \textbf{${title}}}
@@ -189,7 +197,7 @@ echo "\begin{center}
         \label{intro}
 
         This document was prepared on \Today{} at \currenttime{} by \texttt{$(whoami)}.
-        \newline\noindent Called from: \texttt{$pwd}
+        \newline\noindent Project Directory: \texttt{$projdir}
 
         \subsection{Description}
         ${inputdesc}
@@ -231,7 +239,7 @@ else
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 1 > /dev/null
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 1 > /dev/null  
 fi
-cd ..
+cd $pwd
 cp $tmpdir/tables.pdf $PWD/$outfile
 
 if [ $? -eq 0 ] ; then echo "Saved to $PWD/$outfile -- \"${title}\"" ; fi
