@@ -1,4 +1,4 @@
-#!/usr/bin/python
+1#!/usr/bin/python
 
 import sys
 import re
@@ -14,7 +14,7 @@ targets = []
 varmatch=re.compile("^[A-Z a-z 0-9]+=") # looking for ^VARIABLE=
 targetmatch=re.compile("^.*:")          # looking for ^target:
 leadingdot=re.compile("^\.")            # looking for ^. (.PHONY, .SECONDARY)
-leadinghash=re.compile("^#([^?>*!]|\s|$)")            # looking for comment lines, ^# _followed by a space!_
+leadinghash=re.compile("^#([^?>\*!]|\s|$)")            # looking for comment lines, ^# _followed by a space!_
 alpharegex=re.compile("[^a-zA-Z]")      # used to strip non-alphabetic characters
 
 
@@ -32,25 +32,28 @@ def save_array(array, filen):
     else:
         with open(filen, "wb") as F:
             writer = csv.writer(F, delimiter=";", lineterminator='\n')
-            writer.writerow("-;None found;-".split(';'))
+            writer.writerow("-;None found;-;-".split(';'))
 
 
 def check_and_get_comment(startat, spliton):
     """Get all the comment lines, or return a filler message."""
-    if spliton in linewise[startat - 1]:   
-        comment_list=[]
-        inc=1
-      
-        while spliton in linewise[startat - inc]:
-            comment_list.append(linewise[startat - inc][3::])
-            inc += 1
+    
+    if "#*SKIP" not in linewise[startat - 1]:
+        if spliton in linewise[startat - 1]:   
+            comment_list=[]
+            inc=1
+        
+            while spliton in linewise[startat - inc]:
+                comment_list.append(linewise[startat - inc][3::])
+                inc += 1
 
-        comment_list.reverse()
-        comment=' '.join(comment_list)
-        return comment
+            comment_list.reverse()
+            comment=' '.join(comment_list)
+            return comment
+        else:
+            return "No comment supplied"
     else:
-        return "No comment supplied"
-
+        return None
 
 def add_to_array(array, new):
     if array is not None:
@@ -88,15 +91,17 @@ for f in files:
 
         ## GET VARIABLES
         if varmatch.match(line):
-            variable=line.rsplit('=')[0]            
-            comment = check_and_get_comment(i, "#!")
-            
-            # rsplit works R2L so to get what follows the first '=',
-            # we have to reverse, split, then take the first element of that array,
-            # then reverse it so we have the result the right way round.
-            definition=line[::-1].rsplit('=', 1)[0][::-1]
+            variable=line.rsplit('=')[0]
 
-            variables = add_to_array(variables, [[variable, definition, comment, fbn, fbn_safe]])
+            if check_and_get_comment(i, "#!"):
+                comment = check_and_get_comment(i, "#!")
+                
+                # rsplit works R2L so to get what follows the first '=',
+                # we have to reverse, split, then take the first element of that array,
+                # then reverse it so we have the result the right way round.
+                definition=line[::-1].rsplit('=', 1)[0][::-1]
+
+                variables = add_to_array(variables, [[variable, definition, comment, fbn, fbn_safe]])
 
         # GET (INTERACTIVE) TARGETS
         if ".PHONY:" in line:
@@ -116,13 +121,14 @@ for f in files:
             if not leadingdot.match(target) and not "export" in target and not "@echo" in target:
                 if target in phonies:
                     # if this is a phony target, add to phonies
-                    comment = check_and_get_comment(i, "#?")
-                    phonies_arr = add_to_array(phonies_arr, [[target, comment, fbn, fbn_safe]])
+                    if check_and_get_comment(i, "#?"):
+                        comment = check_and_get_comment(i, "#?")
+                        phonies_arr = add_to_array(phonies_arr, [[target, comment, fbn, fbn_safe]])
                 else:
                     # if it's not phony, add to secondary targets
-                    comment = check_and_get_comment(i, "#>")
-                    targets = add_to_array(targets, [[target, comment, fbn, fbn_safe]])
-
+                    if check_and_get_comment(i, "#>") is not None:
+                        comment = check_and_get_comment(i, "#>")
+                        targets = add_to_array(targets, [[target, comment, fbn, fbn_safe]])
 
 save_array(variables, "variables.txt")
 save_array(phonies_arr, "targets.txt")

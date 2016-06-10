@@ -26,7 +26,7 @@ verbose=0
 projdir=""
 
 lib=$(dirname $0) 
-pwd=$PWD
+called=$PWD
 
 while getopts ":o:t:D:e:d:p:vh" opt
 do
@@ -180,7 +180,7 @@ fi
 
 if [ ${projdir}x == "x" ]
 then
-    projdir=$pwd
+    projdir=$PWD
 fi
 
 echo "\begin{center}
@@ -215,7 +215,7 @@ do
           \lstinputlisting{"${PWD}/${i}"}
           \endgroup" >> $tmpdir/makefiles.tex
     
-    if [ $(grep "#\*" $i -c) -gt 0 ]
+    if [ $(grep "#\*[^S][^K][^I][^P]" $i -c) -gt 0 ]
     then
 	description=$(grep "#\*" $i | sed  -e 's/\n/; /g' -e 's/#\*\s*//')
     else
@@ -239,7 +239,8 @@ else
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 1 > /dev/null
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 1 > /dev/null  
 fi
-cd $pwd
+cd $called
+
 cp $tmpdir/tables.pdf $PWD/$outfile
 
 if [ $? -eq 0 ] ; then echo "Saved to $PWD/$outfile -- \"${title}\"" ; fi

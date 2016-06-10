@@ -3,7 +3,9 @@
 .PHONY: PrepSubject ConvertCommon ConvertOn ConvertOff PrepStructurals
 #.SECONDARY:
 
-MATLABCompiler=/usr/local/MATLAB/MATLAB_Runtime/v81 #! always use the same vresion of MATLAB
+#! always use the same version of MATLAB
+#*SKIP
+MATLABCompiler=/usr/local/MATLAB/MATLAB_Runtime/v81 
 
 # all:
 
@@ -18,6 +20,7 @@ endif
 ConvertCommon: flair/Flair.nii.gz mprage/T1.nii.gz dti/blipA.nii.gz
 
 #? Convert ON scans
+#*SKIP
 ConvertOn: pcasl-on/Pcasl.nii.gz rest-on/rest_e001.nii.gz axcpt-on/rest_e001.nii.gz fieldmap-on/B0_mag_fMRI.nii.gz
 
 #? Convert OFF scans
@@ -28,6 +31,7 @@ ConvertOff: pcasl-off/Pcasl.nii.gz rest-off/rest_e001.nii.gz axcpt-off/rest_e001
 #
 
 #> Convert and reorient Flair
+#*SKIP
 flair/Flair.nii.gz: parrec/FLAIR.zip
 	mkdir -p flair
 	unzip $(word 1,$^) -d flair/ ;\
