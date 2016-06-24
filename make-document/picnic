@@ -37,12 +37,14 @@ do
 	    then
 		outfile=$(basename $outfile).pdf
 	    fi
+	    echo "Outfile is $outfile"
 	    ;;
 	D)
 	    if [ -d $OPTARG ]
 	    then
 		directory=$OPTARG
-		echo "Reading all *.mk files from $directory and its subdirectories."
+		echo "Reading all *.mk files from $directory and its \
+subdirectories."
 	    else
 		echo "$OPTARG is not a directory."
 		usage

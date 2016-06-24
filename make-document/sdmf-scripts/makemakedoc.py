@@ -1,4 +1,4 @@
-1#!/usr/bin/python
+#!/usr/bin/python
 
 import sys
 import re
@@ -12,10 +12,15 @@ phonies_arr = []
 targets = []
 
 varmatch=re.compile("^[A-Z a-z 0-9]+=") # looking for ^VARIABLE=
+
 targetmatch=re.compile("^.*:")          # looking for ^target:
+
 leadingdot=re.compile("^\.")            # looking for ^. (.PHONY, .SECONDARY)
-leadinghash=re.compile("^#([^?>\*!]|\s|$)")            # looking for comment lines, ^# _followed by a space!_
-alpharegex=re.compile("[^a-zA-Z]")      # used to strip non-alphabetic characters
+
+leadinghash=re.compile("^#([^?>\*!]|\s|$)")          
+# looking for comment lines, ^# _followed by a space!_
+
+alpharegex=re.compile("[^a-zA-Z]")    # used to strip non-alphabetic characters
 
 
 def save_array(array, filen):
@@ -97,11 +102,13 @@ for f in files:
                 comment = check_and_get_comment(i, "#!")
                 
                 # rsplit works R2L so to get what follows the first '=',
-                # we have to reverse, split, then take the first element of that array,
-                # then reverse it so we have the result the right way round.
+                # we have to reverse, split, then take the first element of that
+                # array, then reverse it so we have the result the right way 
+                # round.
                 definition=line[::-1].rsplit('=', 1)[0][::-1]
 
-                variables = add_to_array(variables, [[variable, definition, comment, fbn, fbn_safe]])
+                variables = add_to_array(variables, [[variable, definition, 
+                	comment, fbn, fbn_safe]])
 
         # GET (INTERACTIVE) TARGETS
         if ".PHONY:" in line:
@@ -114,21 +121,25 @@ for f in files:
                 phonies = phonies + phonies_temp
         
         # GET (INTERMEDIATE) TARGETS
-        if ':' in line and '\t' not in line and not leadinghash.match(line):
+        if ':' in line and '\t' not in line and not leadinghash.match(line) \
+        and "#*" not in line: 
             target=line.rsplit(':', 1)[0]
             
             # if this isn't the .PHONY line and we're not exporting a variable
-            if not leadingdot.match(target) and not "export" in target and not "@echo" in target:
+            if not leadingdot.match(target) and not "export" in target and \
+            not "@echo" in target:
                 if target in phonies:
                     # if this is a phony target, add to phonies
                     if check_and_get_comment(i, "#?"):
                         comment = check_and_get_comment(i, "#?")
-                        phonies_arr = add_to_array(phonies_arr, [[target, comment, fbn, fbn_safe]])
+                        phonies_arr = add_to_array(phonies_arr, [[target, 
+                        	comment, fbn, fbn_safe]])
                 else:
                     # if it's not phony, add to secondary targets
                     if check_and_get_comment(i, "#>") is not None:
                         comment = check_and_get_comment(i, "#>")
-                        targets = add_to_array(targets, [[target, comment, fbn, fbn_safe]])
+                        targets = add_to_array(targets, [[target, comment, fbn, 
+                        	fbn_safe]])
 
 save_array(variables, "variables.txt")
 save_array(phonies_arr, "targets.txt")
