@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2016.6.17)  30 JUN 2016 16:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2016.6.17)  30 JUN 2016 16:37
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -803,72 +803,13 @@ Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
 )
-(/usr/share/texlive/texmf-dist/tex/latex/datetime/datetime.sty
-Package: datetime 2013/09/10 v2.59 Date Time Package
-
-(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2011/01/03 v2.1 e-TeX tools for LaTeX
-\etb@tempcnta=\count162
-)
-(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fmtcount.sty
-Package: fmtcount 2014/07/18 v3.00
-
-(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fcprefix.sty
-Package: fcprefix 2012/09/28
-
-(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fcnumparser.sty
-Package: fcnumparser 2012/09/28
-\fc@digit@counter=\count163
-))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
-File: amsgen.sty 1999/11/30 v2.0
-\@emptytoks=\toks35
-\ex@=\dimen275
-)
-\c@padzeroesN=\count164
-\fc@tmpcatcode=\count165
-\@DT@modctr=\count166
-\@ordinalctr=\count167
-\@orgargctr=\count168
-\@strctr=\count169
-\@tmpstrctr=\count170
-\@DT@loopN=\count171
-\@DT@X=\count172
-
-(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fc-english.def
-File: fc-english.def 2013/08/17
-))
-(/usr/share/texlive/texmf-dist/tex/latex/datetime/datetime-defaults.sty
-Package: datetime-defaults 2013/09/10
-)
-\@day=\count173
-\@month=\count174
-\@year=\count175
-\c@HOUR=\count176
-\c@HOURXII=\count177
-\c@MINUTE=\count178
-\c@TOHOUR=\count179
-\c@TOMINUTE=\count180
-\c@SECOND=\count181
-\currenthour=\count182
-\currentminute=\count183
-\currentsecond=\count184
-Package datetime Info: No datetime.cfg file found, using default settings on in
-put line 308.
-\@dtctr=\count185
-\dayofyear=\count186
-\dayofweek=\count187
-LaTeX Info: Redefining \today on input line 736.
-\dt@a=\toks36
-\dt@b=\toks37
-)
 (/usr/share/texlive/texmf-dist/tex/latex/tikzpagenodes/tikzpagenodes.sty
 Package: tikzpagenodes 2012/09/16 v1.1 Special PGF/TikZ nodes for areas of the 
 page
 
 (/usr/share/texlive/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
 Package: ifoddpage 2011/09/13 v1.0 Conditionals for odd/even page detection
-\c@checkoddpage=\count188
+\c@checkoddpage=\count162
 ))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
 zlibrarycalc.code.tex
@@ -879,8 +820,8 @@ Package: tcolorbox 2014/10/10 version 3.21 text color boxes
 
 (/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty
 Package: verbatim 2014/10/28 v1.5q LaTeX2e package for verbatim enhancements
-\every@verbatim=\toks38
-\verbatim@line=\toks39
+\every@verbatim=\toks35
+\verbatim@line=\toks36
 \verbatim@in@stream=\read2
 )
 (/usr/share/texlive/texmf-dist/tex/latex/environ/environ.sty
@@ -889,14 +830,18 @@ Package: environ 2014/05/04 v0.3 A new way to define environments
 (/usr/share/texlive/texmf-dist/tex/latex/trimspaces/trimspaces.sty
 Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 )
-\@envbody=\toks40
+\@envbody=\toks37
+)
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2011/01/03 v2.1 e-TeX tools for LaTeX
+\etb@tempcnta=\count163
 )
 \tcb@titlebox=\box56
 \tcb@upperbox=\box57
 \tcb@lowerbox=\box58
 \tcb@phantombox=\box59
-\c@tcbbreakpart=\count189
-\c@tcblayer=\count190
+\c@tcbbreakpart=\count164
+\c@tcblayer=\count165
 \tcb@temp=\box60
 \tcb@temp=\box61
 \tcb@temp=\box62
@@ -904,23 +849,23 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 \tcb@out=\write4
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count191
+\lst@mode=\count166
 \lst@gtempboxa=\box64
-\lst@token=\toks41
-\lst@length=\count192
-\lst@currlwidth=\dimen276
-\lst@column=\count193
-\lst@pos=\count194
-\lst@lostspace=\dimen277
-\lst@width=\dimen278
-\lst@newlines=\count195
-\lst@lineno=\count196
-\lst@maxwidth=\dimen279
+\lst@token=\toks38
+\lst@length=\count167
+\lst@currlwidth=\dimen275
+\lst@column=\count168
+\lst@pos=\count169
+\lst@lostspace=\dimen276
+\lst@width=\dimen277
+\lst@newlines=\count170
+\lst@lineno=\count171
+\lst@maxwidth=\dimen278
 
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2014/09/06 1.5e (Carsten Heinz)
-\c@lstnumber=\count197
-\lst@skipnumbers=\count198
+\c@lstnumber=\count172
+\lst@skipnumbers=\count173
 \lst@framebox=\box65
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
@@ -933,21 +878,20 @@ Package: dirtree 2012/12/11 v0.32 package wrapper for dirtree
 
 (/usr/share/texlive/texmf-dist/tex/generic/dirtree/dirtree.tex
 `dirtree' v0.32, 2012/12/11 (jcc)
-\DT@offset=\dimen280
-\DT@width=\dimen281
-\DT@sep=\dimen282
-\DT@all=\dimen283
-\DT@rulewidth=\dimen284
-\DT@dotwidth=\dimen285
-\DTbaselineskip=\dimen286
-\DT@counti=\count199
-\DT@countii=\count200
-\DT@countiii=\count201
-Normal \count register pool exhausted, switching to extended pool.
-\DT@countiv=\count277
-\DT@indent=\dimen287
-\DT@parskip=\dimen288
-\DT@baselineskip=\dimen289
+\DT@offset=\dimen279
+\DT@width=\dimen280
+\DT@sep=\dimen281
+\DT@all=\dimen282
+\DT@rulewidth=\dimen283
+\DT@dotwidth=\dimen284
+\DTbaselineskip=\dimen285
+\DT@counti=\count174
+\DT@countii=\count175
+\DT@countiii=\count176
+\DT@countiv=\count177
+\DT@indent=\dimen286
+\DT@parskip=\dimen287
+\DT@baselineskip=\dimen288
 )
 File: dirtree.tex 2012/12/11 v0.32 `dirtree' (jcc)
 )
@@ -959,18 +903,18 @@ Package: fancyvrb 2008/02/07
 
 Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix 
 <2008/02/07> (tvz)
-\FV@CodeLineNo=\count278
+\FV@CodeLineNo=\count178
 \FV@InFile=\read3
 \FV@TabBox=\box66
-\c@FancyVerbLine=\count279
-\FV@StepNumber=\count280
+\c@FancyVerbLine=\count179
+\FV@StepNumber=\count180
 \FV@OutFile=\write5
 ) (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count281
-\float@exts=\toks42
+\c@float@type=\count181
+\float@exts=\toks39
 \float@box=\box67
-\@float@everytoks=\toks43
+\@float@everytoks=\toks40
 \@floatcapt=\box68
 )
 (/usr/share/texlive/texmf-dist/tex/latex/ifplatform/ifplatform.sty
@@ -1007,8 +951,8 @@ runsystem(rm -- "sdmf.w18")...executed.
 )
 \minted@bgbox=\box69
 \minted@code=\write6
-\@float@every@listing=\toks44
-\c@listing=\count282
+\@float@every@listing=\toks41
+\c@listing=\count182
 )
 runsystem(which pygmentize && touch sdmf.aex)...executed.
 
@@ -1016,25 +960,25 @@ runsystem(rm sdmf.aex)...executed.
 
  (/usr/share/texlive/texmf-dist/tex/latex/easylist/easylist.sty
 Package: easylist 2014/01/11 v.1.4 Numbered items with a single command.
-\el@CounterTotal=\count283
-\el@Scratch=\count284
-\el@ControlCounter=\count285
-\el@CounterLevel=\count286
-\c@List1=\count287
-\c@List2=\count288
-\c@List3=\count289
-\c@List4=\count290
-\c@List5=\count291
-\c@List6=\count292
-\c@List7=\count293
-\c@List8=\count294
-\c@List9=\count295
-\c@List10=\count296
-\el@ProgressiveDimension=\dimen290
+\el@CounterTotal=\count183
+\el@Scratch=\count184
+\el@ControlCounter=\count185
+\el@CounterLevel=\count186
+\c@List1=\count187
+\c@List2=\count188
+\c@List3=\count189
+\c@List4=\count190
+\c@List5=\count191
+\c@List6=\count192
+\c@List7=\count193
+\c@List8=\count194
+\c@List9=\count195
+\c@List10=\count196
+\el@ProgressiveDimension=\dimen289
 \el@CounterBox=\box70
 \el@ControlBox=\box71
-\el@TotalMargin=\dimen291
-\el@LeftMove=\dimen292
+\el@TotalMargin=\dimen290
+\el@LeftMove=\dimen291
 )
 (/usr/share/texlive/texmf-dist/tex/latex/paralist/paralist.sty
 Package: paralist 2013/06/09 v2.4 Extended list environments
@@ -1042,14 +986,14 @@ Package: paralist 2013/06/09 v2.4 Extended list environments
 \plpartopsep=\skip63
 \plitemsep=\skip64
 \plparsep=\skip65
-\pl@lab=\toks45
+\pl@lab=\toks42
 )
 (/usr/share/texlive/texmf-dist/tex/latex/natbib/natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip66
 \bibsep=\skip67
 LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count297
+\c@NAT@ctr=\count197
 )
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
@@ -1092,14 +1036,14 @@ Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
 )
-\@linkdim=\dimen293
-\Hy@linkcounter=\count298
-\Hy@pagecounter=\count299
+\@linkdim=\dimen292
+\Hy@linkcounter=\count198
+\Hy@pagecounter=\count199
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
 )
-\Hy@SavedSpaceFactor=\count300
+\Hy@SavedSpaceFactor=\count200
 
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
@@ -1112,12 +1056,13 @@ Package hyperref Info: Plain pages OFF on input line 4458.
 Package hyperref Info: Backreferencing OFF on input line 4463.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4688.
-\c@Hy@tempcnt=\count301
+\c@Hy@tempcnt=\count201
 LaTeX Info: Redefining \url on input line 5041.
-\XeTeXLinkMargin=\dimen294
-\Fld@menulength=\count302
-\Field@Width=\dimen295
-\Fld@charsize=\dimen296
+\XeTeXLinkMargin=\dimen293
+Normal \count register pool exhausted, switching to extended pool.
+\Fld@menulength=\count277
+\Field@Width=\dimen294
+\Fld@charsize=\dimen295
 Package hyperref Info: Hyper figures OFF on input line 6295.
 Package hyperref Info: Link nesting OFF on input line 6300.
 Package hyperref Info: Hyper index ON on input line 6303.
@@ -1127,17 +1072,17 @@ Package hyperref Info: Link coloring with OCG OFF on input line 6320.
 Package hyperref Info: PDF/A mode OFF on input line 6325.
 LaTeX Info: Redefining \ref on input line 6365.
 LaTeX Info: Redefining \pageref on input line 6369.
-\Hy@abspage=\count303
-\c@Item=\count304
-\c@Hfootnote=\count305
+\Hy@abspage=\count278
+\c@Item=\count279
+\c@Hfootnote=\count280
 )
 
 Package hyperref Message: Driver (autodetected): hpdftex.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
 File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
-\Fld@listcount=\count306
-\c@bookmark@seq@number=\count307
+\Fld@listcount=\count281
+\c@bookmark@seq@number=\count282
 
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
 Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
@@ -1148,37 +1093,37 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 (/usr/share/texlive/texmf-dist/tex/latex/titlesec/titletoc.sty
 Package: titletoc 2011/12/15 v1.6 TOC entries
-\ttl@leftsep=\dimen297
+\ttl@leftsep=\dimen296
 ) (./sdmf.aux)
 \openout1 = `sdmf.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 69.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 69.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 68.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 68.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 69.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 68.
 
 (/usr/share/texmf/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Info: Redefining \microtypecontext on input line 69.
+LaTeX Info: Redefining \microtypecontext on input line 68.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1229,17 +1174,17 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count308
-\scratchdimen=\dimen298
+\scratchcounter=\count283
+\scratchdimen=\dimen297
 \scratchbox=\box72
-\nofMPsegments=\count309
-\nofMParguments=\count310
-\everyMPshowfont=\toks46
-\MPscratchCnt=\count311
-\MPscratchDim=\dimen299
-\MPnumerator=\count312
-\makeMPintoPDFobject=\count313
-\everyMPtoPDFconversion=\toks47
+\nofMPsegments=\count284
+\nofMParguments=\count285
+\everyMPshowfont=\toks43
+\MPscratchCnt=\count286
+\MPscratchDim=\dimen298
+\MPnumerator=\count287
+\makeMPintoPDFobject=\count288
+\everyMPtoPDFconversion=\toks44
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 
@@ -1269,12 +1214,12 @@ Package marginnote Info: \pdfoutput not 0 and \pdflastxpos available.
 (marginnote)             Extended position detection mode activated.
 
 ABD: EveryShipout initializing macros
-\c@lstlisting=\count314
+\c@lstlisting=\count289
 runsystem(pygmentize -S default -f latex > sdmf.pyg)...executed.
 
  (./sdmf.pyg)
 \AtBeginShipoutBox=\box73
-Package hyperref Info: Link coloring ON on input line 69.
+Package hyperref Info: Link coloring ON on input line 68.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -1282,17 +1227,17 @@ Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count315
+\c@section@level=\count290
 )
-LaTeX Info: Redefining \ref on input line 69.
-LaTeX Info: Redefining \pageref on input line 69.
-LaTeX Info: Redefining \nameref on input line 69.
+LaTeX Info: Redefining \ref on input line 68.
+LaTeX Info: Redefining \pageref on input line 68.
+LaTeX Info: Redefining \nameref on input line 68.
 
 (./sdmf.out) (./sdmf.out)
 \@outlinefile=\write7
 \openout7 = `sdmf.out'.
 
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 72.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 71.
  (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -1300,53 +1245,53 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             `lmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 72.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 71.
 
 (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 72.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 71.
 
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 72.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 71.
 
 
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 72.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 71.
 
 
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 72.
+(Font)              <12> on input line 71.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 72.
+(Font)              <8> on input line 71.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 72.
+(Font)              <6> on input line 71.
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/lmr/m/sc/10'.
 (microtype)             Ignoring protrusion settings for this character.
 
-Overfull \hbox (5.85664pt too wide) in paragraph at lines 76--77
+Overfull \hbox (5.85664pt too wide) in paragraph at lines 75--76
 []\T1/lmr/m/n/10 (-20) The pur-pose of this doc-u-ment is to de-scribe the stan
 -dards for cre-at-ing self-documenting
  []
 
-LaTeX Font Info:    Try loading font information for TS1+lmr on input line 86.
+LaTeX Font Info:    Try loading font information for TS1+lmr on input line 85.
 (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 138.
+(Font)              <10.95> on input line 137.
  [2]
-Overfull \hbox (17.0pt too wide) in paragraph at lines 148--158
+Overfull \hbox (17.0pt too wide) in paragraph at lines 147--157
 []$[]$ 
  []
 
@@ -1354,34 +1299,34 @@ Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/lmr/m/sc/10.95'.
 (microtype)             Ignoring protrusion settings for this character.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 171.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 170.
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 188--189
+Underfull \hbox (badness 10000) in paragraph at lines 187--188
 
  []
 
 
-Overfull \hbox (17.0pt too wide) in paragraph at lines 195--196
+Overfull \hbox (17.0pt too wide) in paragraph at lines 194--195
 [][] 
  []
 
 [4] [5]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 217.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 217.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 216.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 216.
  (./sdmf.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 217.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 217.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 216.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 216.
 Package rerunfilecheck Info: File `sdmf.out' has not changed.
 (rerunfilecheck)             Checksum: B1524E70D7559AA6EDEDEE1E370DDE72;756.
  ) 
 Here is how much of TeX's memory you used:
- 30574 strings out of 493105
- 574480 string characters out of 6137072
- 676485 words of memory out of 5000000
- 33410 multiletter control sequences out of 15000+600000
+ 29952 strings out of 493105
+ 565539 string characters out of 6137072
+ 658196 words of memory out of 5000000
+ 32812 multiletter control sequences out of 15000+600000
  64391 words of font info for 81 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,12n,73p,10404b,1685s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,12n,73p,10404b,1686s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dv
 ips/lm/lm-ts1.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/shar
 e/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/l
@@ -1391,7 +1336,7 @@ mf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr1
 type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb><
 /usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb></usr/share/texmf/fonts/type1
 /public/lm/lmtt12.pfb>
-Output written on sdmf.pdf (5 pages, 267099 bytes).
+Output written on sdmf.pdf (5 pages, 267450 bytes).
 PDF statistics:
  153 PDF objects out of 1000 (max. 8388607)
  133 compressed objects within 2 object streams
