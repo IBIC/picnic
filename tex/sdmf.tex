@@ -85,8 +85,8 @@
 	\begin{easylist}[itemize]
 		& \textbf{Top-level descriptions:} ``Header information'' usually found at the top of a makefile, descriptions like
 			\begin{lstlisting}[basicstyle=\ttfamily, gobble=24, breaklines=true]
-				# Top level makefile
-				# make all will recursively make specified targets in each subject directory.
+				#* Top level makefile
+				#* make all will recursively make specified targets in each subject directory.
 			\end{lstlisting}
 		& \textbf{Variables:} Defined through \texttt{VAR=x} syntax in the makefile preamble. Often references to directory paths (\texttt{bin/}, \texttt{incoming/}, etc), sometimes capture the output of \texttt{\$(\ldots)} command expansion.
 		& \textbf{Targets:} What's actually called from the command line, things like \texttt{PrepSubject}. These are collected from the definition of \texttt{.PHONY}. 
@@ -96,25 +96,20 @@
 		& \textbf{Files:} Intermediate targets not called directly from the command line, something like \texttt{mprage/T1\_brain.nii.gz}.
 	\end{easylist}
 	
+	Additionally, Picnic recognizes directives such as \texttt{\#*NODOC} which skips the entire makefile and \texttt{\#*SKIP} which skips the relevant target.
+	
 	\subsection{Organization}
 	
-	This system currently requires delicate use. Making it more robust and callable from different locations is a high priority. Currently, you need to duplicate the following folder structure: \\
+	I've improved the directory structure for picnic; currently it only requires three files:
 	
-	\begin{tcolorbox}[title=Directory structure]	
-		\dirtree{%
-			.1 SDMF/.
-			.2 document-makefile.
-			.2 sdmf-scripts/.
-			.3 makemakedoc.py.
-			.3 tables.tex.
-			.3 targets.tex.
-			.3 variables.tex.
-		}
-	\end{tcolorbox}
-
-	Other directories and files will be created as needed.
+	\begin{easylist}
+		& \texttt{picnic}
+		& \texttt{makemakedoc.py}
+		& \texttt{tables.tex}
+	\end{easylist}
 	
-	Right now, you need to call \texttt{document-makefile} (see \autoref{sec:calling}) from the folder it is located in (\texttt{SDMF/}, above), and give it the relative or absolute paths to the makefiles from that location. 
+	These files can be moved to a directory like \texttt{\textasciitilde/local/picnic}, which you can add to your path, allowing you to call Picnic from everywhere.
+	
 	
 	\section{Calling the script}
 	\label{sec:calling}
@@ -122,26 +117,33 @@
 	There are two primary ways to document your makefiles.
 	
 	You can give it explicit direction to the makefiles you would like to document:	
-	\bashcmd{./document-makefile PrepSubject.mk subdir/anotherfile.mk}
+	\bashcmd{picnic PrepSubject.mk subdir/anotherfile.mk}
 	
 	Or, you can give it a directory from which it will collect all makefiles (in that directory and all subdirectories):	
-	\bashcmd{./document-makefile -D lib/makefiles}
+	\bashcmd{picnic -D lib/makefiles}
 	
 	Using the \texttt{-D} syntax will include any makefile that ends in \texttt{*.mk} or matches the regex \texttt{*[Mm]akefile*}.
 	
-	Because it's possible you would like to not document all makefiles in the directory you have given (for example, a reference makefile), there exists the option \texttt{-e} to which you can pass a regex. All files matching said regex \textit{will not} be documented. It is also possible to include a directive in the makefile itself which will cause the documenter to skip it entirely: \texttt{\#*NODOC}.
+	\subsection{Skipping some files}
 	
-	\texttt{document-makefile} will check the entire document for \texttt{\#*NODOC}, and if it finds it anywhere, the makefile will be skipped.
+	Because it's possible you would like to not document all makefiles in the directory you have given (for example, a reference makefile), there are two ways to exclude some makefiles:
+	
+	\begin{easylist}
+		& The option \texttt{-e}, to which you can pass a regex. All files matching said regex \textit{will not} be documented. 
+		& It is also possible to include a directive in the makefile itself which will cause the documenter to skip it entirely: \texttt{\#*NODOC}. Picnic will check the entire document for \texttt{\#*NODOC}, and if it finds it anywhere, the makefile will be skipped.
+	\end{easylist}
 	
 	\subsection{Options}
 	
-	Aside from the flags \texttt{-D} and \texttt{-e} discussed above, there is also the standard \texttt{-v} flag, which mostly stops silencing the output of PDF\LaTeX, and \texttt{-h}, which outputs the standard help message. \texttt{-e} is not compatible with the first (non-\texttt{-D}) syntax.
+	Aside from the flags \texttt{-D} and \texttt{-e} discussed above, there is also the standard \texttt{-v} flag (for verbose), which mostly stops silencing the output of PDF\LaTeX, and \texttt{-h}, which outputs the standard help message. \texttt{-e} is not compatible with the first (non-\texttt{D}) syntax.
 	
 	There is also the option \texttt{-o}, which allows you to specify the name of the output file. If it does not already end in \texttt{.pdf}, it will be \texttt{basename}'d and \texttt{.pdf} will be added.
 	
-	\begin{center}
-		\fbox{\color{red} All options must come before the file list or the directory.}
-	\end{center}
+	{\color{red} All options must come before the file list or the directory.} If you place options after the file list or directory, Picnic will hang indefinitely. This is a high-priority bug. In the mean time, make sure to call picnic like:	
+	\bashcmd{picnic -o foo.pdf foo.mk}
+	
+	\textit{not}	
+	\bashcmd{picnic foo.mk -o foo.pdf}
 	
 	\begin{minipage}{\textwidth}
 		\textbf{Summary table:}	\\
@@ -156,12 +158,11 @@
 		
 	\subsection{Naming makefiles}
 	
-	PDF\LaTeX, the engine used to typeset the documentation, does not like to input files with underscores in the file name. The program will stop on these files and ask you to rename them. 
-
+	In general, \LaTeX{} doesn't like filenames with underscores in them. Picnic will do its best to handle them, but I recommend avoiding underscores where possible. 
 	
 	\section{Makefile commenting syntax}
 	
-	Because we have four things to identify from the makefiles (description, variable, targets, and files), we introduce four comment ``keywords'' to facilitate information extraction, and for ease of use with other utilities such as \texttt{grep}.
+	Because we have four things to identify from the makefiles (description/directives, variable, targets, and files), I introduce four comment ``keywords'' to facilitate information extraction, and for ease of use with other utilities such as \texttt{grep}.
 	
 	All makefile comments begin with \texttt{\#}, so \sdmf{} comments will also begin with \texttt{\#}. The four comment styles are: \texttt{\#*}, \texttt{\#!}, \texttt{\#?}, and \texttt{\#>}.
 	
@@ -173,7 +174,7 @@
 	
 	\subsection{\texttt{\#*}}
 	
-	This comment style is for descriptions at the top of the makefile, or header information. It is also used for directives like \texttt{\#*NODOC} (at the moment, the only such directive, but if any are added, they will fit in this paradigm.)
+	This comment style is for descriptions at the top of the makefile, or header information. It is also used for directives like \texttt{\#*NODOC} and \texttt{\#*SKIP} (at this time, the only directives).
 	
 	\subsection{\texttt{\#!}}
 	
