@@ -157,15 +157,18 @@ sed -i -e 's/;/\&/g' -e 's/[:/]/\\discretionary{&}{}{&}/g' targets.txt variables
 sed -i -e 's/[$#]/\\&/g' -e 's/%/{\\color{blue}\\%}/g' -e "s/'/\\\textquotesingle{}/g" $outputfiles
 
 # collapse second and third cols of variables.txt into a single cell
-gawk -i inplace 'BEGIN {FS="&"} ; {print $1" & \\texttt{"$2"} \\newline "$3" & \\hyperref["$5"]{"$4"}  \\\\"}' variables.txt
+# gawk -i inplace 'BEGIN {FS="&"} ; {print $1" & \\texttt{"$2"} \\newline "$3" & \\hyperref["$5"]{"$4"}  \\\\"}' variables.txt
+awk 'BEGIN {FS="&"} ; {print $1" & \\texttt{"$2"} \\newline "$3" & \\hyperref["$5"]{"$4"}  \\\\"}' variables.txt > variables_tmp.txt && mv variables_tmp.txt variables.txt 
 
 # add hyperlinking and \\ to the end of the line for targets.txt
-gawk -i inplace 'BEGIN {FS="&"} ; {print $1" & "$2" & \\hyperref["$4"]{"$3"}"}' targets.txt
+# gawk -i inplace 'BEGIN {FS="&"} ; {print $1" & "$2" & \\hyperref["$4"]{"$3"}"}' targets.txt
+awk 'BEGIN {FS="&"} ; {print $1" & "$2" & \\hyperref["$4"]{"$3"}"}' targets.txt > targets_tmp.txt && mv targets_tmp.txt targets.txt 
 sed -i -e 's/$/ \\\\/g' targets.txt
     
 # escape $, %, #, & in intermediates.txt
 #sed -i -e 's/\&/\\\&/g' -e 's/[$#]/\\&/g' intermediates.txt
-gawk -i inplace 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}] \\hfill \\hyperref["$4"]{\\texttt{"$3"}} \\newline "$2}' intermediates.txt
+awk 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}] \\hfill \\hyperref["$4"]{\\texttt{"$3"}} \\newline "$2}' intermediates.txt > intermediates_tmp.txt && mv intermediates_tmp.txt intermediates.txt
+#gawk -i inplace 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}] \\hfill \\hyperref["$4"]{\\texttt{"$3"}} \\newline "$2}' intermediates.txt
 
 mv variables.txt $tmpdir/
 mv targets.txt $tmpdir/
