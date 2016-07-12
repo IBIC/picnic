@@ -54,6 +54,9 @@ def check_and_get_comment(startat, spliton):
 
             comment_list.reverse()
             comment=' '.join(comment_list)
+
+            comment=comment.replace(';', ',')
+
             return comment
         else:
             return "No comment supplied"

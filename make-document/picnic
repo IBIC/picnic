@@ -150,17 +150,21 @@ fi
 outputfiles="targets.txt variables.txt intermediates.txt"
 
 # sanitize & (remove from comments before proceeding)
-sed -i -e 's/\&/and/g' targets.txt variables.txt intermediates.txt
+sed -i -e 's/\&/and/g' \
+		targets.txt variables.txt intermediates.txt
 
 # prepare for LaTeX
 # change ; to & for tabular, allow linebreaks at /,: (for paths)
-sed -i -e 's/;/\&/g' -e 's/[:/]/\\discretionary{&}{}{&}/g' targets.txt \
-	variables.txt
+sed -i -e 's/;/\&/g' \
+		-e 's/[:/]/\\discretionary{&}{}{&}/g' \
+		targets.txt variables.txt
 
 # escape $, #, %, better <'>, allow breaking at :,/'
 # breaking at :,/ is important for path and assignments to PATH
-sed -i -e 's/[$#]/\\&/g' -e 's/%/{\\color{blue}\\%}/g' \
-	-e "s/'/\\\textquotesingle{}/g" $outputfiles
+sed -i -e 's/[$#]/\\&/g' \
+	-e 's/%/{\\color{blue}\\%}/g' \
+	-e "s/'/\\\textquotesingle{}/g" \
+	$outputfiles
 
 # collapse second and third cols of variables.txt into a single cell
 # gawk -i inplace 'BEGIN {FS="&"} ; \
@@ -172,7 +176,7 @@ awk 'BEGIN {FS="&"} ; \
 
 # add hyperlinking and \\ to the end of the line for targets.txt
 # gawk -i inplace 'BEGIN {FS="&"} ; 
-#{print $1" & "$2" & \\hyperref["$4"]{"$3"}"}' targets.txt
+# {print $1" & "$2" & \\hyperref["$4"]{"$3"}"}' targets.txt
 awk 'BEGIN {FS="&"} ; \
 	{print $1" & "$2" & \\hyperref["$4"]{"$3"}"}' targets.txt \
 	> targets_tmp.txt && mv targets_tmp.txt targets.txt 
