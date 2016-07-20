@@ -4,7 +4,13 @@
 
 #### July 19, 2016 v 1.1
 
-Fixed some bugs. Moved files from version 1.0 to directory /old. New documentation coming up. More testing to be done. 
+Moved files from version 1.0 to directory /old. 
+Fixed some bugs (all updated scripts, namely: *picnic*, *makemakedoc.py* and *tables.tex*, are now in the main directory)
++ picnic can now parse semicolons in comments
++ default name of output file changed to 'makedocumentation.pdf' instead of 'tables.pdf'
++ picnic should now be able to properly discriminate between higher-level targets (such as those listed in .PHONY) and intermediary targets.
+
+New documentation coming up. More testing to be done. 
 
 #### June 7, 2016 v 1.0
 
