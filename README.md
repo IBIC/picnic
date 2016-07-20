@@ -5,6 +5,7 @@
 #### July 19, 2016 v 1.1
 
 Moved files from version 1.0 to directory /old. 
+
 Fixed some bugs (all updated scripts, namely: *picnic*, *makemakedoc.py* and *tables.tex*, are now in the main directory)
 + picnic can now parse semicolons in comments
 + default name of output file changed to 'makedocumentation.pdf' instead of 'tables.pdf'
