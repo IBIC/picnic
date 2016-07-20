@@ -112,6 +112,7 @@ for f in files:
 		if ("/" in tmptarget and "#?" not in tmptarget) or ("%" in tmptarget and "#?" not in tmptarget):
 			intermediary = tmptarget
 			if check_and_get_comment(i, "#>"):
+				comment = check_and_get_comment(i, "#>")
 				intermediaries = add_to_array(intermediaries, [[intermediary, comment, fbn, fbn_safe]])
 		if "/" not in tmptarget and "#>" not in tmptarget and "#?" not in tmptarget and "%" not in tmptarget:
 			target = tmptarget
