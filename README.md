@@ -1,9 +1,9 @@
 # IBIC picnic
 
 ## Self-documenting makefiles!
---------------------------------------------
-### How to use picnic
 
+### How to use picnic
+--------------------------------------------
 1. For picnic to work, you only need 3 scripts:
     + picnic
     + makemakedoc.py
@@ -17,9 +17,10 @@
     ```
 
 5. For details, see documentation sdmf.pdf 
---------------------------------------------
-#### July 19, 2016 v 1.1
 
+
+### July 19, 2016 v 1.1
+--------------------------------------------
 Moved files from version 1.0 to directory /old. 
 
 Fixed some bugs (all updated scripts, namely: *picnic*, *makemakedoc.py* and *tables.tex*, are now in the main directory)
@@ -28,9 +29,10 @@ Fixed some bugs (all updated scripts, namely: *picnic*, *makemakedoc.py* and *ta
 + picnic should now be able to properly discriminate between higher-level targets (such as those listed in .PHONY) and intermediary targets.
 
 New documentation coming up. More testing to be done. 
---------------------------------------------
-#### June 7, 2016 v 1.0
 
+
+### June 7, 2016 v 1.0
+--------------------------------------------
 **Formerly known as SDMF**
 
 * `make-document/` 
