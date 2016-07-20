@@ -1,0 +1,216 @@
+\documentclass[oneside,11pt]{article}
+
+% Fonts
+\usepackage[T1]{fontenc}	% better output encoding
+\usepackage{textcomp}		% For ASCII diacritics
+\usepackage{lmodern}		% Latin Modern instad of CM
+%\usepackage{inconsolata}	% better monospaced font
+\usepackage[defaultsans]{droidsans} % straight quotes
+\usepackage{microtype}		% fix the little things % comes after any fonts
+
+% basics
+\usepackage{geometry}	% Adjust margins
+\usepackage{graphicx}	% now you can add pretty pictures
+\usepackage{url} 		% makes urls look nicer
+\usepackage[usenames,dvipsnames]{color} % adds colored text
+\usepackage[font=footnotesize]{caption}	% more control over figure captions
+\usepackage{xparse}		% nesting arguments within environments
+\usepackage{underscore}	% better text underscores
+\usepackage{marginnote}	% better margin notes
+\usepackage{tabularx}	% more flexible tables
+\usepackage[table,dvipsnames]{xcolor}	% alternating table colors
+\usepackage{todonotes}	% backend organization. Also for some reason necessary for tikz
+\usepackage{authblk} % author block
+\usepackage{booktabs}
+\usepackage{ltxtable}
+\usepackage{upquote}
+%\usepackage[level]{datetime}
+%\shortdate
+
+
+% Complex packages
+\usepackage{tikz}		% nice flowcharts and stuff
+\usepackage{tikzpagenodes}
+\usetikzlibrary{positioning,calc}
+\usepackage{tcolorbox} 	% frames
+\usepackage{listings} 	% nice code formatting
+\usepackage{dirtree}	% pretty directory trees
+\usepackage{minted}
+
+% Lists
+\usepackage[ampersand]{easylist}	% Nicer syntax for creating lists
+\usepackage{paralist}	% Allows inline lists %
+% For citations using Bibtex
+\usepackage{natbib}
+
+% Hyperref
+\usepackage[colorlinks=true]{hyperref} 	% allows hyperlinking % NEEDS TO BE LOADED LAST
+
+\newcommand{\sdmf}{\textsc{sdmf}}
+
+
+\newcommand{\bashcmd}[1]{ \hfill\, \begin{minipage}[t]{\linewidth}  \hrule \vspace{0.5\baselineskip} \texttt{\small \$ #1} \vspace{0.5\baselineskip} \hrule \end{minipage} \vspace{0.5\baselineskip} }
+
+\title{Self-Documenting Makefiles!}
+\author{Trevor K. McAllister-Day}
+\affil{\url{tkmday@uw.edu}}
+
+\usepackage{titletoc}
+\titlecontents*{section} % Section
+[0em]                  % Left
+{\space}               % Above code
+{\thecontentslabel~}   % Numbered format
+{}                     % Numberless format
+{}                     % Filler
+[\hspace{1em}]         % Separator
+
+
+\begin{document}
+	
+	\maketitle
+	
+%	\tableofcontents*
+	
+	\begin{abstract}
+		The purpose of this document is to describe the standards for creating self-documenting makefiles (\sdmf). As projects grow more complex and branch off into multiple makefiles, keeping track of variable-settings and targets becomes increasingly difficult. Using \sdmf{} allows you to compile the locations of the variable, targets, and files accessible to all your makefiles into a single place that is searchable; reducing possible collisions between variable and target names.
+	\end{abstract}
+	
+	\section{Introduction}
+	
+	\subsection{Purpose}
+	
+	This script is designed to collect the following information from any number of relevant makefiles you point it at:
+	
+	\begin{easylist}[itemize]
+		& \textbf{Top-level descriptions:} ``Header information'' usually found at the top of a makefile, descriptions like
+			\begin{lstlisting}[basicstyle=\ttfamily, gobble=24, breaklines=true]
+				#* Top level makefile
+				#* make all will recursively make specified targets in each subject directory.
+			\end{lstlisting}
+		& \textbf{Variables:} Defined through \texttt{VAR=x} syntax in the makefile preamble. Often references to directory paths (\texttt{bin/}, \texttt{incoming/}, etc), sometimes capture the output of \texttt{\$(\ldots)} command expansion.
+		& \textbf{Targets:} What's actually called from the command line, things like \texttt{PrepSubject}. These are collected from the definition of \texttt{.PHONY}. 
+			\begin{center}
+				\fbox{\color{red} Targets not set in \texttt{.PHONY} will be considered files, not targets.}
+			\end{center}
+		& \textbf{Files:} Intermediate targets not called directly from the command line, something like \texttt{mprage/T1\_brain.nii.gz}.
+	\end{easylist}
+	
+	Additionally, Picnic recognizes directives such as \texttt{\#*NODOC} which skips the entire makefile and \texttt{\#*SKIP} which skips the relevant target.
+	
+	\subsection{Organization}
+	
+	I've improved the directory structure for picnic; currently it only requires three files:
+	
+	\begin{easylist}
+		& \texttt{picnic}
+		& \texttt{makemakedoc.py}
+		& \texttt{tables.tex}
+	\end{easylist}
+	
+	These files can be moved to a directory like \texttt{\textasciitilde/local/picnic}, which you can add to your path, allowing you to call Picnic from everywhere.
+	
+	
+	\section{Calling the script}
+	\label{sec:calling}
+	
+	There are two primary ways to document your makefiles.
+	
+	You can give it explicit direction to the makefiles you would like to document:	
+	\bashcmd{picnic PrepSubject.mk subdir/anotherfile.mk}
+	
+	Or, you can give it a directory from which it will collect all makefiles (in that directory and all subdirectories):	
+	\bashcmd{picnic -D lib/makefiles}
+	
+	Using the \texttt{-D} syntax will include any makefile that ends in \texttt{*.mk} or matches the regex \texttt{*[Mm]akefile*}.
+	
+	\subsection{Skipping some files}
+	
+	Because it's possible you would like to not document all makefiles in the directory you have given (for example, a reference makefile), there are two ways to exclude some makefiles:
+	
+	\begin{easylist}
+		& The option \texttt{-e}, to which you can pass a regex. All files matching said regex \textit{will not} be documented. 
+		& It is also possible to include a directive in the makefile itself which will cause the documenter to skip it entirely: \texttt{\#*NODOC}. Picnic will check the entire document for \texttt{\#*NODOC}, and if it finds it anywhere, the makefile will be skipped.
+	\end{easylist}
+	
+	\subsection{Options}
+	
+	Aside from the flags \texttt{-D} and \texttt{-e} discussed above, there is also the standard \texttt{-v} flag (for verbose), which mostly stops silencing the output of PDF\LaTeX, and \texttt{-h}, which outputs the standard help message. \texttt{-e} is not compatible with the first (non-\texttt{D}) syntax.
+	
+	There is also the option \texttt{-o}, which allows you to specify the name of the output file. If it does not already end in \texttt{.pdf}, it will be \texttt{basename}'d and \texttt{.pdf} will be added.
+	
+	{\color{red} All options must come before the file list or the directory.} If you place options after the file list or directory, Picnic will hang indefinitely. This is a high-priority bug. In the mean time, make sure to call picnic like:	
+	\bashcmd{picnic -o foo.pdf foo.mk}
+	
+	\textit{not}	
+	\bashcmd{picnic foo.mk -o foo.pdf}
+	
+	\begin{minipage}{\textwidth}
+		\textbf{Summary table:}	\\
+		\begin{tabularx}{\textwidth}{>{\ttfamily}l X}
+			-D & Document all the makefiles in this directory. \\
+			-e & Exclude all files matching this regex. (\texttt{-D} only) \\
+			-o & Specify the output filename. \\
+			-v & Run in verbose mode. \\
+			-h & Display help and exit.  \\
+		\end{tabularx}
+	\end{minipage}
+		
+	\subsection{Naming makefiles}
+	
+	In general, \LaTeX{} doesn't like filenames with underscores in them. Picnic will do its best to handle them, but I recommend avoiding underscores where possible. 
+	
+	\section{Makefile commenting syntax}
+	
+	Because we have four things to identify from the makefiles (description/directives, variable, targets, and files), I introduce four comment ``keywords'' to facilitate information extraction, and for ease of use with other utilities such as \texttt{grep}.
+	
+	All makefile comments begin with \texttt{\#}, so \sdmf{} comments will also begin with \texttt{\#}. The four comment styles are: \texttt{\#*}, \texttt{\#!}, \texttt{\#?}, and \texttt{\#>}.
+	
+	The parser (I believe) can handle most symbols, with \texttt{\&} being replaced by \texttt{and} and semicolons being replaced by commas. Please let me know if any symbols have escaped my notice.
+	
+	\subsection{\texttt{\#}, \texttt{\#\#}, \texttt{\ldots}}
+	
+	(Any number of only octothorpes.) \\ Only octothorpes without any \sdmf{} control characters will be ignored, allowing use of  makefile-only comments, section headers and the like. \\ Example: \texttt{\#\#\# QA \#\#\#} will be completely ignored by the parser.
+	
+	\subsection{\texttt{\#*}}
+	
+	This comment style is for descriptions at the top of the makefile, or header information. It is also used for directives like \texttt{\#*NODOC} and \texttt{\#*SKIP} (at this time, the only directives).
+	
+	\subsection{\texttt{\#!}}
+	
+	These comments explain what a variable is for. The actual value of the variable is captured by the parser, and as such, it is not necessary to include the value itself in the comments. \\
+	Example: 
+	\begin{lstlisting}[gobble=16, basicstyle=\ttfamily]
+		# top level of the project directory
+		PROJECT_DIR=/mnt/home/adrc/ADRC 
+	\end{lstlisting}
+	
+	\ldots will result in an entry like: \\
+	
+	\begin{tabularx}{\textwidth}{>{\ttfamily}l X >{\ttfamily}l}
+		\rowcolor{gray!50}
+		\textbf{Variable} & \textbf{Definition \& Description} & \textbf{File} \\
+		PROJECT\_DIR	& \texttt{/mnt/home/adrc/ADRC} \newline top level of the project directory & foo.mk \\
+		\bottomrule
+	\end{tabularx}
+	
+	\subsection{\texttt{\#?}}
+	
+	These comments are for targets, and should take the form of one-line descriptions of targets to be called from the command line, e.g. \texttt{all}, \texttt{PrepSubject}. \\
+	Example:
+	\begin{lstlisting}[basicstyle=\ttfamily,gobble=16, breaklines=true]
+		#? Make all the relevant PCASL registrations
+		PCASL: pcasl/pcasl_fnirt.nii.gz pcasl/pcasl_M0_to_T1_Warped.nii.gz	
+	\end{lstlisting} 
+	
+	Target comments can be multiple-lines (each prefaced with \texttt{\#?}), but they really \textit{shouldn't} be.
+	
+	\subsection{\texttt{\#>}}
+
+	File (intermediary target) descriptions, any number of \texttt{\#>} comments can be used before an intermediate target. I don't \textit{recommend} using more than two or three. Newlines will not be preserved, and will be replaced with semicolons. \\ 
+	Example: 
+	\begin{lstlisting}[basicstyle=\ttfamily,gobble=16,breaklines=true]
+		#> Register m0 to t1 using fnirt
+		pcasl/pcasl_fnirt.nii.gz: pcasl/Pcasl_skstrip.nii.gz mprage/T1_brain.nii.gz
+	\end{lstlisting}
+
+\end{document}

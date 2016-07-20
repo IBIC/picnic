@@ -1,6 +1,11 @@
 # IBIC picnic
 
 ### Self-documenting makefiles!
+
+#### July 19, 2016 v 1.1
+
+Fixed some bugs. Moved files from version 1.0 to directory /old. New documentation coming up. More testing to be done. 
+
 #### June 7, 2016 v 1.0
 
 **Formerly known as SDMF**
