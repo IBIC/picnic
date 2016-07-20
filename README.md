@@ -1,6 +1,22 @@
 # IBIC picnic
 
-### Self-documenting makefiles!
+## Self-documenting makefiles!
+
+### How to use picnic
+
+1. For picnic to work, you only need 3 scripts:
+    + picnic
+    + makemakedoc.py
+    + tables.tex
+2. You can either clone this Github repository into your home directory or simply copy the above 3 scripts into a new directory under your home directory
+3. Once you have a directory containing these scripts on your local machine, add this directory to your path. The best way to do this is via your .bashrc file. Remember to source .bashrc before you start calling picnic.
+4. To use picnic, type:
+
+    ``` 
+    picnic -o 'name_of_output' name_of_makefile(s)
+    ```
+
+5. For details, see documentation sdmf.pdf 
 
 #### July 19, 2016 v 1.1
 
