@@ -54,6 +54,7 @@ def check_and_get_comment(startat, spliton):
 
             comment_list.reverse() # reverse because we are reading comments from the line right above target/variable, upwards
             comment = ' '.join(comment_list) # this takes the list and joins all lines in the comment together
+            comment = comment.replace(';', ',')
             return comment
         else:
             return "No comment supplied"
