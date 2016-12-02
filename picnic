@@ -7,6 +7,7 @@ usage() {
     echo -e "\t$0 <options> -D path/to/makefiles\n"
     echo -e "Options:"
     echo -e "\t-o\tProvide an output name for the .pdf."
+    echo -e "\t-d\tProvide a filename with documentation for the project."    
     echo -e "\t-e\tExclude files matching given regex (for use with \`-D')."
     echo -e "\t-v\tVerbose: Don't silence pdfLaTeX output, also keep intermediate files."
     echo -e "\t-h\tShow this screen.\n"
