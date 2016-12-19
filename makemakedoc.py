@@ -17,7 +17,7 @@ targetmatch = re.compile("^.*:")          # pattern - looking for ^target: - thi
 
 leadingdot = re.compile("^\.")            # pattern - looking for ^. (.PHONY, .SECONDARY)
 
-leadinghash = re.compile("^#([^?>\*!]|\s|$)")          
+leadinghash = re.compile("^#([^?>\*!]|\s|$)")
 # looking for comment lines that do not begin with [#*, #?, #! or #>], i.e. ^# _followed by a space!_ or just ^#
 
 alpharegex = re.compile("[^a-zA-Z]")    # used to strip non-alphabetic characters
@@ -26,11 +26,9 @@ def save_array(array, filen):
     """Save the array to the file, or save a placeholder if it is empty."""
 
     if len(array) > 0:
-        if len(array) > 1:
-            # can only sort arrays with more than one row
-		# argsort sorts array by indices 
-		# sort array vertically (across rows) 
-		array = array[np.argsort(array[:, 0])]
+        if len(array) > 1: # (can only sort arrays with more than one row)
+            # Sort vertically by indices:
+            array = array[np.argsort(array[:, 0])]
 
         with open(filen, "wb") as F:
             writer = csv.writer(F, delimiter=";", lineterminator='\n')
@@ -42,12 +40,12 @@ def save_array(array, filen):
 
 def check_and_get_comment(startat, spliton):
     """Get all the comment lines, or return a filler message."""
-    
+
     if "#*SKIP" not in linewise[startat - 1]: # comments are 1 line above the target/variable/etc
-        if spliton in linewise[startat - 1]:   
+        if spliton in linewise[startat - 1]:
             comment_list = []
             inc = 1
-        
+
             while spliton in linewise[startat - inc]:
                 comment_list.append(linewise[startat - inc][3:]) # remove the hashtag-symbol from the comment line and just append comment to the list
                 inc += 1
@@ -67,10 +65,12 @@ def add_to_array(array, new):
             array = new
         else:
             array = np.concatenate([np.array(array), np.array(new)])
-        
+
         return array
     else:
         sys.exit("Array not initialized.")
+
+print("running this python file")
 
 files = sys.argv
 del files[0] # the first element is 'makemakedoc.py'
@@ -94,33 +94,33 @@ for f in files:
 
         ## GET VARIABLES
         if varmatch.match(line):
-		variable = line.rsplit('=')[0]
-		if check_and_get_comment(i, "#!"):
-			comment = check_and_get_comment(i, "#!")
-                
-                # rsplit works R2L so to get what follows the first '=',
-                # we have to reverse, split, then take the first element of that
-                # array, then reverse it so we have the result the right way 
-                # round.
-                	definition = line[::-1].rsplit('=', 1)[0][::-1]
-                	variables = add_to_array(variables, [[variable, definition, 
-                	comment, fbn, fbn_safe]])
+            variable = line.rsplit('=')[0]
+            if check_and_get_comment(i, "#!"):
+                comment = check_and_get_comment(i, "#!")
 
-	## GET TARGETS & INTERMEDIATES
-	if ":" in line and "\t" not in line and "#*" not in line and targetmatch.match(line) and "export" not in line and "@echo" not in line:
-		tmptarget = line.rsplit(':', 1)[0] # grab the name of the target/intermediary
-		if ("/" in tmptarget and "#?" not in tmptarget) or ("%" in tmptarget and "#?" not in tmptarget):
-			intermediary = tmptarget
-			if check_and_get_comment(i, "#>"):
-				comment = check_and_get_comment(i, "#>")
-				intermediaries = add_to_array(intermediaries, [[intermediary, comment, fbn, fbn_safe]])
-		if "/" not in tmptarget and "#>" not in tmptarget and "#?" not in tmptarget and "%" not in tmptarget:
-			target = tmptarget
-			if not leadingdot.match(line) and check_and_get_comment(i, "#?"):
-				comment = check_and_get_comment(i, "#?")
-				if "#>" not in comment: 
-					targets_arr = add_to_array(targets_arr, [[target, comment, fbn, fbn_safe]])
-			
+                # rsplit works r2l, so to get what follows the first '=', we
+                ## have to reverse, split, then take the first element of that
+                ## array, then reverse it so we have the result the right way
+                ## round.
+                definition = line[::-1].rsplit('=', 1)[0][::-1]
+                variables = add_to_array(variables, [[variable, definition,
+                    comment, fbn, fbn_safe]])
+
+        ## GET TARGETS & INTERMEDIATES
+        if ":" in line and "\t" not in line and "#*" not in line and targetmatch.match(line) and "export" not in line and "@echo" not in line:
+            tmptarget = line.rsplit(':', 1)[0] # grab the name of the target/intermediary
+            if ("/" in tmptarget and "#?" not in tmptarget) or ("%" in tmptarget and "#?" not in tmptarget):
+                intermediary = tmptarget
+                if check_and_get_comment(i, "#>"):
+                    comment = check_and_get_comment(i, "#>")
+                    intermediaries = add_to_array(intermediaries, [[intermediary, comment, fbn, fbn_safe]])
+            if "/" not in tmptarget and "#>" not in tmptarget and "#?" not in tmptarget and "%" not in tmptarget:
+                target = tmptarget
+                if not leadingdot.match(line) and check_and_get_comment(i, "#?"):
+                    comment = check_and_get_comment(i, "#?")
+                    if "#>" not in comment:
+                        targets_arr = add_to_array(targets_arr, [[target, comment, fbn, fbn_safe]])
+
 save_array(variables, "variables.txt")
 save_array(targets_arr, "targets.txt")
 save_array(intermediaries, "intermediates.txt")
