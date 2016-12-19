@@ -18,6 +18,19 @@
 
 5. For details, see documentation *sdmf.pdf*
 
+## Updates
+
+### December 19, 2012 v. 2.0
+-----------------------------
+
+*Change Log:*
+
++ `picnic` now more intelligently identifies targets/intermediaries by looking at the dependencies of `.PHONY`. This means you have to be more careful about identifying your targets as phony, but they should all be anyway.
++ Trailing whitespace is stripped from variables/targets/intermediaries. 
++ `makemakedoc.py`, `picnic` conformed to 80 chars wide. `tables.tex` already was.
++ Information about verboseness is passed to Python. It will display the file list and identify targets/intermediaries. More functionality can be added. 
+
+-Trevor 
 
 ### July 19, 2016 v 1.1
 --------------------------------------------

@@ -9,9 +9,11 @@ usage() {
     echo -e "\t-o\tProvide an output name for the .pdf."
     echo -e "\t-d\tProvide a filename with documentation for the project."
     echo -e "\t-e\tExclude files matching given regex (for use with \`-D')."
-    echo -e "\t-v\tVerbose: Don't silence pdfLaTeX output, also keep intermediate files."
+    echo -e "\t-v\tVerbose: Don't silence pdfLaTeX output, also keep" \
+                "intermediate files."
     echo -e "\t-h\tShow this screen.\n"
-    echo -e "* Note that paths to makefiles (first option) cannot be combined with \`-D' syntax."
+    echo -e "* Note that paths to makefiles (first option) cannot be combined" \
+                "with \`-D' syntax."
     }
 
 if [ $# -eq 0 ]; then usage; exit 1; fi
@@ -89,7 +91,8 @@ then
     files=$@
 else
     # if a directory was supplied, use it.
-    files=$(find $directory -regextype posix-extended -regex '.+\.mk|.*[Mm]akefile$')
+    files=$(find $directory \
+        -regextype posix-extended -regex '.+\.mk|.*[Mm]akefile$')
     for f in $files
     do
 	if [[ $f == $exclude ]]
@@ -133,12 +136,19 @@ do
 done
 
 # run python to get *.txt files
-python ${lib}/makemakedoc.py ${files}
+if [[ verbose -eq 0 ]]
+then
+    python ${lib}/makemakedoc.py ${files}
+else
+    python ${lib}/makemakedoc.py -v ${files}
+fi
+
 
 # if something went wrong with python, we catch it here
 if [ ! -s targets.txt ] || [ ! -s intermediates.txt ] || [ ! -s variables.txt ]
 then
-   echo "One or more output files is empty. This probably isn't what you want; check your inputs."
+   echo "One or more output files is empty. This probably isn't what you" \
+            "want; check your inputs."
    exit 1
 fi
 
@@ -151,21 +161,31 @@ sed -i -e 's/\&/and/g' targets.txt variables.txt intermediates.txt
 
 # prepare for LaTeX
 # change ; to & for tabular, allow linebreaks at /,: (for paths)
-sed -i -e 's/;/\&/g' -e 's/[/]/\\discretionary{&}{}{&}/g' targets.txt variables.txt
+sed -i -e 's/;/\&/g' -e 's/[/]/\\discretionary{&}{}{&}/g' targets.txt \
+    variables.txt
 
 # escape $, #, %, better <'>, allow breaking at :,/'
 # breaking at :,/ is important for path and assignments to PATH
-sed -i -e 's/[$#]/\\&/g' -e 's/%/{\\color{blue}\\%}/g' -e "s/'/\\\textquotesingle{}/g" $outputfiles
+sed -i -e 's/[$#]/\\&/g' -e 's/%/{\\color{blue}\\%}/g' \
+    -e "s/'/\\\textquotesingle{}/g" $outputfiles
 
 # collapse second and third cols of variables.txt into a single cell
-awk 'BEGIN {FS="&"} ; {print $1" & \\texttt{"$2"} \\newline "$3" & \\hyperref["$5"]{"$4"}  \\\\"}' variables.txt > variables_tmp.txt && mv variables_tmp.txt variables.txt
+awk 'BEGIN {FS="&"} ;
+    {print $1" & \\texttt{"$2"} \\newline "$3" & \
+        \\hyperref["$5"]{"$4"}  \\\\"}' \
+    variables.txt > variables_tmp.txt && mv variables_tmp.txt variables.txt
 
 # add hyperlinking and \\ to the end of the line for targets.txt
-awk 'BEGIN {FS="&"} ; {print $1" & "$2" & \\hyperref["$4"]{"$3"}"}' targets.txt > targets_tmp.txt && mv targets_tmp.txt targets.txt
+awk 'BEGIN {FS="&"} ; {print $1" & "$2" & \\hyperref["$4"]{"$3"}"}' \
+    targets.txt > targets_tmp.txt && mv targets_tmp.txt targets.txt
 sed -i -e 's/$/ \\\\/g' targets.txt
 
 # escape $, %, #, & in intermediates.txt
-awk 'BEGIN {FS=";"} ; {print "\\item [\\texttt{"$1"}] \\hfill \\hyperref["$4"]{\\texttt{"$3"}} \\newline "$2}' intermediates.txt > intermediates_tmp.txt && mv intermediates_tmp.txt intermediates.txt
+awk 'BEGIN {FS=";"} ;
+    {print "\\item [\\texttt{"$1"}] \\hfill \\hyperref["$4"]{\\texttt{"$3"}} \
+        ./\\newline "$2}' \
+    intermediates.txt > intermediates_tmp.txt && \
+    mv intermediates_tmp.txt intermediates.txt
 
 mv variables.txt $tmpdir/
 mv targets.txt $tmpdir/
@@ -198,7 +218,8 @@ echo "\begin{center}
         \section{This File}
         \label{intro}
 
-        This document was prepared on \Today{} at \currenttime{} by \texttt{$(whoami)}.
+        This document was prepared on \Today{} at \currenttime{} by
+        \texttt{$(whoami)}.
         \newline\noindent Project Directory: \texttt{$projdir}
 
         \subsection{Description}
@@ -238,8 +259,10 @@ if [ $verbose -eq 1 ] ; then
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex
 else
     # redirect STDOUT to /dev/null
-    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 1 > /dev/null
-    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex 1 > /dev/null
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex \
+        1 > /dev/null
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex \
+        1 > /dev/null
 fi
 cd $called
 

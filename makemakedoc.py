@@ -5,6 +5,15 @@ import re
 import numpy as np
 import csv
 import os
+import argparse as ap
+
+parser = ap.ArgumentParser(description="Parse makefile(s).")
+parser.add_argument("file", nargs="*")
+parser.add_argument("-v", "--verbose", action="store_true")
+
+args = parser.parse_args()
+
+print(args)
 
 variables = []
 targets = []
@@ -91,10 +100,10 @@ def add_to_array(array, new):
     else:
         sys.exit("Array not initialized.")
 
-files = sys.argv
-del files[0] # the first element is 'makemakedoc.py'
+if (args.verbose):
+    print(args.file)
 
-for f in files:
+for f in args.file:
     print("Python: Reading " + f)
 
     with open(f, 'r') as file_read:
@@ -110,22 +119,22 @@ for f in files:
     # find lines that DO NOT start with [#*, #?, #! or #>]
     linewise = [x for x in linewise if x not in clines]
 
-    phony = [i for i, val in enumerate(linewise) if phony.match(val)]
+    phony_i = [i for i, val in enumerate(linewise) if phony.match(val)]
 
-    if len(phony) == 0:
-        print("Python: No targets identified in file (.PHONY). Quitting.")
-        sys.exit()
-    elif len(phony) > 1:
+    if len(phony_i) == 0:
+        print("Python: No targets identified in file " + f + ". Skipping.")
+        break
+    elif len(phony_i) > 1:
         # this hasn't been tested
         print("Python: Picnic has identified multiple .PHONY declarations" + \
             "in your makefile. Please fix this. Printing offending lines" + \
-            "and exiting.")
-        for i in phony:
-            print(linewise[phony])
-        sys.exit()
+            "and skipping.")
+        for i in phony_i:
+            print(linewise[i])
+        break
     else:
         # get the actual line from the textfile, remove '.PHONY:'
-        phony_l = re.sub("^\.PHONY:", "", linewise[phony[0]])
+        phony_l = re.sub("^\.PHONY:", "", linewise[phony_i[0]])
         # turn the string into a list of targets
         targets = phony_l.split()
 
@@ -164,6 +173,8 @@ for f in files:
             # is the target/intermediary in question in the targets list?
             if any(tmptarget in s for s in targets):
                 target = tmptarget.strip()
+                if (args.verbose):
+                    print(target + " is a target.")
                 if (not leadingdot.match(line) and
                     check_and_get_comment(i, "#?")):
 
@@ -171,8 +182,11 @@ for f in files:
                     if "#>" not in comment:
                         targets_arr = add_to_array(targets_arr,
                             [[target, comment, fbn, fbn_safe]])
+            # if it's not, it must be an intermediary
             else:
                 intermediary = tmptarget.strip()
+                if (args.verbose):
+                    print(intermediary + " is an intermediate file.")
                 if check_and_get_comment(i, "#>"):
                     comment = check_and_get_comment(i, "#>")
                     intermediaries = add_to_array(intermediaries,
