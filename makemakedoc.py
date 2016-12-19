@@ -91,8 +91,6 @@ def add_to_array(array, new):
     else:
         sys.exit("Array not initialized.")
 
-print("running this python file")
-
 files = sys.argv
 del files[0] # the first element is 'makemakedoc.py'
 
@@ -140,7 +138,7 @@ for f in files:
 
         ## GET VARIABLES
         if varmatch.match(line):
-            variable = line.rsplit('=')[0]
+            variable = line.rsplit('=')[0].strip()
             if check_and_get_comment(i, "#!"):
                 comment = check_and_get_comment(i, "#!")
 
@@ -165,7 +163,7 @@ for f in files:
 
             # is the target/intermediary in question in the targets list?
             if any(tmptarget in s for s in targets):
-                target = tmptarget
+                target = tmptarget.strip()
                 if (not leadingdot.match(line) and
                     check_and_get_comment(i, "#?")):
 
@@ -174,7 +172,7 @@ for f in files:
                         targets_arr = add_to_array(targets_arr,
                             [[target, comment, fbn, fbn_safe]])
             else:
-                intermediary = tmptarget
+                intermediary = tmptarget.strip()
                 if check_and_get_comment(i, "#>"):
                     comment = check_and_get_comment(i, "#>")
                     intermediaries = add_to_array(intermediaries,
