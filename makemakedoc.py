@@ -11,16 +11,26 @@ targets = []
 targets_arr = []
 intermediaries = []
 
-varmatch = re.compile("^[A-Z a-z 0-9]+=") # pattern - looking for ^VARIABLE=
+# pattern - looking for ^VARIABLE=
+varmatch = re.compile("^[A-Z a-z 0-9]+=")
 
-targetmatch = re.compile("^.*:")          # pattern - looking for ^target: - this will be used to locate comments for targets AND intermediary files
+# pattern - looking for ^target:
+## this will be used to locate comments for targets AND intermediary files
+## skips lines with a leading literal dot (.PHONY/.SECONDARY)
+targetmatch = re.compile("^[^\.].*:")
 
-leadingdot = re.compile("^\.")            # pattern - looking for ^. (.PHONY, .SECONDARY)
+# pattern - looking for ^. (.PHONY, .SECONDARY)
+leadingdot = re.compile("^\.")
 
+# pattern - identify list of phony targets
+phony = re.compile("^\.PHONY:")
+
+# looking for comment lines that do not begin with [#*, #?, #! or #>],
+## i.e. ^# _followed by a space!_ or just ^#
 leadinghash = re.compile("^#([^?>\*!]|\s|$)")
-# looking for comment lines that do not begin with [#*, #?, #! or #>], i.e. ^# _followed by a space!_ or just ^#
 
-alpharegex = re.compile("[^a-zA-Z]")    # used to strip non-alphabetic characters
+# used to strip non-alphabetic characters
+alpharegex = re.compile("[^a-zA-Z]")
 
 def save_array(array, filen):
     """Save the array to the file, or save a placeholder if it is empty."""
@@ -41,18 +51,29 @@ def save_array(array, filen):
 def check_and_get_comment(startat, spliton):
     """Get all the comment lines, or return a filler message."""
 
-    if "#*SKIP" not in linewise[startat - 1]: # comments are 1 line above the target/variable/etc
+    # comments are 1 line above the target/variable/etc
+    if "#*SKIP" not in linewise[startat - 1]:
         if spliton in linewise[startat - 1]:
             comment_list = []
             inc = 1
 
             while spliton in linewise[startat - inc]:
-                comment_list.append(linewise[startat - inc][3:]) # remove the hashtag-symbol from the comment line and just append comment to the list
+                # remove the hashtag-symbol from the comment line and just
+                ## append comment to the list
+                comment_list.append(linewise[startat - inc][3:])
                 inc += 1
 
-            comment_list.reverse() # reverse because we are reading comments from the line right above target/variable, upwards
-            comment = ' '.join(comment_list) # this takes the list and joins all lines in the comment together
+            # reverse because we are reading comments from the line right above
+            ## target/variable, upwards
+            comment_list.reverse()
+
+            # this takes the list and joins all lines in the comment together
+            comment = ' '.join(comment_list)
+
+            # replace semicolons with commas because they cause problems in the
+            ## csv export
             comment = comment.replace(';', ',')
+
             return comment
         else:
             return "No comment supplied"
@@ -82,9 +103,34 @@ for f in files:
         contents = file_read.read()
 
     # remove blank lines and lines starting with '# ' only
-    linewise = filter(None, contents.splitlines()) # break contents of file into lines
-    clines = filter(leadinghash.match, linewise) # return lines which do not start with '#'
-    linewise = [x for x in linewise if x not in clines] # find lines that DO NOT start with [#*, #?, #! or #>]
+    # break contents of file into lines
+    linewise = filter(None, contents.splitlines())
+
+    # return lines which do not start with '#'
+    clines = filter(leadinghash.match, linewise)
+
+    # find lines that DO NOT start with [#*, #?, #! or #>]
+    linewise = [x for x in linewise if x not in clines]
+
+    phony = [i for i, val in enumerate(linewise) if phony.match(val)]
+
+    if len(phony) == 0:
+        print("Python: No targets identified in file (.PHONY). Quitting.")
+        sys.exit()
+    elif len(phony) > 1:
+        # this hasn't been tested
+        print("Python: Picnic has identified multiple .PHONY declarations" + \
+            "in your makefile. Please fix this. Printing offending lines" + \
+            "and exiting.")
+        for i in phony:
+            print(linewise[phony])
+        sys.exit()
+    else:
+        # get the actual line from the textfile, remove '.PHONY:'
+        phony_l = re.sub("^\.PHONY:", "", linewise[phony[0]])
+        # turn the string into a list of targets
+        targets = phony_l.split()
+
 
     fbn = os.path.basename(f)
     fbn_safe = alpharegex.sub('', fbn)
@@ -107,19 +153,32 @@ for f in files:
                     comment, fbn, fbn_safe]])
 
         ## GET TARGETS & INTERMEDIATES
-        if ":" in line and "\t" not in line and "#*" not in line and targetmatch.match(line) and "export" not in line and "@echo" not in line:
-            tmptarget = line.rsplit(':', 1)[0] # grab the name of the target/intermediary
-            if ("/" in tmptarget and "#?" not in tmptarget) or ("%" in tmptarget and "#?" not in tmptarget):
+        if (":" in line and
+            "\t" not in line and
+            "#*" not in line and
+            targetmatch.match(line) and
+            "export" not in line and
+            "@echo" not in line):
+
+            # grab the name of the target/intermediary
+            tmptarget = line.rsplit(':', 1)[0]
+
+            # is the target/intermediary in question in the targets list?
+            if any(tmptarget in s for s in targets):
+                target = tmptarget
+                if (not leadingdot.match(line) and
+                    check_and_get_comment(i, "#?")):
+
+                    comment = check_and_get_comment(i, "#?")
+                    if "#>" not in comment:
+                        targets_arr = add_to_array(targets_arr,
+                            [[target, comment, fbn, fbn_safe]])
+            else:
                 intermediary = tmptarget
                 if check_and_get_comment(i, "#>"):
                     comment = check_and_get_comment(i, "#>")
-                    intermediaries = add_to_array(intermediaries, [[intermediary, comment, fbn, fbn_safe]])
-            if "/" not in tmptarget and "#>" not in tmptarget and "#?" not in tmptarget and "%" not in tmptarget:
-                target = tmptarget
-                if not leadingdot.match(line) and check_and_get_comment(i, "#?"):
-                    comment = check_and_get_comment(i, "#?")
-                    if "#>" not in comment:
-                        targets_arr = add_to_array(targets_arr, [[target, comment, fbn, fbn_safe]])
+                    intermediaries = add_to_array(intermediaries,
+                        [[intermediary, comment, fbn, fbn_safe]])
 
 save_array(variables, "variables.txt")
 save_array(targets_arr, "targets.txt")
