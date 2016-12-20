@@ -151,10 +151,15 @@ for f in args.file:
             variable = line.rsplit('=')[0].strip()
 
             # Remove leading ``export '' if present
-            variable = re.sub("^export ", "", variable)
+            if re.match("^export ", variable):
+                # add leading `*' to global variables
+                variable = "* " + re.sub("^export ", "", variable)
+                is_global = " (available to sub-makes)"
+            else:
+                is_global = ""
             
             if check_and_get_comment(i, "#!"):
-                comment = check_and_get_comment(i, "#!")
+                comment = check_and_get_comment(i, "#!") + is_global
 
                 # rsplit works r2l, so to get what follows the first '=', we
                 ## have to reverse, split, then take the first element of that
