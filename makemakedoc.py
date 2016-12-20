@@ -147,7 +147,12 @@ for f in args.file:
 
         ## GET VARIABLES
         if varmatch.match(line):
+            # Get everything left of the `=' and strip trailing whitespace
             variable = line.rsplit('=')[0].strip()
+
+            # Remove leading ``export '' if present
+            variable = re.sub("^export ", "", variable)
+            
             if check_and_get_comment(i, "#!"):
                 comment = check_and_get_comment(i, "#!")
 
