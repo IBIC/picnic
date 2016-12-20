@@ -20,7 +20,15 @@
 
 ## Updates
 
-### December 19, 2012 v. 2.0
+### December 20, 2016 v 2.1
+----------------------------
+
+*Change Log:*
+
++ `picnic` filters "`export`" out of global variable declaration, and notes them in the pdf.
+Also added explanatory notes to the "Variables" section header.
+
+### December 19, 2016 v. 2.0
 -----------------------------
 
 *Change Log:*
