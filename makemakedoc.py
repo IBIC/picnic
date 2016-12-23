@@ -21,7 +21,7 @@ targets_arr = []
 intermediaries = []
 
 # pattern - looking for ^VARIABLE=
-varmatch = re.compile("^[A-Z a-z 0-9]+=")
+varmatch = re.compile("^.+=")
 
 # pattern - looking for ^target:
 ## this will be used to locate comments for targets AND intermediary files
@@ -157,7 +157,7 @@ for f in args.file:
                 is_global = " (available to sub-makes)"
             else:
                 is_global = ""
-            
+
             if check_and_get_comment(i, "#!"):
                 comment = check_and_get_comment(i, "#!") + is_global
 

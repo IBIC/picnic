@@ -183,7 +183,7 @@ sed -i -e 's/$/ \\\\/g' targets.txt
 # escape $, %, #, & in intermediates.txt
 awk 'BEGIN {FS=";"} ;
     {print "\\item [\\texttt{"$1"}] \\hfill \\hyperref["$4"]{\\texttt{"$3"}} \
-        ./\\newline "$2}' \
+        \\newline "$2}' \
     intermediates.txt > intermediates_tmp.txt && \
     mv intermediates_tmp.txt intermediates.txt
 
