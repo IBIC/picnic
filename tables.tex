@@ -24,6 +24,7 @@
 \usepackage{tabu}
 \usepackage[level]{datetime}
 \usepackage{listings}
+\usepackage{enumitem}	% better description environment
 %\shortdate
 %\newdateformat{mydate}{%
 %	\monthname[\THEMONTH] \THEDAY, \THEYEAR}
@@ -56,7 +57,7 @@
 	{}                     % Numberless format
 	{}                     % Filler
 	[\hspace{1em}]         % Separator
-	
+
 \makeatletter
 \renewcommand*{\@tocmaketitle}{\noindent \textbf{\large Contents}}
 \makeatother
@@ -65,60 +66,63 @@
 
 \newcommand{\Today}{\usdate\today}
 
+% \rewnewcommand{\arraystretch}{1.5}
+
 \begin{document}
 
 	\input{descriptions.tex}
-	
+
 	\begin{center}
-		\fbox{Note that the items are sorted uppercase, then lowercase: [A-Za-z]}
+		\fbox{Note that the items are sorted uppercase, then lowercase:
+				[A-Za-z]}
 	\end{center}
-	
+
 	\section{Targets}
 	\label{targets}
-	
-%	\LTXtable{\textwidth}{targets.tex}	
+
+%	\LTXtable{\textwidth}{targets.tex}
 	\rowcolors{2}{gray!25}{white}
-	\begin{longtabu} to \linewidth {>{\ttfamily}l X >{\ttfamily}l}
+	\begin{longtabu} to \linewidth {>{\ttfamily}p{5.4cm} X }
 		\rowcolor{gray!50}
-		\textbf{Target} & \textbf{Definition \& Description} & \textbf{File} \\
-		
-		\input{targets.txt}		
-		
+		\textbf{Target} & \textbf{Description} \\
+
+		\input{targets.txt}
+
 	\end{longtabu}
-	
+
 	\section{Variables}
 	\label{variables}
 
-        \textbf{Note}: Variables with an asterisk (``\texttt{*}'') are global variables
-        initialized with ``\texttt{export}.'' Read more about exporting variables in
-        the GNU Make manual: \href{https://www.gnu.org/software/make/manual/html_node/%
+    \textbf{Note}: Variables with an asterisk (``\texttt{*}'') are global
+    variables initialized with ``\texttt{export}.'' Read more about exporting variables in the GNU Make manual:
+    \href{https://www.gnu.org/software/make/manual/html_node/%
           Variables_002fRecursion.html}{5.7.2
           Communicating Variables to a Sub-\texttt{make}}
-			
+
 	\rowcolors{2}{gray!25}{white}
-	
-	\begin{longtabu} to \linewidth {>{\ttfamily}l X >{\ttfamily}l}
+
+	\begin{longtabu} to \linewidth {>{\ttfamily}p{5.4cm} X}
 		\rowcolor{gray!50}
-		\textbf{Variable} & \textbf{Definition \& Description} & \textbf{File} \\
-		
-		\input{variables.txt}		
-		
+		\textbf{Variable} & \textbf{Definition \& Description} \\
+
+		\input{variables.txt}
+
 		\bottomrule
 	\end{longtabu}
-	
+
 	\section{Intermediate Files}
 	\label{intermediates}
 
-	\begin{description}		
-		\input{intermediates.txt}				
+	\begin{description}
+		\input{intermediates.txt}
 	\end{description}
-	
+
 	\newpage
 	\newgeometry{scale=0.85, centering}
 	\section{Makefiles}
 	\label{makefiles}
-		
-	\lstset{language=make, 
+
+	\lstset{language=make,
 		backgroundcolor=\color{lemon},
 		showstringspaces=false,
 		gobble=8,
@@ -126,8 +130,7 @@
 		breaklines=true,
 		escapeinside={\%*}{*},
 		upquote=true}
-		
+
 	\input{makefiles.tex}
-	
+
 \end{document}
-	

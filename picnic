@@ -171,14 +171,14 @@ sed -i -e 's/[$#]/\\&/g' -e 's/%/{\\color{blue}\\%}/g' \
 
 # collapse second and third cols of variables.txt into a single cell
 awk 'BEGIN {FS="&"} ;
-    {print $1" & \\texttt{"$2"} \\newline "$3" & \
-        \\hyperref["$5"]{"$4"}  \\\\"}' \
+        {print $1" \\newline (\\hyperref["$5"]{"$4"}) & \\texttt{"$2"} \
+            \\newline "$3" \\\\"}' \
     variables.txt > variables_tmp.txt && mv variables_tmp.txt variables.txt
 
 # add hyperlinking and \\ to the end of the line for targets.txt
-awk 'BEGIN {FS="&"} ; {print $1" & "$2" & \\hyperref["$4"]{"$3"}"}' \
+awk 'BEGIN {FS="&"} ;
+        {print $1" \\newline (\\hyperref["$4"]{"$3"}) & "$2" \\\\"}' \
     targets.txt > targets_tmp.txt && mv targets_tmp.txt targets.txt
-sed -i -e 's/$/ \\\\/g' targets.txt
 
 # escape $, %, #, & in intermediates.txt
 awk 'BEGIN {FS=";"} ;
