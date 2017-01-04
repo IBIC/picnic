@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+# Read in the makefiles, parse them, write out information to intermediate
+# files, which are manipulated into LaTeX. Clean up when done.
+
 import sys
 import re
 import numpy as np
@@ -21,7 +24,8 @@ targets_arr = []
 intermediaries = []
 
 # pattern - looking for ^VARIABLE=
-varmatch = re.compile("^.+=")
+## skips lines with leading hash (comments)
+varmatch = re.compile("^[^#].+=")
 
 # pattern - looking for ^target:
 ## this will be used to locate comments for targets AND intermediary files
