@@ -206,11 +206,7 @@ then
 fi
 
 echo "\begin{center}
-	{\Huge \textbf{${title}}}
-
-	{\large Documenting makefiles: \texttt{${files}} }
-
-	\textit{\Today}
+	       {\Huge \textbf{${title}}}
         \end{center}
 
         \tableofcontents*
@@ -218,9 +214,18 @@ echo "\begin{center}
         \section{This File}
         \label{intro}
 
-        This document was prepared on \Today{} at \currenttime{} by
-        \texttt{$(whoami)}.
-        \newline\noindent Project Directory: \texttt{$projdir}
+        \begin{easylist}[itemize]
+
+            & This document was prepared on \Today{} at \currenttime{} by
+            \texttt{$(whoami)}.
+
+            & Prepared in: \texttt{$projdir}
+
+            & This file documents the following makefiles:
+            \begin{sloppypar}
+                \texttt{${files}}
+            \end{sloppypar}
+        \end{easylist}
 
         \subsection{Description}
         ${inputdesc}
