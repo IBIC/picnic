@@ -14,6 +14,7 @@ usage() {
     echo -e "\t-h\tShow this screen.\n"
     echo -e "* Note that paths to makefiles (first option) cannot be combined" \
                 "with \`-D' syntax."
+    echo -e "* Note all options must precede file list."
     }
 
 if [ $# -eq 0 ]; then usage; exit 1; fi
@@ -38,19 +39,19 @@ do
 	    outfile=$OPTARG
 	    if [[ $outfile != *.pdf ]]
 	    then
-		outfile=$(basename $outfile).pdf
+		  outfile=$(basename $outfile).pdf
 	    fi
 	    echo "Outfile is $outfile"
 	    ;;
 	D)
 	    if [ -d $OPTARG ]
 	    then
-		directory=$OPTARG
-		echo "Reading all *.mk files from $directory and its subdirectories."
+		  directory=$OPTARG
+		  echo "Reading all *.mk files from $directory and its subdirectories."
 	    else
-		echo "$OPTARG is not a directory."
-		usage
-		exit 1
+		  echo "$OPTARG is not a directory."
+		  usage
+		  exit 1
 	    fi
 	    ;;
 	e)
