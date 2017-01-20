@@ -210,8 +210,6 @@ for f in args.file:
                     intermediaries = add_to_array(intermediaries,
                         [[intermediary, comment, fbn, fbn_safe]])
 
-print(intermediaries)
-
 save_array(variables, "variables.txt")
 save_array(targets_arr, "targets.txt")
 save_array(intermediaries, "intermediates.txt")
