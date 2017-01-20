@@ -246,9 +246,9 @@ do
 
     if [ $(grep "#\*[^S][^K][^I][^P]" $i -c) -gt 0 ]
     then
-	description=$(grep "#\*" $i | sed  -e 's/\n/; /g' -e 's/#\*\s*//')
+	   description=$(grep "#\*" $i | sed  -e 's/\n/; /g' -e 's/#\*\s*//')
     else
-	description="No description supplied."
+	   description="No description supplied."
     fi
 
     echo "\item [\texttt{$i}] $description" >> $tmpdir/descriptions.tex

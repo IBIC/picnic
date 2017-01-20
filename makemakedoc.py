@@ -25,7 +25,7 @@ intermediaries = []
 
 # pattern - looking for ^VARIABLE=
 ## skips lines with leading hash (comments)
-varmatch = re.compile("^[^#].+=")
+varmatch = re.compile("^[^#\s]+=")
 
 # pattern - looking for ^target:
 ## this will be used to locate comments for targets AND intermediary files
@@ -44,6 +44,9 @@ leadinghash = re.compile("^#([^?>\*!]|\s|$)")
 
 # used to strip non-alphabetic characters
 alpharegex = re.compile("[^a-zA-Z]")
+
+# skip anything that looks like a comment, picnic or not
+commenthash = re.compile("^#")
 
 def save_array(array, filen):
     """Save the array to the file, or save a placeholder if it is empty."""
@@ -177,6 +180,7 @@ for f in args.file:
         if (":" in line and
             "\t" not in line and
             "#*" not in line and
+            not commenthash.match(line) and
             targetmatch.match(line) and
             "export" not in line and
             "@echo" not in line):
@@ -205,6 +209,8 @@ for f in args.file:
                     comment = check_and_get_comment(i, "#>")
                     intermediaries = add_to_array(intermediaries,
                         [[intermediary, comment, fbn, fbn_safe]])
+
+print(intermediaries)
 
 save_array(variables, "variables.txt")
 save_array(targets_arr, "targets.txt")
