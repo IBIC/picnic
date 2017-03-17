@@ -38,11 +38,15 @@ while getopts ":o:t:D:e:d:p:vh" opt
 do
     case $opt in
 	o)
-	    outfile=$OPTARG
+        # Strip spaces from file name
+	    outfile=$(echo $OPTARG | sed -e 's/[[:space:]]//g')
+
+        # Remove extension if any and add ".pdf"
 	    if [[ $outfile != *.pdf ]]
 	    then
 		  outfile=$(basename $outfile).pdf
 	    fi
+
 	    echo "Outfile is $outfile"
 	    ;;
 	D)
@@ -160,7 +164,7 @@ fi
 outputfiles="targets.txt variables.txt intermediates.txt"
 
 # sanitize & (remove from comments before proceeding)
-sed -i -e 's/\&/and/g' targets.txt variables.txt intermediates.txt
+sed -i -e 's/\&/and/g' $outputfiles
 
 # prepare for LaTeX
 # change ; to & for tabular, allow linebreaks at /,: (for paths)
@@ -246,9 +250,10 @@ do
           \lstinputlisting{"${PWD}/${i}"}
           \endgroup" >> $tmpdir/makefiles.tex
 
-    if [ $(grep "#\*[^S][^K][^I][^P]" $i -c) -gt 0 ]
+    if [ $(grep "#\*[^S][^K][^Itabl][^P]" $i -c) -gt 0 ]
     then
-	   description=$(grep "#\*" $i | sed  -e 's/\n/; /g' -e 's/#\*\s*//')
+	   description=$(grep "#\*" $i | sed  -e 's/\n/; /g' -e 's/#\*\s*//' \
+                        -e 's/[$#]/\\&/g')
     else
 	   description="No description supplied."
     fi
@@ -277,3 +282,7 @@ cd $called
 cp $tmpdir/picnic-tables.pdf $PWD/$outfile
 
 if [ $? -eq 0 ] ; then echo "Saved to $PWD/$outfile -- \"${title}\"" ; fi
+
+if [ $verbose -eq 1 ] ; then
+    echo "Temporary files saved in $tmpdir/."
+fi
