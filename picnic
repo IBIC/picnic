@@ -141,9 +141,9 @@ done
 # run python to get *.txt files
 if [[ verbose -eq 0 ]]
 then
-    python ${lib}/makemakedoc.py ${files}
+    python ${lib}/picnic-makedoc.py ${files}
 else
-    python ${lib}/makemakedoc.py -v ${files}
+    python ${lib}/picnic-makedoc.py -v ${files}
 fi
 
 
@@ -263,17 +263,17 @@ cp ${lib}/*.tex $tmpdir/
 cd $tmpdir
 if [ $verbose -eq 1 ] ; then
     # output all of pdflatex's gobbledygook
-    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex
-    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode picnic-tables.tex
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode picnic-tables.tex
 else
     # redirect STDOUT to /dev/null
-    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex \
-        1 > /dev/null
-    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode tables.tex \
-        1 > /dev/null
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode \
+        picnic-tables.tex 1 > /dev/null
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode \
+        picnic-tables.tex 1 > /dev/null
 fi
 cd $called
 
-cp $tmpdir/tables.pdf $PWD/$outfile
+cp $tmpdir/picnic-tables.pdf $PWD/$outfile
 
 if [ $? -eq 0 ] ; then echo "Saved to $PWD/$outfile -- \"${title}\"" ; fi
