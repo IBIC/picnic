@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cp --verbose /mnt/home/tkmday/picnic/picnic* /mnt/home/ibic/bin/
