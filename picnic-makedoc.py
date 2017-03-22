@@ -115,7 +115,9 @@ for f in args.file:
     print("Python: Reading " + f)
 
     with open(f, 'r') as file_read:
-        contents = file_read.read()
+        contents_breaks = file_read.read()
+        # Remove \-terminated lines and make them one line
+        contents = re.sub(r"\\\n", '', contents_breaks)
 
     # remove blank lines and lines starting with '# ' only
     # break contents of file into lines
