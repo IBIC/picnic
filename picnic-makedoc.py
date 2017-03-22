@@ -24,8 +24,9 @@ targets_arr = []
 intermediaries = []
 
 # pattern - looking for ^VARIABLE=
-## skips lines with leading hash (comments)
-varmatch = re.compile("^[^#\s]+=")
+## skips lines with leading hashes and spaces (comments)
+## stop at first equals sign
+varmatch = re.compile("^[^#=\s]+={1}")
 
 # pattern - looking for ^target:
 ## this will be used to locate comments for targets AND intermediary files
@@ -155,7 +156,8 @@ for f in args.file:
         ## GET VARIABLES
         if varmatch.match(line):
             # Get everything left of the `=' and strip trailing whitespace
-            variable = line.rsplit('=')[0].strip()
+            variable = line.split('=')[0].strip()
+            print(variable)
 
             # Remove leading ``export '' if present
             if re.match("^export ", variable):
@@ -176,6 +178,9 @@ for f in args.file:
                 variables = add_to_array(variables, [[variable, definition,
                     comment, fbn, fbn_safe]])
 
+            # If it's a variable, don't also check whether it's a target.
+            continue
+
         ## GET TARGETS & INTERMEDIATES
         if (":" in line and
             "\t" not in line and
@@ -187,6 +192,7 @@ for f in args.file:
 
             # grab the name of the target/intermediary
             tmptarget = line.rsplit(':', 1)[0]
+            tmptarget = line.split(':')[0]
 
             # is the target/intermediary in question in the targets list?
             if any(tmptarget in s for s in targets):
@@ -208,11 +214,11 @@ for f in args.file:
                     print(intermediary + " is an intermediate file.")
                 if check_and_get_comment(i, "#>"):
                     comment = check_and_get_comment(i, "#>")
+                    # This loop accounts for targets that specify multiple
+                    ## files.
                     for i in intermediary.split():
                         intermediaries = add_to_array(intermediaries,
                             [[i, comment, fbn, fbn_safe]])
-                    # intermediaries = add_to_array(intermediaries,
-                    #     [[intermediary, comment, fbn, fbn_safe]])
 
 save_array(variables, "variables.txt")
 save_array(targets_arr, "targets.txt")
