@@ -200,6 +200,7 @@ for f in args.file:
                     if "#>" not in comment:
                         targets_arr = add_to_array(targets_arr,
                             [[target, comment, fbn, fbn_safe]])
+
             # if it's not, it must be an intermediary
             else:
                 intermediary = tmptarget.strip()
@@ -207,8 +208,11 @@ for f in args.file:
                     print(intermediary + " is an intermediate file.")
                 if check_and_get_comment(i, "#>"):
                     comment = check_and_get_comment(i, "#>")
-                    intermediaries = add_to_array(intermediaries,
-                        [[intermediary, comment, fbn, fbn_safe]])
+                    for i in intermediary.split():
+                        intermediaries = add_to_array(intermediaries,
+                            [[i, comment, fbn, fbn_safe]])
+                    # intermediaries = add_to_array(intermediaries,
+                    #     [[intermediary, comment, fbn, fbn_safe]])
 
 save_array(variables, "variables.txt")
 save_array(targets_arr, "targets.txt")
