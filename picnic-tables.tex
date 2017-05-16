@@ -72,6 +72,27 @@ breaklinks=true]{hyperref}
 
 % \rewnewcommand{\arraystretch}{1.5}
 
+\newcommand{\ExternalLink}{%
+    \tikz[x=1.2ex, y=1.2ex, baseline=-0.05ex]{%
+        \begin{scope}[x=1ex, y=1ex]
+            \clip (-0.1,-0.1)
+                --++ (-0, 1.2)
+                --++ (0.6, 0)
+                --++ (0, -0.6)
+                --++ (0.6, 0)
+                --++ (0, -1);
+            \path[draw,
+                line width = 0.5,
+                rounded corners=0.5]
+                (0,0) rectangle (1,1);
+        \end{scope}
+        \path[draw, line width = 0.5] (0.5, 0.5)
+            -- (1, 1);
+        \path[draw, line width = 0.5] (0.6, 1)
+            -- (1, 1) -- (1, 0.6);
+        }
+    }
+
 \begin{document}
 
     \input{descriptions.tex}
@@ -101,10 +122,11 @@ breaklinks=true]{hyperref}
     \textbf{Note}: Variables with an asterisk (``\texttt{*}'') are global
         variables initialized with ``\texttt{export}.''
         Read more about exporting variables in the GNU Make manual:
+        5.7.2 Communicating Variables to a Sub-make
         \href{https://www.gnu.org/software/make/manual/html_node/%
-            Variables_002fRecursion.html}{5.7.2 Communicating Variables to a
-            Sub-make}
-        % 5.7.2 Communicating Variables to a Sub-make
+                Variables_002fRecursion.html}{\ExternalLink}.
+
+    % Symbol: https://tex.stackexchange.com/q/99316
 
     \rowcolors{2}{gray!25}{white}
 
@@ -112,7 +134,7 @@ breaklinks=true]{hyperref}
         \rowcolor{gray!50}
         \textbf{Variable} & \textbf{Definition \& Description} \\
 
-        % \input{variables.txt}
+        \input{variables.txt}
 
         \bottomrule
     \end{longtabu}
