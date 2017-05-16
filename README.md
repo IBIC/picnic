@@ -20,6 +20,12 @@
 
 ## Updates
 
+### May 15, 2017 v 2.2
+----------------------------
+
+*Change Log:*
+* Picnic would fail if the document so happened to be organized in such a way that the external hyperlink to the GNU Make manual was split across multiple elements. I added two workarounds to fix that: A `-n` flag that disables links across the whole document, as well as changing the link from the full text "5.7.2 Communicating Variabes to a Sub-make" to a small, Wikipedia-like external link icon.
+
 ### December 20, 2016 v 2.1
 ----------------------------
 
@@ -57,11 +63,11 @@ Fixed some bugs (all updated scripts, namely: *picnic*, *makemakedoc.py* and *ta
     
     Contains the scripts and files needed for documenting makefiles, and also a few test makefiles.
 
- * `sdmf-scripts/` 
+* `sdmf-scripts/` 
     
     Scripts needed for document-makefile
 
- * `sdmf-output/`
+* `sdmf-output/`
 
     Output of document-makefile
 
