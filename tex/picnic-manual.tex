@@ -51,7 +51,7 @@
 
 \newcommand{\bashcmd}[1]{ \hfill\, \begin{minipage}[t]{\linewidth}  \hrule \vspace{0.5\baselineskip} \texttt{\small \$ #1} \vspace{0.5\baselineskip} \hrule \end{minipage} \vspace{0.5\baselineskip} }
 
-\title{Self-Documenting Makefiles!}
+\title{Picnic: Self-Documenting Makefiles! \\ Version 2.2}
 \author{Trevor K. McAllister-Day}
 \affil{\url{tkmday@uw.edu}}
 
@@ -69,10 +69,16 @@
 	
 	\maketitle
 	
-%	\tableofcontents*
+	\tableofcontents
 	
 	\begin{abstract}
-		The purpose of this document is to describe the standards for creating self-documenting makefiles (\sdmf). As projects grow more complex and branch off into multiple makefiles, keeping track of variable-settings and targets becomes increasingly difficult. Using \sdmf{} allows you to compile the locations of the variable, targets, and files accessible to all your makefiles into a single place that is searchable; reducing possible collisions between variable and target names.
+		The purpose of this document is to describe the standards for creating 
+		self-documenting makefiles. As projects grow more complex and branch 
+		off into multiple makefiles, keeping track of variable-settings and 
+		targets becomes increasingly difficult. Using Picnic allows you to 
+		compile the locations of the variable, targets, and files accessible to 
+		all your makefiles into a single place that is searchable; reducing 
+		possible collisions between variable and target names.
 	\end{abstract}
 	
 	\section{Introduction}
@@ -82,33 +88,50 @@
 	This script is designed to collect the following information from any number of relevant makefiles you point it at:
 	
 	\begin{easylist}[itemize]
+		
 		& \textbf{Top-level descriptions:} ``Header information'' usually found at the top of a makefile, descriptions like
 			\begin{lstlisting}[basicstyle=\ttfamily, gobble=24, breaklines=true]
 				#* Top level makefile
 				#* make all will recursively make specified targets in each subject directory.
 			\end{lstlisting}
-		& \textbf{Variables:} Defined through \texttt{VAR=x} syntax in the makefile preamble. Often references to directory paths (\texttt{bin/}, \texttt{incoming/}, etc), sometimes capture the output of \texttt{\$(\ldots)} command expansion.
-		& \textbf{Targets:} What's actually called from the command line, things like \texttt{PrepSubject}. These are collected from the definition of \texttt{.PHONY}. 
+			
+		& \textbf{Variables:} Defined through \texttt{VAR=x} syntax in the 
+		makefile preamble. Often references to directory paths (\texttt{bin/}, 
+		\texttt{incoming/}, etc), sometimes capture the output of 
+		\texttt{\$(\ldots)} command expansion.
+		
+		& \textbf{Targets:} What's actually called from the command line, 
+		things like \texttt{PrepSubject}. These are collected from the 
+		definition of \texttt{.PHONY}. Critically, if they aren't there, they 
+		won't be considered targets.
 			\begin{center}
 				\fbox{\color{red} Targets not set in \texttt{.PHONY} will be considered files, not targets.}
 			\end{center}
-		& \textbf{Files:} Intermediate targets not called directly from the command line, something like \texttt{mprage/T1\_brain.nii.gz}.
+			
+		& \textbf{Files:} Intermediate targets not called directly from the 
+		command line, something like \texttt{mprage/T1\_brain.nii.gz}.
+		
 	\end{easylist}
 	
 	Additionally, Picnic recognizes directives such as \texttt{\#*NODOC} which skips the entire makefile and \texttt{\#*SKIP} which skips the relevant target.
 	
 	\subsection{Organization}
 	
-	I've improved the directory structure for picnic; currently it only requires three files:
+	Picnic is currently installed in \path{/mnt/home/ibic/bin}, and relies on 
+	the following three files:
 	
 	\begin{easylist}
+		
 		& \texttt{picnic}
-		& \texttt{makemakedoc.py}
-		& \texttt{tables.tex}
+		
+		& \texttt{picnic-makedoc.py}
+		
+		& \texttt{picnic-tables.tex}
+		
 	\end{easylist}
 	
-	These files can be moved to a directory like \texttt{\textasciitilde/local/picnic}, which you can add to your path, allowing you to call Picnic from everywhere.
-	
+	If you want to pull from GitHub and edit your own branch, you can find 
+	picnic at \url{https://github.com/IBIC/picnic}.
 	
 	\section{Calling the script}
 	\label{sec:calling}
@@ -128,7 +151,10 @@
 	Because it's possible you would like to not document all makefiles in the directory you have given (for example, a reference makefile), there are two ways to exclude some makefiles:
 	
 	\begin{easylist}
-		& The option \texttt{-e}, to which you can pass a regex. All files matching said regex \textit{will not} be documented. 
+		
+		& The option \texttt{-e}, to which you can pass a regex. All files 
+		matching said regex \textit{will not} be documented. 
+		
 		& It is also possible to include a directive in the makefile itself which will cause the documenter to skip it entirely: \texttt{\#*NODOC}. Picnic will check the entire document for \texttt{\#*NODOC}, and if it finds it anywhere, the makefile will be skipped.
 	\end{easylist}
 	
@@ -147,10 +173,17 @@
 	\begin{minipage}{\textwidth}
 		\textbf{Summary table:}	\\
 		\begin{tabularx}{\textwidth}{>{\ttfamily}l X}
+			
 			-D & Document all the makefiles in this directory. \\
+			
 			-e & Exclude all files matching this regex. (\texttt{-D} only) \\
+			
 			-o & Specify the output filename. \\
+			
+			-n & Disable links in output (in case of errors). \\
+			
 			-v & Run in verbose mode. \\
+			
 			-h & Display help and exit.  \\
 		\end{tabularx}
 	\end{minipage}
@@ -169,7 +202,10 @@
 	
 	\subsection{\texttt{\#}, \texttt{\#\#}, \texttt{\ldots}}
 	
-	(Any number of only octothorpes.) \\ Only octothorpes without any \sdmf{} control characters will be ignored, allowing use of  makefile-only comments, section headers and the like. \\ Example: \texttt{\#\#\# QA \#\#\#} will be completely ignored by the parser.
+	(Any number of only octothorpes.) \\ Only octothorpes without any Picnic 
+	control characters will be ignored, allowing use of  makefile-only 
+	comments, section headers and the like. \\ Example: \texttt{\#\#\# QA 
+	\#\#\#} will be completely ignored by the parser.
 	
 	\subsection{\texttt{\#*}}
 	
@@ -212,5 +248,34 @@
 		#> Register m0 to t1 using fnirt
 		pcasl/pcasl_fnirt.nii.gz: pcasl/Pcasl_skstrip.nii.gz mprage/T1_brain.nii.gz
 	\end{lstlisting}
+	
+	\section{Known Issues}
+	
+	\subsection{List of files}
+	
+	As mentioned above, the list of files to document must be the last thing on 
+	the command line, flags and options cannot come after files. This bug is 
+	under investigation.
+	
+	\subsection{Link failure}
+	
+	If you get the following error, \LaTeX{} has failed for some reason.
+	
+	\begin{lstlisting}[basicstyle=\ttfamily,gobble=16, breaklines=true]
+		cp: cannot stat '/tmp/picnic.9JwOj/picnic-tables.pdf': No such file or directory
+		Temporary files saved in /tmp/picnic.9JwOj/.
+	\end{lstlisting} 	
+	
+	At this point, try running with verbose output (\texttt{-v}). If you see the following error with the verbose flag set, you have an issue with links.
+	
+	\begin{lstlisting}[basicstyle=\ttfamily,gobble=16, breaklines=true]
+		! pdfTeX error (ext4): \pdfendlink ended up in different nesting level than \pdfstartlink.
+	\end{lstlisting} 
+	
+	Basically, due to the format of the specific document, a link has been pushed to a place it can't go. Because Picnic works procedurally, there's no way to adjust your input to avoid this.
+	
+	One workaround is to disable in-document links totally, with the \texttt{-n} flag. This is functional, if a little inconvenient. This a low priority bug.
+	
+	
 
 \end{document}
