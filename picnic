@@ -11,6 +11,7 @@ usage() {
     echo -e "\t-o\tProvide an output name for the .pdf."
     echo -e "\t-d\tProvide a filename with documentation for the project."
     echo -e "\t-e\tExclude files matching given regex (for use with \`-D')."
+    echo -e "\t-n\tDisable links in the PDF."
     echo -e "\t-v\tVerbose: Don't silence pdfLaTeX output, also keep" \
                 "intermediate files."
     echo -e "\t-h\tShow this screen.\n"
@@ -33,8 +34,9 @@ projdir=""
 
 lib=$(dirname $0)
 called=$PWD
+links=yes
 
-while getopts ":o:t:D:e:d:p:vh" opt
+while getopts ":o:t:D:e:d:p:nvh" opt
 do
     case $opt in
 	o)
@@ -75,6 +77,9 @@ do
 	p)
 	    projdir=$OPTARG
 	    ;;
+    n)
+        links=no
+        ;;
 	h)
 	    usage
 	    exit 0
@@ -213,7 +218,7 @@ then
 fi
 
 echo "\begin{center}
-	       {\Huge \textbf{${title}}}
+            {\Huge \textbf{${title}}}
         \end{center}
 
         \tableofcontents*
@@ -250,7 +255,7 @@ do
           \lstinputlisting{"${PWD}/${i}"}
           \endgroup" >> $tmpdir/makefiles.tex
 
-    if [ $(grep "#\*[^S][^K][^Itabl][^P]" $i -c) -gt 0 ]
+    if [ $(grep "#\*[^S][^K][^I][^P]" $i -c) -gt 0 ]
     then
 	   description=$(grep "#\*" $i | sed  -e 's/\n/; /g' -e 's/#\*\s*//' \
                         -e 's/[$#]/\\&/g')
@@ -265,17 +270,23 @@ echo "\end{description}" >> $tmpdir/descriptions.tex
 
 cp ${lib}/*.tex $tmpdir/
 
+if [ $links == "no" ] ; then
+    sed -i $tmpdir/picnic-tables.tex -e 's/^% draft,/draft,/'
+fi
+
 cd $tmpdir
 if [ $verbose -eq 1 ] ; then
     # output all of pdflatex's gobbledygook
-    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode picnic-tables.tex
-    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode picnic-tables.tex
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode \
+        picnic-tables.tex
+    pdflatex -shell-escape -synctex=1 -interaction=nonstopmode \
+        picnic-tables.tex
 else
     # redirect STDOUT to /dev/null
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode \
-        picnic-tables.tex 1 > /dev/null
+        picnic-tables.tex 1> /dev/null
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode \
-        picnic-tables.tex 1 > /dev/null
+        picnic-tables.tex 1> /dev/null
 fi
 cd $called
 

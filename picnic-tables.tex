@@ -1,23 +1,23 @@
 \documentclass[oneside,11pt]{memoir}
 
 % Fonts
-\usepackage[T1]{fontenc}	% better output encoding
-\usepackage{textcomp}		% For ASCII diacritics
-\usepackage{lmodern}		% Latin Modern instad of CM
-%\usepackage{inconsolata}	% better monospaced font
+\usepackage[T1]{fontenc}    % better output encoding
+\usepackage{textcomp}       % For ASCII diacritics
+\usepackage{lmodern}        % Latin Modern instad of CM
+%\usepackage{inconsolata}   % better monospaced font
 \usepackage[defaultsans]{droidsans} % straight quotes
-\usepackage{microtype}		% fix the little things % comes after any fonts
+\usepackage{microtype}      % fix the little things % comes after any fonts
 \usepackage{multicol}
 
 % basics
-\usepackage[textwidth=0.75\paperwidth]{geometry}	% Adjust margins
-\usepackage{url} 		% makes urls look nicer
+\usepackage[textwidth=0.75\paperwidth]{geometry}    % Adjust margins
+\usepackage{url}        % makes urls look nicer
 \usepackage[usenames,dvipsnames]{color} % adds colored text
-\usepackage[font=footnotesize]{caption}	% more control over figure captions
-\usepackage{underscore}	% better text underscores
-\usepackage{tabularx}	% more flexible tables
-\usepackage[table,dvipsnames]{xcolor}	% alternating table colors
-\usepackage{todonotes}	% backend organization. Also for some reason necessary for tikz
+\usepackage[font=footnotesize]{caption} % more control over figure captions
+\usepackage{underscore} % better text underscores
+\usepackage{tabularx}   % more flexible tables
+\usepackage[table,dvipsnames]{xcolor}   % alternating table colors
+\usepackage{todonotes}  % backend organization. Also for some reason necessary for tikz
 \usepackage{booktabs}
 \usepackage{ltxtable}
 \usepackage{array}
@@ -25,20 +25,22 @@
 \usepackage{tabu}
 \usepackage[level]{datetime}
 \usepackage{listings}
-\usepackage{enumitem}	% better description environment
+\usepackage{enumitem}   % better description environment
 %\shortdate
 %\newdateformat{mydate}{%
-%	\monthname[\THEMONTH] \THEDAY, \THEYEAR}
+%   \monthname[\THEMONTH] \THEDAY, \THEYEAR}
 
 % Lists
-\usepackage[ampersand]{easylist}	% Nicer syntax for creating lists
-\usepackage{paralist}	% Allows inline lists %
+\usepackage[ampersand]{easylist}    % Nicer syntax for creating lists
+\usepackage{paralist}   % Allows inline lists %
 % For citations using Bibtex
 \usepackage{natbib}
 
 % Hyperref
 % allows hyperlinking % NEEDS TO BE LOADED LAST
-\usepackage[linkcolor=magenta,colorlinks=true]{hyperref}
+\usepackage[linkcolor=magenta,colorlinks=true,
+% draft,
+breaklinks=true]{hyperref}
 \newcommand{\sdmf}{\textsc{sdmf}}
 
 \renewcommand{\thesection}{\arabic{section}}
@@ -53,12 +55,12 @@
 
 \usepackage{titletoc}
 \titlecontents*{section} % Section
-	[0em]                  % Left
-	{\space}               % Above code
-	{\thecontentslabel~}   % Numbered format
-	{}                     % Numberless format
-	{}                     % Filler
-	[\hspace{1em}]         % Separator
+    [0em]                  % Left
+    {\space}               % Above code
+    {\thecontentslabel~}   % Numbered format
+    {}                     % Numberless format
+    {}                     % Filler
+    [\hspace{1em}]         % Separator
 
 \makeatletter
 \renewcommand*{\@tocmaketitle}{\noindent \textbf{\large Contents}}
@@ -72,69 +74,70 @@
 
 \begin{document}
 
-	\input{descriptions.tex}
+    \input{descriptions.tex}
 
-	\begin{center}
-		\fbox{Note that the items are sorted uppercase, then lowercase:
-				[A-Za-z]}
-	\end{center}
+    \begin{center}
+        \fbox{Note that the items are sorted uppercase, then lowercase:
+                [A-Za-z]}
+    \end{center}
 
-	\section{Targets}
-	\label{targets}
+    \section{Targets}
+    \label{targets}
 
-%	\LTXtable{\textwidth}{targets.tex}
-	\tabulinesep=1.2mm
-	\rowcolors{2}{gray!25}{white}
-	\begin{longtabu} to \linewidth {>{\ttfamily}p{5.4cm} X }
-		\rowcolor{gray!50}
-		\textbf{Target} & \textbf{Description} \\
+%   \LTXtable{\textwidth}{targets.tex}
+    \tabulinesep=1.2mm
+    \rowcolors{2}{gray!25}{white}
+    \begin{longtabu} to \linewidth {>{\ttfamily}p{5.4cm} X }
+        \rowcolor{gray!50}
+        \textbf{Target} & \textbf{Description} \\
 
-		\input{targets.txt}
+        \input{targets.txt}
 
-	\end{longtabu}
+    \end{longtabu}
 
-	\section{Variables}
-	\label{variables}
+    \section{Variables}
+    \label{variables}
 
     \textbf{Note}: Variables with an asterisk (``\texttt{*}'') are global
-    	variables initialized with ``\texttt{export}.''
-    	Read more about exporting variables in the GNU Make manual:
-    \href{https://www.gnu.org/software/make/manual/html_node/%
-          Variables_002fRecursion.html}{5.7.2
-          Communicating Variables to a Sub-\texttt{make}}
+        variables initialized with ``\texttt{export}.''
+        Read more about exporting variables in the GNU Make manual:
+        \href{https://www.gnu.org/software/make/manual/html_node/%
+            Variables_002fRecursion.html}{5.7.2 Communicating Variables to a
+            Sub-make}
+        % 5.7.2 Communicating Variables to a Sub-make
 
-	\rowcolors{2}{gray!25}{white}
+    \rowcolors{2}{gray!25}{white}
 
-	\begin{longtabu} to \linewidth {>{\ttfamily}p{5.4cm} X}
-		\rowcolor{gray!50}
-		\textbf{Variable} & \textbf{Definition \& Description} \\
+    \begin{longtabu} to \linewidth {>{\ttfamily}p{5.4cm} X}
+        \rowcolor{gray!50}
+        \textbf{Variable} & \textbf{Definition \& Description} \\
 
-		\input{variables.txt}
+        % \input{variables.txt}
 
-		\bottomrule
-	\end{longtabu}
+        \bottomrule
+    \end{longtabu}
 
-	\section{Intermediate Files}
-	\label{intermediates}
+    \section{Intermediate Files}
+    \label{intermediates}
 
-	\begin{description}
-		\input{intermediates.txt}
-	\end{description}
+    \begin{description}
+        \input{intermediates.txt}
+    \end{description}
 
-	\newpage
-	\newgeometry{scale=0.85, centering}
-	\section{Makefiles}
-	\label{makefiles}
+    \newpage
+    \newgeometry{scale=0.85, centering}
+    \section{Makefiles}
+    \label{makefiles}
 
-	\lstset{language=make,
-		backgroundcolor=\color{lemon},
-		showstringspaces=false,
-		gobble=8,
-		basicstyle=\small\ttfamily,
-		breaklines=true,
-		escapeinside={\%*}{*},
-		upquote=true}
+    \lstset{language=make,
+      backgroundcolor=\color{lemon},
+      showstringspaces=false,
+      gobble=8,
+      basicstyle=\small\ttfamily,
+      breaklines=true,
+      escapeinside={\%*}{*},
+      upquote=true}
 
-	\input{makefiles.tex}
+    \input{makefiles.tex}
 
 \end{document}
