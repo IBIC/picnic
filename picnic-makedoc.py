@@ -16,7 +16,7 @@ parser.add_argument("-v", "--verbose", action="store_true")
 
 args = parser.parse_args()
 
-print(args)
+# print(args)
 
 variables = []
 targets = []

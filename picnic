@@ -97,6 +97,14 @@ echo $docfile
 # remove flags and their arguments, keep the rest as input
 shift $(( $OPTIND - 1 ))
 
+# If the outfile exists, inform user it is being deleted.
+if [ -f $outfile ]
+then
+    echo "Deleting old $outfile."
+    echo
+    rm $outfile
+fi
+
 if [ "$directory" = "" ]
 then
     # if no directory was supplied, take all arguments
@@ -117,9 +125,7 @@ fi
 
 if [ "$files" == "" ] ; then usage; exit 1; fi
 
-#mkdir -p sdmf-output/
 tmpdir=$(mktemp -d /tmp/picnic.XXXXX)
-#tmpdir=$(mkdir -p tmp/)
 
 echo "Working in $tmpdir"
 
@@ -248,17 +254,31 @@ echo "\begin{center}
 > $tmpdir/makefiles.tex
 for i in ${files}
 do
+    if [ -f ${PWD}/${i} ]
+    then
+        # If a relative path was given
+        location=${PWD}/${i}
+    elif [ -f ${i} ]
+    then
+        # If a full path was given
+        location=${i}
+    else
+        # If it can't be found anywhere
+        echo "Trouble finding file ${i}"
+        continue
+    fi
+
     echo "\subsection{\texttt{"$(basename ${i})"}}
           \begingroup
           \catcode\`\_=12
           \label{"$(echo $(basename $i) | sed 's/[^a-zA-Z]//g')"}
-          \lstinputlisting{"${PWD}/${i}"}
+          \lstinputlisting{"${location}"}
           \endgroup" >> $tmpdir/makefiles.tex
 
     if [ $(grep "#\*[^S][^K][^I][^P]" $i -c) -gt 0 ]
     then
 	   description=$(grep "#\*" $i | sed  -e 's/\n/; /g' -e 's/#\*\s*//' \
-                        -e 's/[$#]/\\&/g')
+                        -e 's/[\{}_^#&$%~]/\\&/g')
     else
 	   description="No description supplied."
     fi
