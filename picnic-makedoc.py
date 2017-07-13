@@ -159,7 +159,7 @@ for f in args.file:
         if varmatch.match(line):
             # Get everything left of the `=' and strip trailing whitespace
             variable = line.split('=')[0].strip()
-            print(variable)
+
 
             # Remove leading ``export '' if present
             if re.match("^export ", variable):
