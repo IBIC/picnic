@@ -18,6 +18,18 @@
 
 5. For details, see documentation *sdmf.pdf*
 
+### Quick Reference:
+
+
+| **Makefile Element**              | **Picnic Comment Code** |
+|-----------------------------------|-------------------------|
+| Target (in .PHONY)                | #!                      |
+| Variable                          | #?                      |
+| Intermediate file (not in .PHONY) | #>                      |
+| **Directives**                    |                         |
+| *Skip whole file*                 | #*NODOC                 |
+| *Skip this element*               | #*SKIP                  |
+
 ## Updates
 
 ### May 15, 2017 v 2.2
