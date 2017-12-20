@@ -148,7 +148,6 @@ for f in args.file:
         # turn the string into a list of targets
         targets = phony_l.split()
 
-
     fbn = os.path.basename(f)
     fbn_safe = alpharegex.sub('', fbn)
 
@@ -185,7 +184,7 @@ for f in args.file:
 
         ## GET TARGETS & INTERMEDIATES
         if (":" in line and
-            "\t" not in line and
+            "^\t" not in line and
             "#*" not in line and
             not commenthash.match(line) and
             targetmatch.match(line) and
