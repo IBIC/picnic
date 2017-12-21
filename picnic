@@ -172,26 +172,31 @@ fi
 
 ## Apply to everyone
 
-outputfiles="targets.txt variables.txt intermediates.txt"
+outputfiles="targets.txt variables.txt intermediates.txt functions.txt"
 
 # sanitize & (remove from comments before proceeding)
-sed -i -e 's/\&/and/g' $outputfiles
+sed -i -e 's/\&/and/g' ${outputfiles}
 
 # prepare for LaTeX
 # change ; to & for tabular, allow linebreaks at /,: (for paths)
 sed -i -e 's/;/\&/g' -e 's/[/]/\\discretionary{&}{}{&}/g' targets.txt \
-    variables.txt
+    variables.txt functions.txt
 
 # escape $, #, %, better <'>, allow breaking at :,/'
 # breaking at :,/ is important for path and assignments to PATH
 sed -i -e 's/[$#]/\\&/g' -e 's/%/{\\color{blue}\\%}/g' \
-    -e "s/'/\\\textquotesingle{}/g" $outputfiles
+    -e "s/'/\\\textquotesingle{}/g" ${outputfiles}
 
-# collapse second and third cols of variables.txt into a single cell
+# collapse second and third cols of variables.txt and functions.txt into a
+## single cell
 awk 'BEGIN {FS="&"} ;
         {print $1" \\newline (\\hyperref["$5"]{"$4"}) & \\texttt{"$2"} \
             \\newline "$3" \\\\"}' \
     variables.txt > variables_tmp.txt && mv variables_tmp.txt variables.txt
+
+awk 'BEGIN {FS="&"} ;
+	    {print $1" \\newline (\\hyperref["$4"]{"$3"}) & "$2" \\\\"}' \
+    functions.txt > functions_tmp.txt && mv functions_tmp.txt functions.txt
 
 # add hyperlinking and \\ to the end of the line for targets.txt
 awk 'BEGIN {FS="&"} ;
@@ -205,9 +210,10 @@ awk 'BEGIN {FS=";"} ;
     intermediates.txt > intermediates_tmp.txt && \
     mv intermediates_tmp.txt intermediates.txt
 
-mv variables.txt $tmpdir/
-mv targets.txt $tmpdir/
-mv intermediates.txt $tmpdir/
+mv variables.txt ${tmpdir}/
+mv targets.txt ${tmpdir}/
+mv intermediates.txt ${tmpdir}/
+mv functions.txt ${tmpdir}/
 
 echo "Running PdfLaTeX ..."
 

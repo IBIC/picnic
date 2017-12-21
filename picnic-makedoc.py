@@ -22,6 +22,7 @@ variables = []
 targets = []
 targets_arr = []
 intermediaries = []
+functions_arr = []
 
 # pattern - looking for ^VARIABLE=
 ## skips lines with leading hashes and spaces (comments)
@@ -36,12 +37,15 @@ targetmatch = re.compile("^[^\.].*:")
 # pattern - looking for ^. (.PHONY, .SECONDARY)
 leadingdot = re.compile("^\.")
 
+# function match - look for define
+functionmatch = re.compile("^define \S+ =")
+
 # pattern - identify list of phony targets
 phony = re.compile("^\.PHONY:")
 
 # looking for comment lines that do not begin with [#*, #?, #! or #>],
 ## i.e. ^# _followed by a space!_ or just ^#
-leadinghash = re.compile("^#([^?>\*!]|\s|$)")
+leadinghash = re.compile("^#([^?>\*!@]|\s|$)")
 
 # used to strip non-alphabetic characters
 alpharegex = re.compile("[^a-zA-Z]")
@@ -93,7 +97,7 @@ def check_and_get_comment(startat, spliton):
 
             return comment
         else:
-            return "No comment supplied"
+            return "No comment supplied."
     else:
         return None
 
@@ -221,6 +225,21 @@ for f in args.file:
                         intermediaries = add_to_array(intermediaries,
                             [[i, comment, fbn, fbn_safe]])
 
+        ## GET FUNCTIONS
+        if functionmatch.match(line):
+            functionname = line.split(' ')[1]
+
+            if (args.verbose):
+                print(functionname + " is a function.")
+
+            if check_and_get_comment(i, "#@"):
+            	comment = check_and_get_comment(i, "#@")
+
+            	functions_arr = add_to_array(functions_arr,
+            		[[functionname, comment, fbn, fbn_safe]])
+
+
 save_array(variables, "variables.txt")
 save_array(targets_arr, "targets.txt")
 save_array(intermediaries, "intermediates.txt")
+save_array(functions_arr, "functions.txt")
