@@ -43,7 +43,7 @@ functionmatch = re.compile("^define \S+ =")
 # pattern - identify list of phony targets
 phony = re.compile("^\.PHONY:")
 
-# looking for comment lines that do not begin with [#*, #?, #! or #>],
+# looking for comment lines that do not begin with [#*, #?, #!, #>, or $@],
 ## i.e. ^# _followed by a space!_ or just ^#
 leadinghash = re.compile("^#([^?>\*!@]|\s|$)")
 

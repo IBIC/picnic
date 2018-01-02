@@ -1,92 +1,55 @@
 # IBIC picnic
 
-## Self-documenting makefiles!
+**Self-documenting makefiles!**
 
-### How to use picnic
---------------------------------------------
-1. For picnic to work, you only need 3 scripts:
+## Getting started
+1. For picnic to work, you need 3 scripts:
     + *picnic*
-    + *makemakedoc.py*
-    + *tables.tex*
-2. You can either clone this Github repository into your home directory or simply copy the above 3 scripts into a new directory under your home directory
-3. Once you have a directory containing these scripts on your local machine, add this directory to your path. The best way to do this is via your .bashrc file. Remember to source .bashrc before you start calling picnic.
-4. To use picnic, type:
+    + *picnic-makedoc.py*
+    + *picnic-tables.tex*
+1. picnic is installed on IBIC machines by default in `/mnt/home/ibic/bin/picnic`, which should be a part of your path.
+1. If it isn't, you can either clone this GitHub repository into your home directory or simply copy the above 3 scripts into a new directory under your home directory and add that directory to your path.
 
-    ``` 
-    picnic -o 'name_of_output' name_of_makefile(s)
-    ```
+To quickly use use picnic on one or more Makefile, type:
 
-5. For details, see documentation *sdmf.pdf*
+    picnic makefile(s)
 
-### Quick Reference:
+## Advanced Options
 
+There are two ways to invoke picnic, with explicit list of makefiles (file globs are acceptable) and by giving it a path to a directoroy full of makefiles (this option is less tested).
+
+    picnic <options> path/to/makefile another/path/makefile ...
+    picnic <options> -D path/to/makefiles
+
+Furthermore, picnic accepts a number of command line arguments, listed below and discussed further after the list.
+
+    -o  Provide an output name for the .pdf.
+    -d  Provide a filename with documentation for the project.
+    -e  Exclude files matching given regex (for use with `-D').
+    -n  Disable links in the PDF.
+    -v  Verbose: Don't silence pdfLaTeX output, also keep intermediate files.
+    -h  Show this screen.
+
+**Set a filename** Give picnic a one-word filename. If none is given, picnic will name the output after your file if there is only one, or will name it "makedocumentation.pdf" if there is more than one input file. ".pdf" is automatically added to the output, but picnic will accept inputs with ".pdf" without naming the output ".pdf.pdf."
+
+**Documentation** Documentation files contain a text paragraph with information on the makefile, useful for putting together at the end of the project.
+
+**Exclude regex** When using the -D option, exclude files that match a given regex. 
+
+**Disable links** On occasion, LaTeX document links will be problematic. If you don't want to mess around with LaTeX, add this option to get a barebones, but funtional PDF.
+
+**Verbose** When verbose mode is on, messages from subscripts aren't silenced, and you can see what they're doing. As well, intermediate files aren't deleted. Useful for debugging.
+
+**Help** Shows the help menu.
+
+## Quick Commenting Reference
 
 | **Makefile Element**              | **Picnic Comment Code** |
 |-----------------------------------|-------------------------|
-| Target (in .PHONY)                | #!                      |
-| Variable                          | #?                      |
-| Intermediate file (not in .PHONY) | #>                      |
+| Target (in .PHONY)                | `#!`                    |
+| Variable                          | `#?`                    |
+| Intermediate file (not in .PHONY) | `#>`                    |
+| Functions                         | `$@`                    |
 | **Directives**                    |                         |
-| *Skip whole file*                 | #*NODOC                 |
-| *Skip this element*               | #*SKIP                  |
-
-## Updates
-
-### May 15, 2017 v 2.2
-----------------------------
-
-*Change Log:*
-* Picnic would fail if the document so happened to be organized in such a way that the external hyperlink to the GNU Make manual was split across multiple elements. I added two workarounds to fix that: A `-n` flag that disables links across the whole document, as well as changing the link from the full text "5.7.2 Communicating Variabes to a Sub-make" to a small, Wikipedia-like external link icon.
-
-### December 20, 2016 v 2.1
-----------------------------
-
-*Change Log:*
-
-+ `picnic` filters "`export`" out of global variable declaration, and notes them in the pdf.
-Also added explanatory notes to the "Variables" section header.
-
-### December 19, 2016 v. 2.0
------------------------------
-
-*Change Log:*
-
-+ `picnic` now more intelligently identifies targets/intermediaries by looking at the dependencies of `.PHONY`. This means you have to be more careful about identifying your targets as phony, but they should all be anyway.
-+ Trailing whitespace is stripped from variables/targets/intermediaries. 
-+ `makemakedoc.py`, `picnic` conformed to 80 chars wide. `tables.tex` already was.
-+ Information about verboseness is passed to Python. It will display the file list and identify targets/intermediaries. More functionality can be added. 
-
--Trevor 
-
-### July 19, 2016 v 1.1
---------------------------------------------
-Moved files from version 1.0 to directory /old. 
-
-Fixed some bugs (all updated scripts, namely: *picnic*, *makemakedoc.py* and *tables.tex*, are now in the main directory of the Github  repository)
-+ picnic can now parse semicolons in comments
-+ default name of output file changed to 'makedocumentation.pdf' instead of 'tables.pdf'
-+ picnic should now be able to properly discriminate between higher-level targets (such as those listed in .PHONY) and intermediary targets.
-
-### June 7, 2016 v 1.0
---------------------------------------------
-**Formerly known as SDMF**
-
-* `make-document/` 
-    
-    Contains the scripts and files needed for documenting makefiles, and also a few test makefiles.
-
-* `sdmf-scripts/` 
-    
-    Scripts needed for document-makefile
-
-* `sdmf-output/`
-
-    Output of document-makefile
-
-* `testing/` 
-    
-    Testing python outside of `production' environment	 
- 
-* `tex/` 
- 
- Manual for documenting makefiles. 
+| *Skip whole file*                 | `#*NODOC`               |
+| *Skip this element*               | `#*SKIP`                |
