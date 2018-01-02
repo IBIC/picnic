@@ -46,10 +46,10 @@ Furthermore, picnic accepts a number of command line arguments, listed below and
 
 | **Makefile Element**              | **Picnic Comment Code** |
 |-----------------------------------|-------------------------|
-| Target (in .PHONY)                | `#!`                    |
-| Variable                          | `#?`                    |
+| Target (in .PHONY)                | `#?`                    |
+| Variable                          | `#!`                    |
 | Intermediate file (not in .PHONY) | `#>`                    |
-| Functions                         | `$@`                    |
+| Functions                         | `#@`                    |
 | **Directives**                    |                         |
 | *Skip whole file*                 | `#*NODOC`               |
 | *Skip this element*               | `#*SKIP`                |
