@@ -42,7 +42,27 @@ Furthermore, picnic accepts a number of command line arguments, listed below and
 
 **Help** Shows the help menu.
 
-## Quick Commenting Reference
+## Documenting a makefile
+
+The real utility of picnic comes from having makefiles that are documented in the proper format. The basic format of a picnic comment is as follows:
+
+    #<symbol> A comment about this thing
+    [A make line]
+
+In other words, a comment on a variable would look something like this:
+
+    #! Use only one CPU to prevent parallelization issues
+    OMP_NUM_THREADS=1
+
+Picnic comments need to be directly above the line they refer to. Picnic ignores completely empty lines but for readabilty I suggest that they are directly above (as in the examples above.)
+
+Multiple-line comments are possible; however linebreaks are lost.
+
+Note that picnic does do some minor editing of comments to ensure that they aren't gobbled later on, for example semicolons are replaced with commas in all comments. 
+
+Below is a table of the four commenting choices, which can be used to document **targets** (that is, anything that is a "dependency" to .PHONY and would be called on the command line); **variables**; intermediate files (real files that may or may not be deleted make finishes executing); and **functions** which are defined by `define func = ... enddef`.
+
+### Quick Commenting Reference
 
 | **Makefile Element**              | **Picnic Comment Code** |
 |-----------------------------------|-------------------------|
@@ -53,3 +73,25 @@ Furthermore, picnic accepts a number of command line arguments, listed below and
 | **Directives**                    |                         |
 | *Skip whole file*                 | `#*NODOC`               |
 | *Skip this element*               | `#*SKIP`                |
+
+As noted in the above table, there are two "directives," which direct picnic to either ignore the file entirely (if it's passed in as part of a file glob, for example), or to skip the immediately following element. 
+
+### Other notes
+
+One major undeveloped feature is dealing with elements that appear twice in a makefile due to logic blocks.
+
+For example:
+
+    ifeq ($(wildcard mcvsa/mcvsa_e001.nii.gz),)
+    mcvsa-AFNI:
+
+    else
+    mcvsa-AFNI: mcvsa.results/stats.mcvsa+orig.BRIK mcvsa-stats
+
+    endif
+
+The goal of this code is to change what `make mcvsa-AFNI` does depending on whether the file `mcvsa/mcvsa_e001.nii.gz`. Whether or not this works well, it has the side effect of picnic picking up both of the `mcvsa-AFNI` targets, duplicating them in the output PDF.
+
+I haven't decided on a solution to this yet; one option is to ignore the second target, or there could be functionality for documenting `ifeq` blocks to identify what their purpose is.
+
+As it stands, you can use `#*SKIP` to ignore the second target (or variable) if having both bothers you. 
