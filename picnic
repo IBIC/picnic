@@ -24,7 +24,6 @@ if [ $# -eq 0 ]; then usage; exit 1; fi
 
 files=""
 
-outfile="makedocumentation.pdf"
 title="Makefile Documentation"
 directory=""
 exclude="not a regex"
@@ -41,15 +40,7 @@ do
     case $opt in
 	o)
         # Strip spaces from file name
-	    outfile=$(echo $OPTARG | sed -e 's/[[:space:]]//g')
-
-        # Remove extension if any and add ".pdf"
-	    if [[ $outfile != *.pdf ]]
-	    then
-		  outfile=$(basename $outfile).pdf
-	    fi
-
-	    echo "Outfile is $outfile"
+	    chosenname=$(echo ${OPTARG} | sed -e 's/[[:space:]]//g')
 	    ;;
 	D)
 	    if [ -d $OPTARG ]
@@ -97,12 +88,28 @@ echo $docfile
 # remove flags and their arguments, keep the rest as input
 shift $(( $OPTIND - 1 ))
 
+# Set the output file name
+if [ ${#} -gt 1 ] ; then
+    if ! [ ${chosenname} == "" ] ; then
+        # Set the output to the entered name minus any extensions
+        outfile=${chosenname%.*}.pdf
+    else
+        # Name it makedocumentation if there's more than one input file.
+        outfile="makedocumentation.pdf"
+    fi
+else
+    # Name it according to the file if there's only one file.
+    # Remove any extension (.mk) and add pdf
+    outfile="${1%.*}.pdf"
+fi
+echo "Outfile is ${outfile}"
+
 # If the outfile exists, inform user it is being deleted.
-if [ -f $outfile ]
+if [ -f ${outfile} ]
 then
-    echo "Deleting old $outfile."
+    echo "Deleting old ${outfile}."
     echo
-    rm $outfile
+    rm ${outfile}
 fi
 
 if [ "$directory" = "" ]
@@ -316,9 +323,9 @@ else
 fi
 cd $called
 
-cp $tmpdir/picnic-tables.pdf $PWD/$outfile
+cp $tmpdir/picnic-tables.pdf $PWD/${outfile}
 
-if [ $? -eq 0 ] ; then echo "Saved to $PWD/$outfile -- \"${title}\"" ; fi
+if [ $? -eq 0 ] ; then echo "Saved to $PWD/${outfile} -- \"${title}\"" ; fi
 
 if [ $verbose -eq 1 ] ; then
     echo "Temporary files saved in $tmpdir/."
