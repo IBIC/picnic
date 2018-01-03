@@ -7,7 +7,8 @@ IBIC picnic changelog
 + Fixed crash when supplying absolute path to makefiles (7/13/17)
 + Fixed bug in reading lines with tabs as indent (12/20/17)
 + Add function documentation (12/20/17)
-+ Output automatically named after input if there is only one input file (1/2/18).
++ Output automatically named after input if there is only one input file (1/2/18). Bug fixed 1/3/18.
++ Cleaned up old files (1/3/18)
 
 
 ## May 15, 2017 v 2.2

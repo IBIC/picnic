@@ -62,6 +62,20 @@ Note that picnic does do some minor editing of comments to ensure that they aren
 
 Below is a table of the four commenting choices, which can be used to document **targets** (that is, anything that is a "dependency" to .PHONY and would be called on the command line); **variables**; intermediate files (real files that may or may not be deleted make finishes executing); and **functions** which are defined by `define func = ... enddef`.
 
+Finally, you can also add a paragraph-length introduction to the makefile, usually at the beginning of the file, like so:
+
+    #* This Makefile takes the Fisher Z-transformed single-subject correlation maps
+    #* for PD and control subjects and runs AFNI 3dttest++ on them to get group
+    #* differences and the mean and z-stats for the two groups.
+    #* It uses 3dAFNItoNIFTI to separate the difference and within-group images from
+    #* their HEAD/BRIK files.
+
+    #! Project root directory
+    PROJECT_DIR=/mnt/praxic/pdnetworksr01
+
+    ...
+
+
 ### Quick Commenting Reference
 
 | **Makefile Element**              | **Picnic Comment Code** |
@@ -70,6 +84,7 @@ Below is a table of the four commenting choices, which can be used to document *
 | Variable                          | `#!`                    |
 | Intermediate file (not in .PHONY) | `#>`                    |
 | Functions                         | `#@`                    |
+| Header                            | `#*`                    |
 | **Directives**                    |                         |
 | *Skip whole file*                 | `#*NODOC`               |
 | *Skip this element*               | `#*SKIP`                |
