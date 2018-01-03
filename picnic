@@ -89,18 +89,20 @@ echo $docfile
 shift $(( $OPTIND - 1 ))
 
 # Set the output file name
-if [ ${#} -gt 1 ] ; then
-    if ! [ ${chosenname} == "" ] ; then
-        # Set the output to the entered name minus any extensions
-        outfile=${chosenname%.*}.pdf
+
+if [ ! ${chosenname} == "" ] ; then
+    # If the user supplied a name, use it.
+    # Remove any extension and replace it with pdf
+    outfile="${chosenname%.*}.pdf"
+else
+    # If the user didn't supply a name;
+    if [ ${#} -eq 1 ] ; then
+        # and there is only one file, use that file's name
+        outfile="${1%.*}.pdf"
     else
-        # Name it makedocumentation if there's more than one input file.
+        # otherwise, if theres >1 file, use a default name
         outfile="makedocumentation.pdf"
     fi
-else
-    # Name it according to the file if there's only one file.
-    # Remove any extension (.mk) and add pdf
-    outfile="${1%.*}.pdf"
 fi
 echo "Outfile is ${outfile}"
 
