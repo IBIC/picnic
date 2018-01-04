@@ -83,7 +83,9 @@ do
     esac
 done
 
-echo $docfile
+if [[ ! ${docfile} == "" ]] ; then
+    echo $docfile
+fi
 
 # remove flags and their arguments, keep the rest as input
 shift $(( $OPTIND - 1 ))
@@ -110,7 +112,6 @@ echo "Outfile is ${outfile}"
 if [ -f ${outfile} ]
 then
     echo "Deleting old ${outfile}."
-    echo
     rm ${outfile}
 fi
 
