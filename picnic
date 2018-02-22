@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Jan. 27, 2017
 
@@ -139,22 +139,6 @@ tmpdir=$(mktemp -d /tmp/picnic.XXXXX)
 
 echo "Working in $tmpdir"
 
-# Make sure that no options were given after the filenames
-exitflag=0
-for f in $files
-do
-    if [[ ${f:0:1} == "-" ]]
-    then
-	exitflag=1
-    fi
-done
-if [ $exitflag -eq 1 ]
-then
-    usage
-    exit 1
-fi
-
-    
 # Check for exceptions and skip files if necessary
 for f in $files
 do
