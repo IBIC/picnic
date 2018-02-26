@@ -10,11 +10,15 @@ import csv
 import os
 import argparse as ap
 
-parser = ap.ArgumentParser(description="Parse makefile(s).")
-parser.add_argument("file", nargs="*")
-parser.add_argument("-v", "--verbose", action="store_true")
+parser = ap.ArgumentParser(description = "Parse makefile(s).")
+
+parser.add_argument("file", nargs = "*")
+parser.add_argument("-v", "--verbose", action = "store_true")
+parser.add_argument("-i", "--add-includes", action = "store_true")
 
 args = parser.parse_args()
+
+files = args.file
 
 # print(args)
 
@@ -23,11 +27,13 @@ targets = []
 targets_arr = []
 intermediaries = []
 functions_arr = []
+inclusions = []
+inclusions_that_exist = []
 
-# pattern - looking for ^VARIABLE=
+# pattern - looking for ^VARIABLE =
 ## skips lines with leading hashes and spaces (comments)
 ## stop at first equals sign
-varmatch = re.compile("^[^#=\s]+={1}")
+varmatch = re.compile("^[^# = \s]+={1}")
 
 # pattern - looking for ^target:
 ## this will be used to locate comments for targets AND intermediary files
@@ -38,7 +44,7 @@ targetmatch = re.compile("^[^\.].*:")
 leadingdot = re.compile("^\.")
 
 # function match - look for define
-functionmatch = re.compile("^define \S+ =")
+functionmatch = re.compile("^define \S+ = ")
 
 # pattern - identify list of phony targets
 phony = re.compile("^\.PHONY:")
@@ -62,11 +68,11 @@ def save_array(array, filen):
             array = array[np.argsort(array[:, 0])]
 
         with open(filen, "wb") as F:
-            writer = csv.writer(F, delimiter=";", lineterminator='\n')
+            writer = csv.writer(F, delimiter = ";", lineterminator = '\n')
             writer.writerows(array)
     else:
         with open(filen, "wb") as F:
-            writer = csv.writer(F, delimiter=";", lineterminator='\n')
+            writer = csv.writer(F, delimiter = ";", lineterminator = '\n')
             writer.writerow("-;None found;-;-".split(';'))
 
 def check_and_get_comment(startat, spliton):
@@ -112,10 +118,13 @@ def add_to_array(array, new):
     else:
         sys.exit("Array not initialized.")
 
+
+## PROGRAM LOOP ##
+
 if (args.verbose):
     print(args.file)
 
-for f in args.file:
+for f in files:
     print("Python: Reading " + f)
 
     with open(f, 'r') as file_read:
@@ -160,8 +169,8 @@ for f in args.file:
 
         ## GET VARIABLES
         if varmatch.match(line):
-            # Get everything left of the `=' and strip trailing whitespace
-            variable = line.split('=')[0].strip()
+            # Get everything left of the ` = ' and strip trailing whitespace
+            variable = line.split(' = ')[0].strip()
 
 
             # Remove leading ``export '' if present
@@ -175,11 +184,11 @@ for f in args.file:
             if check_and_get_comment(i, "#!"):
                 comment = check_and_get_comment(i, "#!") + is_global
 
-                # rsplit works r2l, so to get what follows the first '=', we
+                # rsplit works r2l, so to get what follows the first ' = ', we
                 ## have to reverse, split, then take the first element of that
                 ## array, then reverse it so we have the result the right way
                 ## round.
-                definition = line[::-1].rsplit('=', 1)[0][::-1]
+                definition = line[::-1].rsplit(' = ', 1)[0][::-1]
                 variables = add_to_array(variables, [[variable, definition,
                     comment, fbn, fbn_safe]])
 
@@ -237,7 +246,6 @@ for f in args.file:
 
             	functions_arr = add_to_array(functions_arr,
             		[[functionname, comment, fbn, fbn_safe]])
-
 
 save_array(variables, "variables.txt")
 save_array(targets_arr, "targets.txt")

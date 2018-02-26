@@ -5,7 +5,7 @@
 ## Getting started
 1. For picnic to work, you need 3 scripts:
     + *picnic*
-    + *picnic-makedoc.py*
+    + *picnic_makedoc.py*
     + *picnic-tables.tex*
 1. picnic is installed on IBIC machines by default in `/mnt/home/ibic/bin/picnic`, which should be a part of your path.
 1. If it isn't, you can either clone this GitHub repository into your home directory or simply copy the above 3 scripts into a new directory under your home directory and add that directory to your path.

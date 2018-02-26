@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Jan. 27, 2017
 
@@ -35,7 +35,7 @@ lib=$(dirname $0)
 called=$PWD
 links=yes
 
-while getopts ":o:t:D:e:d:p:nvh" opt
+while getopts ":o:t:D:e:d:p:nivh" opt
 do
     case $opt in
 	o)
@@ -43,8 +43,7 @@ do
 	    chosenname=$(echo ${OPTARG} | sed -e 's/[[:space:]]//g')
 	    ;;
 	D)
-	    if [ -d $OPTARG ]
-	    then
+	    if [ -d $OPTARG ] ; then
 		  directory=$OPTARG
 		  echo "Reading all *.mk files from $directory and its subdirectories."
 	    else
@@ -70,6 +69,9 @@ do
 	    ;;
     n)
         links=no
+        ;;
+    i)
+        inclusions=yes
         ;;
 	h)
 	    usage
@@ -133,7 +135,13 @@ else
     done
 fi
 
-if [ "$files" == "" ] ; then usage; exit 1; fi
+if [ "$files" == "" ] ; then usage ; exit 1 ; fi
+
+# Check for inclusions
+if [ "${inclusions}" == "yes" ] ; then
+    python check_inclusions.py ${files}
+fi
+exit
 
 tmpdir=$(mktemp -d /tmp/picnic.XXXXX)
 
@@ -148,13 +156,11 @@ do
 	exitflag=1
     fi
 done
-if [ $exitflag -eq 1 ]
-then
+if [ $exitflag -eq 1 ] ; then
     usage
     exit 1
 fi
 
-    
 # Check for exceptions and skip files if necessary
 for f in $files
 do
@@ -167,8 +173,7 @@ do
 done
 
 # make sure we haven't accidentally removed all files
-if [ $(echo $files | wc -w) -eq 0 ]
-then
+if [ $(echo $files | wc -w) -eq 0 ] ; then
     echo "No valid files."
     exit 1
 fi
@@ -180,11 +185,10 @@ do
 done
 
 # run python to get *.txt files
-if [[ verbose -eq 0 ]]
-then
-    python ${lib}/picnic-makedoc.py ${files}
+if [[ verbose -eq 0 ]] ; then
+    python ${lib}/picnic_makedoc.py ${files}
 else
-    python ${lib}/picnic-makedoc.py -v ${files}
+    python ${lib}/picnic_makedoc.py -v ${files}
 fi
 
 
