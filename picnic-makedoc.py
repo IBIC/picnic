@@ -174,7 +174,7 @@ for f in args.file:
             else:
                 is_global = ""
                 if (args.verbose):
-                print(variable + " is a variable.")
+                    print(variable + " is a variable.")
 
             if check_and_get_comment(i, "#!"):
                 comment = check_and_get_comment(i, "#!") + is_global
