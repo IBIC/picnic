@@ -1,18 +1,21 @@
-#!/bin/bash 
+#!/bin/bash
 
-# Jan. 27, 2017
+# July. 26, 2017
 
 usage() {
     echo -e "$0\n"
     echo -e "Usage:"
     echo -e "\t$0 <options> path/to/makefile another/path/makefile ..."
     echo -e "\t$0 <options> -D path/to/makefiles\n"
+
     echo -e "Options:"
     echo -e "\t-o\tProvide an output name for the .pdf."
     echo -e "\t-d\tProvide a filename with documentation for the project."
     echo -e "\t-e\tExclude files matching given regex (for use with \`-D')."
     echo -e "\t-n\tDisable links in the PDF."
-    echo -e "\t-v\tVerbose: Don't silence pdfLaTeX output, also keep" \
+    echo -e "\t-v\tVerbose 1: Print out some helpful info (no pdfLaTeX)," \
+                "also keep intermediate files."
+    echo -e "\t-V\tVerbose 2: Don't silence pdfLaTeX output, also keep" \
                 "intermediate files."
     echo -e "\t-h\tShow this screen.\n"
     echo -e "* Note that paths to makefiles (first option) cannot be combined" \
@@ -35,7 +38,7 @@ lib=$(dirname $0)
 called=$PWD
 links=yes
 
-while getopts ":o:t:D:e:d:p:nvh" opt
+while getopts ":o:t:D:e:d:p:nvVh" opt
 do
     case $opt in
 	o)
@@ -64,6 +67,9 @@ do
 	    ;;
 	v)
 	    verbose=1
+        ;;
+    V)
+        verbose=2
 	    ;;
 	p)
 	    projdir=$OPTARG
@@ -154,7 +160,7 @@ then
     exit 1
 fi
 
-    
+
 # Check for exceptions and skip files if necessary
 for f in $files
 do
@@ -327,7 +333,7 @@ if [ $links == "no" ] ; then
 fi
 
 cd $tmpdir
-if [ $verbose -eq 1 ] ; then
+if [ $verbose -gt 1 ] ; then
     # output all of pdflatex's gobbledygook
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode \
         picnic-tables.tex
