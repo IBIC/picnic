@@ -168,9 +168,12 @@ for f in args.file:
                 # add leading `*' to global variables
                 variable = "* " + re.sub("^export ", "", variable)
                 is_global = " (available to sub-makes)"
-                print(variable + " is a global variable.")
+
+                if (args.verbose):
+                    print(variable + " is a global variable.")
             else:
                 is_global = ""
+                if (args.verbose):
                 print(variable + " is a variable.")
 
             if check_and_get_comment(i, "#!"):
