@@ -27,7 +27,7 @@ functions_arr = []
 # pattern - looking for ^VARIABLE=
 ## skips lines with leading hashes and spaces (comments)
 ## stop at first equals sign
-varmatch = re.compile("^[^#=\s]+={1}")
+varmatch = re.compile("(export )?[^#=\s]+={1}")
 
 # pattern - looking for ^target:
 ## this will be used to locate comments for targets AND intermediary files
@@ -163,14 +163,15 @@ for f in args.file:
             # Get everything left of the `=' and strip trailing whitespace
             variable = line.split('=')[0].strip()
 
-
             # Remove leading ``export '' if present
             if re.match("^export ", variable):
                 # add leading `*' to global variables
                 variable = "* " + re.sub("^export ", "", variable)
                 is_global = " (available to sub-makes)"
+                print(variable + " is a global variable.")
             else:
                 is_global = ""
+                print(variable + " is a variable.")
 
             if check_and_get_comment(i, "#!"):
                 comment = check_and_get_comment(i, "#!") + is_global
