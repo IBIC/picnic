@@ -6,21 +6,25 @@ usage() {
     echo -e "${0}\n"
     echo -e "Usage:"
     echo -e "\t${0} <options> path/to/makefile another/path/makefile ..."
-    echo -e "\t${0} <options> -D path/to/makefiles\n"
+    echo -e "\t${0} <options> -D path/to/makefiles"
+    echo	""
 
     echo -e "Options:"
     echo -e "\t-o\tProvide an output name for the .pdf."
+    echo	""
     echo -e "\t-d\tProvide a filename with documentation for the project."
     echo -e "\t-e\tExclude files matching given regex (for use with \`-D')."
+    echo -e "\t-c\tCheck that a makefile is ready to be picnic'd."
+    echo -e "\t-h\tShow this screen."
     echo -e "\t-n\tDisable links in the PDF."
     echo -e "\t-v\tVerbose 1: Print out some helpful info (no pdfLaTeX)," \
                 "also keep intermediate files."
     echo -e "\t-V\tVerbose 2: Don't silence pdfLaTeX output, also keep" \
                 "intermediate files."
-    echo -e "\t-h\tShow this screen.\n"
-    echo -e "* Note that paths to makefiles (first option) cannot be combined" \
-                "with \`-D' syntax."
-    echo -e "* Note all options must precede file list."
+    echo	""
+    echo -e " * Note that paths to makefiles (first option) cannot be" \
+                "combined with \`-D' syntax."
+    echo -e " * Note all options must precede file list."
     }
 
 if [ $# -eq 0 ] ; then usage ; exit 1 ; fi
@@ -33,12 +37,13 @@ exclude="not a regex"
 docfile=""
 verbose=0
 projdir=""
+check=no
 
 lib=$(dirname ${0})
 called=${PWD}
 links=yes
 
-while getopts ":o:t:D:e:d:p:nvVh" opt ; do
+while getopts ":o:D:cd:e:hnp:t:vV" opt ; do
     case ${opt} in
 	o)
         # Strip spaces from file name
@@ -48,13 +53,17 @@ while getopts ":o:t:D:e:d:p:nvVh" opt ; do
 	    if [ -d ${OPTARG} ]
 	    then
 		  directory=${OPTARG}
-		  echo "Reading all *.mk files from ${directory} and its subdirectories."
+		  echo "Reading all *.mk files from ${directory} and its" \
+		  		"subdirectories."
 	    else
 		  echo "${OPTARG} is not a directory."
 		  usage
 		  exit 1
 	    fi
 	    ;;
+	c)
+		check=yes
+		;;
 	e)
 	    exclude="${OPTARG}"
 	    ;;
@@ -113,12 +122,6 @@ else
 fi
 echo "Outfile is ${outfile}"
 
-# If the outfile exists, inform user it is being deleted.
-if [ -f ${outfile} ] ; then
-    echo "Deleting old ${outfile}."
-    rm ${outfile}
-fi
-
 if [ "${directory}" = "" ] ; then
     # if no directory was supplied, take all arguments
     files=$@
@@ -159,32 +162,57 @@ fi
 
 # Check for exceptions and skip files if necessary
 for f in ${files} ; do
-    grep "#*NODOC" ${f} -q
-    if [ $? -eq 0 ]
-    then
-	echo "${f} contains #*NODOC directive, skipping."
-	files=$(echo ${files} | sed "s|\s*${f}\s*||g")
-    fi
+
+	if [ -e ${f} ] ; then
+
+	    if grep "#*NODOC" ${f} -q ; then
+			echo "${f} contains #*NODOC directive, skipping."
+			files=$(echo ${files} | sed "s|\s*${f}\s*||g")
+	    fi
+
+	else
+
+		echo "${f} is not a valid file, quitting."
+		exit 1
+
+	fi
+
 done
 
 # make sure we haven't accidentally removed all files
 if [ $(echo ${files} | wc -w) -eq 0 ] ; then
+
     echo "No valid files."
     exit 1
+
 fi
 
 # save good files for LaTeX to open
 for i in ${files} ; do
+
     echo $(basename ${i}) >> ${tmpdir}/header.txt
+
 done
 
-# run python to get *.txt files
-if [[ verbose -eq 0 ]] ; then
-    python ${lib}/picnic-makedoc.py ${files}
-else
-    python ${lib}/picnic-makedoc.py -v ${files}
-fi
+# Run python to get *.txt files
 
+# If verboseness is 1 or 2, use v_flag
+v_flag=""
+if [[ ${verbose} > 0 ]] ; then v_flag="--verbose" ; fi
+
+# Whether to check input files for picnic preparedness
+c_flag=""
+if [[ ${check} == "yes" ]] ; then c_flag="--check" ; fi
+
+# Actually run picnic python
+python ${lib}/picnic-makedoc.py ${v_flag} ${c_flag} ${files}
+
+if [[ ${check} == "yes" ]] ; then
+
+	echo "Check mode set; exiting here. Remove flag to run for real."
+	exit
+
+fi
 
 # if something went wrong with python, we catch it here
 if [ ! -s targets.txt ] || [ ! -s intermediates.txt ] || [ ! -s variables.txt ]
@@ -335,6 +363,13 @@ else
 fi
 cd ${called}
 
+# If the outfile exists, inform user it is being deleted.
+# Don't do this until all checks have been completed and new PDF has been
+# created
+if [ -f ${outfile} ] ; then
+    echo "Overwriting old ${outfile}."
+    rm ${outfile}
+fi
 cp ${tmpdir}/picnic-tables.pdf ${PWD}/${outfile}
 
 if [ $? -eq 0 ] ; then echo "Saved to ${PWD}/${outfile} -- \"${title}\"" ; fi
