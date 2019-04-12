@@ -116,25 +116,25 @@ def add_to_array(array, new):
 
 def count_missing(array, col_i, name):
 
-	# Check the input array isn't empty by checking that it's a numpy array
-	if type(array).__module__ == np.__name__:
+    # Check the input array isn't empty by checking that it's a numpy array
+    if type(array).__module__ == np.__name__:
 
-		# Get comments where none was supplied
-		comments = array[:, col_i]
-		no_comment = np.where(comments == "No comment supplied.")
+        # Get comments where none was supplied
+        comments = array[:, col_i]
+        no_comment = np.where(comments == "No comment supplied.")
 
-		# Get identifiers of those missing comments from 1st column
-		names = array[no_comment, 0]
+        # Get identifiers of those missing comments from 1st column
+        names = array[no_comment, 0]
 
-		if names.size > 0:
-			print(name.capitalize() + " missing description: ")
-			print(names)
-			print("")
-		else:
-			print(name.capitalize() + " OK")
+        if names.size > 0:
+            print(name.capitalize() + " missing description: ")
+            print(names)
+            print("")
+        else:
+            print(name.capitalize() + " OK")
 
-	else:
-		print("No " + name + " identified.")
+    else:
+        print("No " + name + " identified.")
 
 
 if args.verbose:
@@ -217,7 +217,7 @@ for f in args.file:
 
         ## GET TARGETS & INTERMEDIATES
         if (":" in line and
-            "^\t" not in line and
+            not line[0] == "\t" and
             "#*" not in line and
             not commenthash.match(line) and
             targetmatch.match(line) and
@@ -262,23 +262,23 @@ for f in args.file:
                 print(functionname + " is a function.")
 
             if check_and_get_comment(i, "#@"):
-            	comment = check_and_get_comment(i, "#@")
+                comment = check_and_get_comment(i, "#@")
 
-            	functions_arr = add_to_array(functions_arr,
-            		[[functionname, comment, fbn, fbn_safe]])
+                functions_arr = add_to_array(functions_arr,
+                    [[functionname, comment, fbn, fbn_safe]])
 
 if args.check:
-	print("")
-	print("Checking for readiness ...")
+    print("")
+    print("Checking for readiness ...")
 
-	count_missing(variables,      2, "variables")
-	count_missing(targets_arr,    1, "targets")
-	count_missing(intermediaries, 1, "intermediate files")
-	count_missing(functions_arr,  1, "functions")
+    count_missing(variables,      2, "variables")
+    count_missing(targets_arr,    1, "targets")
+    count_missing(intermediaries, 1, "intermediate files")
+    count_missing(functions_arr,  1, "functions")
 
-	print("")
+    print("")
 
-	sys.exit
+    sys.exit
 
 save_array(variables, "variables.txt")
 save_array(targets_arr, "targets.txt")
