@@ -3,10 +3,10 @@
 # July. 26, 2017
 
 usage() {
-    echo -e "$0\n"
+    echo -e "${0}\n"
     echo -e "Usage:"
-    echo -e "\t$0 <options> path/to/makefile another/path/makefile ..."
-    echo -e "\t$0 <options> -D path/to/makefiles\n"
+    echo -e "\t${0} <options> path/to/makefile another/path/makefile ..."
+    echo -e "\t${0} <options> -D path/to/makefiles\n"
 
     echo -e "Options:"
     echo -e "\t-o\tProvide an output name for the .pdf."
@@ -23,7 +23,7 @@ usage() {
     echo -e "* Note all options must precede file list."
     }
 
-if [ $# -eq 0 ]; then usage; exit 1; fi
+if [ $# -eq 0 ] ; then usage ; exit 1 ; fi
 
 files=""
 
@@ -34,36 +34,35 @@ docfile=""
 verbose=0
 projdir=""
 
-lib=$(dirname $0)
-called=$PWD
+lib=$(dirname ${0})
+called=${PWD}
 links=yes
 
-while getopts ":o:t:D:e:d:p:nvVh" opt
-do
-    case $opt in
+while getopts ":o:t:D:e:d:p:nvVh" opt ; do
+    case ${opt} in
 	o)
         # Strip spaces from file name
 	    chosenname=$(echo ${OPTARG} | sed -e 's/[[:space:]]//g')
 	    ;;
 	D)
-	    if [ -d $OPTARG ]
+	    if [ -d ${OPTARG} ]
 	    then
-		  directory=$OPTARG
-		  echo "Reading all *.mk files from $directory and its subdirectories."
+		  directory=${OPTARG}
+		  echo "Reading all *.mk files from ${directory} and its subdirectories."
 	    else
-		  echo "$OPTARG is not a directory."
+		  echo "${OPTARG} is not a directory."
 		  usage
 		  exit 1
 	    fi
 	    ;;
 	e)
-	    exclude="$OPTARG"
+	    exclude="${OPTARG}"
 	    ;;
 	d)
-	    docfile=$OPTARG
+	    docfile=${OPTARG}
 	    ;;
 	t)
-	    title="$OPTARG"
+	    title="${OPTARG}"
 	    ;;
 	v)
 	    verbose=1
@@ -72,7 +71,7 @@ do
         verbose=2
 	    ;;
 	p)
-	    projdir=$OPTARG
+	    projdir=${OPTARG}
 	    ;;
     n)
         links=no
@@ -82,7 +81,7 @@ do
 	    exit 0
 	    ;;
 	\?)
-	    echo "-$OPTARG is not a valid option"
+	    echo "-${OPTARG} is not a valid option"
 	    usage
 	    exit 1
 	    ;;
@@ -90,11 +89,11 @@ do
 done
 
 if [[ ! ${docfile} == "" ]] ; then
-    echo $docfile
+    echo ${docfile}
 fi
 
 # remove flags and their arguments, keep the rest as input
-shift $(( $OPTIND - 1 ))
+shift $(( ${OPTIND} - 1 ))
 
 # Set the output file name
 
@@ -115,79 +114,72 @@ fi
 echo "Outfile is ${outfile}"
 
 # If the outfile exists, inform user it is being deleted.
-if [ -f ${outfile} ]
-then
+if [ -f ${outfile} ] ; then
     echo "Deleting old ${outfile}."
     rm ${outfile}
 fi
 
-if [ "$directory" = "" ]
-then
+if [ "${directory}" = "" ] ; then
     # if no directory was supplied, take all arguments
     files=$@
 else
     # if a directory was supplied, use it.
-    files=$(find $directory \
+    files=$(find ${directory} \
         -regextype posix-extended -regex '.+\.mk|.*[Mm]akefile$')
-    for f in $files
+    for f in ${files}
     do
-	if [[ $f == $exclude ]]
+	if [[ ${f} == ${exclude} ]]
 	then
-	    echo "Excluding $f"
-	    files=$(echo $files | sed "s|\s*$f\s*||g")
+	    echo "Excluding ${f}"
+	    files=$(echo ${files} | sed "s|\s*${f}\s*||g")
 	fi
     done
 fi
 
-if [ "$files" == "" ] ; then usage; exit 1; fi
+if [ "${files}" == "" ] ; then usage; exit 1; fi
 
 tmpdir=$(mktemp -d /tmp/picnic.XXXXX)
 
-echo "Working in $tmpdir"
+echo "Working in ${tmpdir}"
 
 # Make sure that no options were given after the filenames
 exitflag=0
-for f in $files
-do
+for f in ${files} ; do
     if [[ ${f:0:1} == "-" ]]
     then
 	exitflag=1
     fi
 done
-if [ $exitflag -eq 1 ]
-then
+
+if [ ${exitflag} -eq 1 ] ; then
     usage
     exit 1
 fi
 
 
 # Check for exceptions and skip files if necessary
-for f in $files
-do
-    grep "#*NODOC" $f -q
+for f in ${files} ; do
+    grep "#*NODOC" ${f} -q
     if [ $? -eq 0 ]
     then
-	echo "$f contains #*NODOC directive, skipping."
-	files=$(echo $files | sed "s|\s*$f\s*||g")
+	echo "${f} contains #*NODOC directive, skipping."
+	files=$(echo ${files} | sed "s|\s*${f}\s*||g")
     fi
 done
 
 # make sure we haven't accidentally removed all files
-if [ $(echo $files | wc -w) -eq 0 ]
-then
+if [ $(echo ${files} | wc -w) -eq 0 ] ; then
     echo "No valid files."
     exit 1
 fi
 
 # save good files for LaTeX to open
-for i in ${files}
-do
-    echo $(basename $i) >> $tmpdir/header.txt
+for i in ${files} ; do
+    echo $(basename ${i}) >> ${tmpdir}/header.txt
 done
 
 # run python to get *.txt files
-if [[ verbose -eq 0 ]]
-then
+if [[ verbose -eq 0 ]] ; then
     python ${lib}/picnic-makedoc.py ${files}
 else
     python ${lib}/picnic-makedoc.py -v ${files}
@@ -249,16 +241,14 @@ mv functions.txt ${tmpdir}/
 
 echo "Running PdfLaTeX ..."
 
-if [ ${docfile}x == "x" ]
-then
+if [ ${docfile}x == "x" ] ; then
     inputdesc="No description supplied."
 else
-    inputdesc=$(cat "$docfile")
+    inputdesc=$(cat "${docfile}")
 fi
 
-if [ ${projdir}x == "x" ]
-then
-    projdir=$PWD
+if [ ${projdir}x == "x" ] ; then
+    projdir=${PWD}
 fi
 
 echo "\begin{center}
@@ -275,7 +265,7 @@ echo "\begin{center}
             & This document was prepared on \Today{} at \currenttime{} by
             \texttt{$(whoami)}.
 
-            & Prepared in: \texttt{$projdir}
+            & Prepared in: \texttt{${projdir}}
 
             & This file documents the following makefiles:
             \begin{sloppypar}
@@ -287,17 +277,15 @@ echo "\begin{center}
         ${inputdesc}
 
         \subsection{Files}
-        \begin{description}" > $tmpdir/descriptions.tex
+        \begin{description}" > ${tmpdir}/descriptions.tex
 
-> $tmpdir/makefiles.tex
-for i in ${files}
-do
-    if [ -f ${PWD}/${i} ]
-    then
+> ${tmpdir}/makefiles.tex
+for i in ${files} ; do
+
+    if [ -f ${PWD}/${i} ] ; then
         # If a relative path was given
         location=${PWD}/${i}
-    elif [ -f ${i} ]
-    then
+    elif [ -f ${i} ] ; then
         # If a full path was given
         location=${i}
     else
@@ -309,31 +297,30 @@ do
     echo "\subsection{\texttt{"$(basename ${i})"}}
           \begingroup
           \catcode\`\_=12
-          \label{"$(echo $(basename $i) | sed 's/[^a-zA-Z]//g')"}
+          \label{"$(echo $(basename ${i}) | sed 's/[^a-zA-Z]//g')"}
           \lstinputlisting{"${location}"}
-          \endgroup" >> $tmpdir/makefiles.tex
+          \endgroup" >> ${tmpdir}/makefiles.tex
 
-    if [ $(grep "#\*[^S][^K][^I][^P]" $i -c) -gt 0 ]
-    then
-	   description=$(grep "#\*" $i | sed  -e 's/\n/; /g' -e 's/#\*\s*//' \
+    if [ $(grep "#\*[^S][^K][^I][^P]" ${i} -c) -gt 0 ] ; then
+	   description=$(grep "#\*" ${i} | sed  -e 's/\n/; /g' -e 's/#\*\s*//' \
                         -e 's/[\{}_^#&$%~]/\\&/g')
     else
 	   description="No description supplied."
     fi
 
-    echo "\item [\texttt{$i}] $description" >> $tmpdir/descriptions.tex
+    echo "\item [\texttt{${i}}] ${description}" >> ${tmpdir}/descriptions.tex
 done
 
-echo "\end{description}" >> $tmpdir/descriptions.tex
+echo "\end{description}" >> ${tmpdir}/descriptions.tex
 
-cp ${lib}/*.tex $tmpdir/
+cp ${lib}/*.tex ${tmpdir}/
 
-if [ $links == "no" ] ; then
-    sed -i $tmpdir/picnic-tables.tex -e 's/^% draft,/draft,/'
+if [ ${links} == "no" ] ; then
+    sed -i ${tmpdir}/picnic-tables.tex -e 's/^% draft,/draft,/'
 fi
 
-cd $tmpdir
-if [ $verbose -gt 1 ] ; then
+cd ${tmpdir}
+if [ ${verbose} -gt 1 ] ; then
     # output all of pdflatex's gobbledygook
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode \
         picnic-tables.tex
@@ -346,12 +333,12 @@ else
     pdflatex -shell-escape -synctex=1 -interaction=nonstopmode \
         picnic-tables.tex 1> /dev/null
 fi
-cd $called
+cd ${called}
 
-cp $tmpdir/picnic-tables.pdf $PWD/${outfile}
+cp ${tmpdir}/picnic-tables.pdf ${PWD}/${outfile}
 
-if [ $? -eq 0 ] ; then echo "Saved to $PWD/${outfile} -- \"${title}\"" ; fi
+if [ $? -eq 0 ] ; then echo "Saved to ${PWD}/${outfile} -- \"${title}\"" ; fi
 
-if [ $verbose -eq 1 ] ; then
-    echo "Temporary files saved in $tmpdir/."
+if [ ${verbose} -eq 1 ] ; then
+    echo "Temporary files saved in ${tmpdir}/."
 fi
